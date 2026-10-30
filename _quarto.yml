@@ -12,8 +12,6 @@ website:
   repo-url: https://github.com/dyerlab/Licensed_to_Ilex
   navbar:
     left:
-      - href: index.qmd
-        text: Home
       - text: Analyses
         menu:
           - analyses/01_study_area.qmd

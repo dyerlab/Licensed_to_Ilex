@@ -1,6 +1,6 @@
 ---
 title: "Licensed to Ilex"
-subtitle: "Orthoimagery analysis along a Richmond to Pocahontas State Park transect"
+subtitle: "Urbanization and the Reshaping of Plant–Insect Interactions: Pollination, Herbivory, and Parasitism in American Holly"
 ---
 
 ```{=html}

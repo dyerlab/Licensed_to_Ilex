@@ -103,12 +103,5 @@
     "title": "Study Area and Orthoimagery",
     "section": "Notes",
     "text": "Notes\n\nImagery source: VBMP 2025 12-inch orthoimagery (Sanborn Map Company, flown February to March 2025), distributed by the Virginia Geographic Information Network (VGIN). The MrSID versions are RGB only. The near-infrared band is only in the TIFF deliverables.\nTile layout: each 12-inch tile is 5,000 × 5,000 px at 1 ft, covering 5,000 × 5,000 ft. Tile names follow DO_S13_&lt;section&gt;_&lt;quarter&gt;.2025.\nMrSID decoding: the MrSID GDAL driver only loads inside the QGIS application (macOS code-signing blocks it from the command line), so conversion runs in the QGIS Python console.\nMosaic edges: the VRT has no nodata value. Areas outside the tiles read as 0 in all three bands; all such areas lie outside the study area."
-  },
-  {
-    "objectID": "index.html#reproducing",
-    "href": "index.html#reproducing",
-    "title": "Licensed to Ilex",
-    "section": "Reproducing",
-    "text": "Reproducing\nThe code is on GitHub. The imagery is not included in the repository; see the README for how to download the source MrSID tiles from VGIN and rebuild the data locally."
   }
 ]

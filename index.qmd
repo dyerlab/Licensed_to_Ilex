@@ -32,10 +32,7 @@ subtitle: "Urbanization and the Reshaping of Plant–Insect Interactions: Pollin
 > Human activity is reshaping landscapes, and with them the plant and insect communities that live there. This project uses American holly (Ilex opaca), a common understory tree that thrives in both forests and cities, to ask how plants and their associated insects respond along a continuous gradient of urbanization, from highly managed urban sites in Richmond to secondary-growth forest. Rather than treating “urban” and “rural” as two categories, we are looking for where along the gradient key changes happen: shifts in sex ratios, mating patterns, pollinator communities, herbivory by the holly leaf miner and its parasitoids, leaf traits and physiology, and seed production. The work combines geospatial mapping, field surveys, greenhouse germination, common gardens, and potentially genetic analyses, with the goal of understanding how to manage human-modified landscapes to reduce their impacts.
 
 
-This site documents analyses of 2025 Virginia Base Mapping Program (VBMP) 12-inch
-orthoimagery along a 25 km transect from industrial Richmond, Virginia
-(37.584817° N, 77.472433° W) to Pocahontas State Park (37.373768° N, 77.570813° W),
-buffered by 2 km on each side.
+This site documents spatial analyses components of this project using the 2025 Virginia Base Mapping Program (VBMP) 12-inch orthoimagery along a 25 km transect from industrial Richmond, Virginia (37.584817° N, 77.472433° W) to Pocahontas State Park (37.373768° N, 77.570813° W), buffered by 2 km on each side.  The overall goal here is to identify smampling zones, target trees, and establish a set of individuals along the gradient to serve as focal trees along a mulitfaceted gradient from highly developed Richmond Virginia $\to$ Pochontas State Park.
 
 ## Analyses
 

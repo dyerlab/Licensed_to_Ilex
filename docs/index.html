@@ -71,6 +71,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -90,23 +119,6 @@ ul.task-list li input[type="checkbox"] {
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav navbar-nav-scroll me-auto">
-  <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-analyses" role="link" data-bs-toggle="dropdown" aria-expanded="false">
- <span class="menu-text">Analyses</span>
-    </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-analyses">    
-        <li>
-    <a class="dropdown-item" href="./analyses/01_study_area.html">
- <span class="dropdown-text">Study Area and Orthoimagery</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./analyses/02_gradient.html">
- <span class="dropdown-text">Urban to Forest Gradient</span></a>
-  </li>  
-    </ul>
-  </li>
-</ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/dyerlab/Licensed_to_Ilex"> <i class="bi bi-github" role="img">
@@ -184,7 +196,7 @@ ul.task-list li input[type="checkbox"] {
 <blockquote class="blockquote">
 <p>Human activity is reshaping landscapes, and with them the plant and insect communities that live there. This project uses American holly (Ilex opaca), a common understory tree that thrives in both forests and cities, to ask how plants and their associated insects respond along a continuous gradient of urbanization, from highly managed urban sites in Richmond to secondary-growth forest. Rather than treating “urban” and “rural” as two categories, we are looking for where along the gradient key changes happen: shifts in sex ratios, mating patterns, pollinator communities, herbivory by the holly leaf miner and its parasitoids, leaf traits and physiology, and seed production. The work combines geospatial mapping, field surveys, greenhouse germination, common gardens, and potentially genetic analyses, with the goal of understanding how to manage human-modified landscapes to reduce their impacts.</p>
 </blockquote>
-<p>This site documents analyses of 2025 Virginia Base Mapping Program (VBMP) 12-inch orthoimagery along a 25 km transect from industrial Richmond, Virginia (37.584817° N, 77.472433° W) to Pocahontas State Park (37.373768° N, 77.570813° W), buffered by 2 km on each side.</p>
+<p>This site documents spatial analyses components of this project using the 2025 Virginia Base Mapping Program (VBMP) 12-inch orthoimagery along a 25 km transect from industrial Richmond, Virginia (37.584817° N, 77.472433° W) to Pocahontas State Park (37.373768° N, 77.570813° W), buffered by 2 km on each side. The overall goal here is to identify smampling zones, target trees, and establish a set of individuals along the gradient to serve as focal trees along a mulitfaceted gradient from highly developed Richmond Virginia <span class="math inline">\(\to\)</span> Pochontas State Park.</p>
 <section id="analyses" class="level2">
 <h2 class="anchored" data-anchor-id="analyses">Analyses</h2>
 <table class="caption-top table">

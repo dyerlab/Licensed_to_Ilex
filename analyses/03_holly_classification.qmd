@@ -1,0 +1,251 @@
+---
+title: "Holly Candidates"
+subtitle: "Small, isolated evergreen crowns in leaf-off imagery as candidate holly locations"
+date: today
+---
+
+```{r setup}
+library(sf)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(leaflet)
+library(plotly)
+library(terra)
+library(here)
+
+source(here("R", "functions.R"))
+derived <- here(cfg$paths$derived)
+h <- cfg$holly
+
+line    <- load_transect()
+windows <- load_windows()
+obj     <- holly_candidates(load_holly_objects())
+classes <- read.csv(file.path(derived, "nlcd_window_classes.csv"))
+nlcd    <- read.csv(file.path(derived, "nlcd_windows.csv"))
+
+vi_name <- unique(obj$vi_name)
+vi_label <- c(gli = "GLI (green leaf index, RGB)", ndvi = "NDVI (near-infrared)")[vi_name]
+thr <- h$thresholds[[vi_name]]
+
+reason_cols <- c(candidate = "#d95f02", `not isolated` = "#7570b3",
+                 `developed/water` = "#999999", size = "#cccccc")
+```
+
+## Purpose
+
+American holly (*Ilex opaca*) is evergreen, so in leaf-off imagery (flown February to March
+2025) its crowns stay green while the deciduous canopy around it is bare. This page builds the
+first step of a holly classification workflow:
+
+1. **Candidates from imagery** (this page): find small, isolated evergreen crowns in
+   non-developed areas.
+2. **Ground truth**: visit candidate locations and record what is there (holly, sex if known,
+   or the false-positive species).
+3. **Classification**: train a supervised classifier on crown features (and NDVI once the
+   4-band imagery arrives) using the field labels, then map holly across the transect.
+
+| Step | Script | Output |
+|---|---|---|
+| 7. Crown extraction | `R/06_holly_objects.R` | `data/derived/holly_objects.gpkg` (all crowns with features) |
+| 8. Candidate rule | `holly_candidates()` in `R/functions.R` | `data/derived/holly_candidates.{csv,gpx}` (field list) |
+
+The current imagery is RGB only, so greenness comes from the green leaf index (GLI). When the
+4-band imagery arrives and the mosaic is rebuilt with a `nir` band, `veg_index()` switches to
+NDVI automatically; only the NDVI thresholds in `config.yml` need calibrating.
+
+## Approach
+
+Each 12-inch tile is processed at full resolution:
+
+1. **Vegetation index** (`r vi_label`), smoothed with a `r h$smooth_px` × `r h$smooth_px` px mean.
+2. **Crowns:** pixels with index > `r thr$crown` are evergreen crown; connected groups of them
+   are crown objects. Objects `r h$extract_diam_ft[1]`–`r h$extract_diam_ft[2]` ft across
+   (equivalent-circle diameter) are kept with their features.
+3. **Isolation:** the share of evergreen pixels (index > `r thr$context`, a lower threshold) in
+   the `r h$context_window * h$context_cell_px` ft neighbourhood of each crown. Holly in a
+   leaf-off hardwood stand has a low share; a crown inside pine canopy has a high one.
+4. **Candidate rule:** crown `r h$candidate_diam_ft[1]`–`r h$candidate_diam_ft[2]` ft across,
+   evergreen share ≤ `r h$context_max`, and NLCD class not water or developed
+   (`r paste(h$exclude_nlcd, collapse = ", ")`). Crowns cut by a tile edge are excluded from
+   the field list.
+
+Thresholds were set by inspecting forest chips at 17.5 and 22.5 km: GLI in pine canopy has
+a median near 0.03, leaf-off hardwood near −0.02.
+
+### Example
+
+A 600 × 600 ft area 22.5 km along the transect: a pine stand (upper left) next to leaf-off
+hardwoods (lower right). Candidates are the isolated crowns in the hardwood stand; crowns
+inside the pine canopy are rejected as not isolated.
+
+```{r example, fig.width=10, fig.height=5.2}
+ends <- st_coordinates(line)[, 1:2]
+d <- (ends[2, ] - ends[1, ]) / sqrt(sum((ends[2, ] - ends[1, ])^2))
+p <- ends[1, ] + km_to_crs(22.5) * d
+e <- ext(p[1] - 300, p[1] + 300, p[2] - 300, p[2] + 300)
+chip <- crop(load_ortho(aoi = FALSE), e)
+names(chip) <- band_names(chip)
+vi <- focal(veg_index(chip, vi_name), h$smooth_px, "mean", na.policy = "omit")
+ex <- obj[st_as_sf(as.polygons(e, crs = crs(chip))), ]
+ex <- ex[ex$reason %in% c("candidate", "not isolated"), ]
+
+par(mfrow = c(1, 2), mar = c(0.5, 0.5, 2, 0.5))
+plotRGB(chip, mar = c(0.5, 0.5, 2, 0.5)); title("Imagery with crowns")
+plot(vect(ex), add = TRUE, border = reason_cols[ex$reason], lwd = 2)
+legend("bottomleft", c("candidate", "not isolated"), col = reason_cols[c("candidate", "not isolated")],
+       lwd = 2, bg = "white", cex = 0.8)
+plot(vi, main = vi_label, axes = FALSE, legend = TRUE, mar = c(0.5, 0.5, 2, 4),
+     col = hcl.colors(50, "Greens 3", rev = TRUE))
+```
+
+## Candidates
+
+```{r counts}
+n_tot <- nrow(obj)
+n_cand <- sum(obj$candidate & !obj$tile_edge)
+obj |>
+  st_drop_geometry() |>
+  mutate(reason = factor(reason, levels = names(reason_cols))) |>
+  count(reason, name = "crowns") |>
+  mutate(share = sprintf("%.1f%%", 100 * crowns / sum(crowns))) |>
+  knitr::kable(col.names = c("Rule outcome", "Crowns", "Share"),
+               format.args = list(big.mark = ","))
+```
+
+Of `r format(n_tot, big.mark = ",")` evergreen crowns `r h$extract_diam_ft[1]`–`r h$extract_diam_ft[2]` ft
+across in the study area, **`r format(n_cand, big.mark = ",")`** pass the candidate rule (the
+outcome is the first rule a crown fails). Zoom in on the map to see individual candidates over
+the imagery; click one for its id and features.
+
+```{r map}
+cand <- obj[obj$candidate & !obj$tile_edge, ]
+cand_ll <- st_transform(st_centroid(cand), 4326)
+cand_ll$popup <- sprintf(
+  "<b>%s</b><br>%.0f ft crown<br>%s %.3f<br>Evergreen share: %.2f<br>Window %d (%.1f km)<br>%.6f, %.6f",
+  cand_ll$obj_id, cand_ll$diam_ft, toupper(vi_name), cand_ll$vi_mean, cand_ll$context,
+  cand_ll$window, cand_ll$u_km, cand_ll$lat, cand_ll$lon
+)
+
+leaflet(cand_ll) |>
+  addProviderTiles(providers$Esri.WorldImagery, group = "Imagery",
+                   options = providerTileOptions(maxNativeZoom = 19, maxZoom = 21)) |>
+  addProviderTiles(providers$Esri.WorldGrayCanvas, group = "Light") |>
+  addPolylines(data = st_transform(line, 4326), color = "white", dashArray = "6", weight = 2) |>
+  addCircleMarkers(radius = 5, color = "#d95f02", weight = 2, fillOpacity = 0.3,
+                   popup = ~popup, clusterOptions = markerClusterOptions(disableClusteringAtZoom = 18)) |>
+  addLayersControl(baseGroups = c("Imagery", "Light"))
+```
+
+### Along the transect
+
+Candidate density per km² of non-developed land (NLCD classes other than
+`r paste(h$exclude_nlcd, collapse = ", ")`) in each 1 km window, with the window's forest cover
+for reference.
+
+```{r density}
+nondev <- classes |>
+  filter(!class %in% h$exclude_nlcd) |>
+  group_by(window) |>
+  summarise(nondev_frac = sum(frac))
+dens <- windows |>
+  st_drop_geometry() |>
+  left_join(nondev, by = "window") |>
+  left_join(count(st_drop_geometry(cand), window, name = "n"), by = "window") |>
+  left_join(select(nlcd, window, forest_pct), by = "window") |>
+  mutate(n = coalesce(n, 0L),
+         nondev_km2 = area_km2 * nondev_frac,
+         per_km2 = ifelse(nondev_km2 > 0.05, n / nondev_km2, NA))
+
+plot_ly(dens, x = ~u_mid_km) |>
+  add_bars(y = ~per_km2, name = "Candidates per km² non-developed",
+           marker = list(color = "#d95f02"),
+           customdata = ~sprintf("%d candidates in %.2f km²", n, nondev_km2),
+           hovertemplate = "%{y:.0f} per km² (%{customdata})<extra></extra>") |>
+  layout(xaxis = list(title = "Distance from Richmond (km)", dtick = 5),
+         yaxis = list(title = "Candidates per km²"),
+         hovermode = "x unified", showlegend = FALSE) |>
+  config(displaylogo = FALSE)
+```
+
+### Candidate gallery
+
+A random sample of candidates, 60 × 60 ft around each crown (outlined), for a quick visual
+check of what the rule picks up.
+
+```{r gallery, fig.width=10, fig.height=7}
+set.seed(2025)
+ortho <- load_ortho(aoi = FALSE)
+samp <- cand[sample(nrow(cand), min(24, nrow(cand))), ]
+par(mfrow = c(4, 6), mar = c(0.2, 0.2, 1.2, 0.2))
+for (i in seq_len(nrow(samp))) {
+  ctr <- st_coordinates(st_centroid(st_geometry(samp[i, ])))
+  x <- crop(ortho, ext(ctr[1] - 30, ctr[1] + 30, ctr[2] - 30, ctr[2] + 30))
+  plotRGB(x[[1:3]], mar = c(0.2, 0.2, 1.2, 0.2))
+  plot(vect(samp[i, ]), add = TRUE, border = "#d95f02", lwd = 1.5)
+  where <- if (is.na(samp$window[i])) "end cap" else sprintf("window %d", samp$window[i])
+  title(sprintf("%.0f ft, %s", samp$diam_ft[i], where), cex.main = 0.8, line = 0.2)
+}
+```
+
+### Crown features
+
+Features recorded for every crown, compared between candidates and crowns rejected as not
+isolated (mostly crowns within pine or other evergreen canopy). These are the starting inputs
+for the classifier.
+
+```{r features, fig.width=9, fig.height=4.5}
+obj |>
+  st_drop_geometry() |>
+  filter(reason %in% c("candidate", "not isolated")) |>
+  select(reason, `Diameter (ft)` = diam_ft, Compactness = compactness,
+         `Index mean` = vi_mean, Brightness = brightness, `Evergreen share` = context) |>
+  pivot_longer(-reason) |>
+  ggplot(aes(value, fill = reason, colour = reason)) +
+  geom_density(alpha = 0.25, linewidth = 0.6) +
+  facet_wrap(~name, scales = "free", nrow = 2) +
+  scale_fill_manual(values = reason_cols, name = NULL) +
+  scale_colour_manual(values = reason_cols, name = NULL) +
+  labs(x = NULL, y = NULL) +
+  theme_minimal() +
+  theme(legend.position = "top", axis.text.y = element_blank(), panel.grid.minor = element_blank())
+```
+
+## Ground truth
+
+The field list is `data/derived/holly_candidates.csv` (with a GPX copy for GPS units and phone
+apps). Each row has the crown id, latitude and longitude, transect position, crown diameter, and
+the features used by the rule. Suggested field record per visited candidate:
+
+| Field | Values |
+|---|---|
+| `obj_id` | crown id from the list (or new id for holly found nearby but not listed) |
+| `species` | *Ilex opaca*, or the false positive (e.g. eastern red cedar, pine, magnolia, privet, ivy-covered trunk, lawn) |
+| `sex` | female (fruit), male, unknown |
+| `dbh_cm`, `height_m` | optional size measures |
+| `notes`, `photo` | free text and photo id |
+
+Crown ids are tied to the current thresholds; if the rule or index changes, match field records
+to crowns by location rather than id. Keep field data outside `data/derived/` (for example
+`data/field/`), since derived files are rebuilt by the scripts.
+
+## Next steps
+
+- **Sampling design:** a stratified random sample of candidates per window (or per NLCD
+  class), so the field effort covers the full gradient.
+- **Classifier:** with field labels, fit a supervised model (e.g. random forest) on crown
+  features, validated with spatially blocked cross-validation (hold out whole windows).
+- **NDVI:** when the 4-band imagery arrives, rebuild the mosaic, calibrate the NDVI thresholds,
+  and add NDVI and NIR features. In leaf-off imagery NDVI should separate evergreen foliage from
+  bare branches and dormant grass more cleanly than GLI.
+
+## Notes
+
+- **Expected false positives:** other evergreens of similar size, such as eastern red cedar,
+  young loblolly or Virginia pine, southern magnolia, and evergreen shrubs (privet, *Elaeagnus*,
+  mountain laurel), plus green ground cover such as winter grass or English ivy on trunks.
+- **What is missed:** holly under evergreen canopy (hidden), crowns smaller than
+  `r h$candidate_diam_ft[1]` ft, holly in developed areas (excluded by design), and crowns merged
+  with neighbouring evergreens into one larger object.
+- **Shadows:** the imagery has long shadows in places; shaded crowns may fall below the index
+  threshold.

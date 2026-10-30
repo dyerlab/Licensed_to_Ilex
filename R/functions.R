@@ -28,7 +28,7 @@ load_transect <- function() {
 # All such areas lie outside the AOI, so any analysis limited to the AOI polygon is unaffected.
 load_ortho <- function(aoi = TRUE, mask = FALSE) {
   r <- rast(here(cfg$paths$derived, "ortho_12in.vrt"))
-  names(r) <- c("red", "green", "blue")
+  names(r) <- band_names(r)
   if (isFALSE(aoi)) return(r)
   poly <- if (isTRUE(aoi)) load_aoi() else aoi
   poly <- project(vect(poly), crs(r))
@@ -83,4 +83,46 @@ transect_position <- function(lon, lat, x = NULL) {
   inside <- u >= 0 & u <= crs_to_km(len) & abs(v) <= cfg$buffer$half_width_km
   window <- ifelse(inside, pmin(floor(u / win_len), ceiling(crs_to_km(len) / win_len) - 1) + 1, NA)
   data.frame(u_km = u, v_km = v, window = as.integer(window))
+}
+
+# Band names for VBMP imagery: RGB (MrSID-derived) or RGB + NIR (4-band GeoTIFF).
+band_names <- function(r) {
+  c("red", "green", "blue", "nir")[seq_len(nlyr(r))]
+}
+
+# Which vegetation index to use for a raster: NDVI when a nir band exists, else GLI.
+veg_index_name <- function(r) {
+  if (cfg$holly$veg_index != "auto") return(cfg$holly$veg_index)
+  if ("nir" %in% names(r)) "ndvi" else "gli"
+}
+
+# Vegetation index from imagery with bands named by band_names().
+#   gli:  green leaf index (2G - R - B) / (2G + R + B), RGB only
+#   ndvi: (NIR - R) / (NIR + R)
+veg_index <- function(r, index = veg_index_name(r)) {
+  out <- switch(index,
+    gli  = (2 * r$green - r$red - r$blue) / (2 * r$green + r$red + r$blue),
+    ndvi = (r$nir - r$red) / (r$nir + r$red),
+    stop("Unknown vegetation index: ", index)
+  )
+  names(out) <- index
+  out
+}
+
+# Crown objects extracted by R/06_holly_objects.R (all small evergreen crowns, loose filters).
+load_holly_objects <- function() {
+  st_read(here(cfg$paths$derived, "holly_objects.gpkg"), quiet = TRUE)
+}
+
+# Apply the candidate rule from config.yml to crown objects: crown size, isolation from
+# other evergreen canopy, and non-developed NLCD class. Adds a `candidate` column and a
+# `reason` column naming the first rule an object fails ("candidate" if it passes all).
+holly_candidates <- function(obj, h = cfg$holly) {
+  size_ok <- obj$diam_ft >= h$candidate_diam_ft[1] & obj$diam_ft <= h$candidate_diam_ft[2]
+  iso_ok  <- !is.na(obj$context) & obj$context <= h$context_max
+  lc_ok   <- !is.na(obj$nlcd) & !(obj$nlcd %in% h$exclude_nlcd)
+  obj$reason <- ifelse(!size_ok, "size", ifelse(!lc_ok, "developed/water",
+                ifelse(!iso_ok, "not isolated", "candidate")))
+  obj$candidate <- obj$reason == "candidate"
+  obj
 }

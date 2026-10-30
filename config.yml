@@ -50,3 +50,27 @@ nlcd:
     LndCov: "Land-Cover-Native_conus_year_data"
     FctImp: "Fractional-Impervious-Surface-Native_conus_year_data"
   dir: "data/raw/nlcd"
+
+holly:
+  # Candidate holly crowns: small, isolated evergreen crowns in leaf-off (Feb-Mar) imagery.
+  # Vegetation index: "auto" uses NDVI when the imagery has a nir band, otherwise GLI
+  # (green leaf index, (2G - R - B) / (2G + R + B)). Thresholds are per index.
+  veg_index: "auto"
+  smooth_px: 3                 # mean filter (pixels) applied to the index before thresholding
+  thresholds:
+    gli:
+      crown: 0.05              # pixel is evergreen crown (calibrated on km 17.5 and 22.5 chips)
+      context: 0.02            # pixel counts as evergreen when measuring surroundings
+    ndvi:                      # placeholders: calibrate when the 4-band imagery arrives
+      crown: 0.30
+      context: 0.20
+  # Objects kept by R/06_holly_objects.R (loose, so the candidate rule can be tuned later)
+  extract_diam_ft: [6, 30]     # equivalent-circle diameter range
+  context_cell_px: 10          # aggregate the context mask to 10 px (10 ft) cells
+  context_window: 7            # cells; 7 x 10 ft = 70 ft neighbourhood
+  # Candidate rule (applied by holly_candidates() in R/functions.R)
+  candidate_diam_ft: [10, 20]
+  context_max: 0.25            # max evergreen fraction in the 70 ft neighbourhood (isolation)
+  exclude_nlcd: [11, 21, 22, 23, 24]   # water and developed classes ("non-developed" areas only)
+  workers: 6                   # tiles processed in parallel
+  dir: "data/derived/holly"

@@ -24,6 +24,13 @@ Site home: <https://dyerlab.github.io/Licensed_to_Ilex/>
    - [Gradient](https://dyerlab.github.io/Licensed_to_Ilex/analyses/02_gradient.html#gradient)
    - [Window table](https://dyerlab.github.io/Licensed_to_Ilex/analyses/02_gradient.html#window-table)
    - [Notes](https://dyerlab.github.io/Licensed_to_Ilex/analyses/02_gradient.html#notes)
+3. [Holly candidates](https://dyerlab.github.io/Licensed_to_Ilex/analyses/03_holly_classification.html) (source: [`analyses/03_holly_classification.qmd`](analyses/03_holly_classification.qmd))
+   - [Purpose](https://dyerlab.github.io/Licensed_to_Ilex/analyses/03_holly_classification.html#purpose)
+   - [Approach and example](https://dyerlab.github.io/Licensed_to_Ilex/analyses/03_holly_classification.html#approach)
+   - [Candidates, map, and density along the transect](https://dyerlab.github.io/Licensed_to_Ilex/analyses/03_holly_classification.html#candidates)
+   - [Ground truth](https://dyerlab.github.io/Licensed_to_Ilex/analyses/03_holly_classification.html#ground-truth)
+   - [Next steps](https://dyerlab.github.io/Licensed_to_Ilex/analyses/03_holly_classification.html#next-steps)
+   - [Notes](https://dyerlab.github.io/Licensed_to_Ilex/analyses/03_holly_classification.html#notes)
 
 <!-- When adding an analysis: add analyses/NN_name.qmd, list it in _quarto.yml and index.qmd,
      then add an entry here (section anchors are the lowercased, hyphenated headings). -->
@@ -68,6 +75,7 @@ Rscript R/02_select_tiles.R    # tiles intersecting the buffer       -> data/der
 Rscript R/03_build_vrt.R       # virtual mosaic + preview            -> data/derived/ortho_12in.vrt
 Rscript R/04_transect_windows.R  # 1 km windows along the transect  -> data/derived/transect_windows.gpkg
 Rscript R/05_nlcd.R            # Annual NLCD download + summaries    -> data/derived/nlcd_windows.csv
+Rscript R/06_holly_objects.R   # evergreen crowns + holly candidates -> data/derived/holly_candidates.csv
 quarto render                  # rebuild the website                 -> docs/
 ```
 

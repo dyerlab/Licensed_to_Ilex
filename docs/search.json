@@ -56,11 +56,32 @@
     "text": "Analyses\n\n\n\n\nAnalysis\nDescription\n\n\n\n\n01\nStudy area and orthoimagery\nTransect, study area, imagery tiles, and mosaic\n\n\n02\nUrban to forest gradient\nAnnual NLCD land cover and impervious surface in 1 km windows along the transect"
   },
   {
-    "objectID": "index.html#overview",
-    "href": "index.html#overview",
+    "objectID": "index.html#framing",
+    "href": "index.html#framing",
     "title": "Licensed to Ilex",
-    "section": "Overview",
-    "text": "Overview\n\nFraming\n\nUrbanization is treated as a continuous gradient, not an urban-versus-rural comparison. The goal is to identify “phase shifts” from urban to peri-urban to secondary forest, with applied value for managing human-modified landscapes.\nIt builds directly on the dogwood work: about 60 maternal trees sampled from Richmond to Pocahontas State Park, with mating system parameters analyzed against spatial, impervious surface, and land cover gradients.\nHolly is framed as an Anthropocene “winner,” like pigeons and rats, a species doing well in human landscapes that’s worth understanding for that reason.\n\n\n\nQuestions raised\n\nSex ratios: Holly is dioecious, and the nursery trade sells grafted female clones. Urban areas may be female-biased, which could lower seed set through limited pollen.\nPollination: Little is known about who pollinates holly. The visitors appear to be mostly generalists. One hypothesis is that non-native urban pollinators compensate, so there’s no net effect on seed set.\nHerbivory: The holly leaf miner and its parasitoids, including possible co-evolution along the gradient.\nLeaf traits and physiology: Leaf toughness, LI-COR gas exchange, and water-use efficiency, linked to herbivore performance (modeled on the Costa Rica caterpillar study).\nFragmentation: Holly often grows on forest edges, so edge versus interior is a related axis.\nLonger term: Reciprocal common gardens (Rice Rivers Center and an urban site near the Science Museum), and range-wide phylogeography, including high-elevation Appalachian populations.\n\n\n\nApproach\n\nStart with low-cost observational data:\n\nMap and sex trees after leaf drop,\nCollect seeds from mother trees through December (freezer storage),\nPhotograph leaves on target trees for herbivory,\nRear leaf miners for parasitoids,\nRun pollinator counts in April–June.\nGermination tests, seed abortion, etc. ~ (landscape location).\n\n\n\n\nPeople and teaching\n\nRecruit undergraduates by pitching to targeted courses: GIS/cartography for spatial work, ecology for herbivory & pollinators, and evolution for co-evolution.\nFormats include independent study, the new zero-credit research course, and a possible fall capstone or seminar that produces the literature review.\nAn NSF submission is planned."
+    "section": "Framing",
+    "text": "Framing\n\nUrbanization is treated as a continuous gradient, not an urban-versus-rural comparison. The goal is to identify “phase shifts” from urban to peri-urban to secondary forest, with applied value for managing human-modified landscapes.\nIt builds directly on the dogwood work: about 60 maternal trees sampled from Richmond to Pocahontas State Park, with mating system parameters analyzed against spatial, impervious surface, and land cover gradients.\nHolly is framed as an Anthropocene “winner,” like pigeons and rats, a species doing well in human landscapes that’s worth understanding for that reason."
+  },
+  {
+    "objectID": "index.html#questions",
+    "href": "index.html#questions",
+    "title": "Licensed to Ilex",
+    "section": "Questions",
+    "text": "Questions\n\nSex ratios: Holly is dioecious, and the nursery trade sells grafted female clones. Urban areas may be female-biased, which could lower seed set through limited pollen.\nPollination: Little is known about who pollinates holly. The visitors appear to be mostly generalists. One hypothesis is that non-native urban pollinators compensate, so there’s no net effect on seed set.\nHerbivory: The holly leaf miner and its parasitoids, including possible co-evolution along the gradient.\nLeaf traits and physiology: Leaf toughness, LI-COR gas exchange, and water-use efficiency, linked to herbivore performance (modeled on the Costa Rica caterpillar study).\nFragmentation: Holly often grows on forest edges, so edge versus interior is a related axis.\nLonger term: Reciprocal common gardens (Rice Rivers Center and an urban site near the Science Museum), and range-wide phylogeography, including high-elevation Appalachian populations."
+  },
+  {
+    "objectID": "index.html#approach",
+    "href": "index.html#approach",
+    "title": "Licensed to Ilex",
+    "section": "Approach",
+    "text": "Approach\n\nStart with low-cost observational data:\n\nMap and sex trees after leaf drop,\nCollect seeds from mother trees through December (freezer storage),\nPhotograph leaves on target trees for herbivory,\nRear leaf miners for parasitoids,\nRun pollinator counts in April–June.\nGermination tests, seed abortion, etc. ~ (landscape location)."
+  },
+  {
+    "objectID": "index.html#people",
+    "href": "index.html#people",
+    "title": "Licensed to Ilex",
+    "section": "People",
+    "text": "People\n\nRecruit undergraduates by pitching to targeted courses: GIS/cartography for spatial work, ecology for herbivory & pollinators, and evolution for co-evolution.\nFormats include independent study, the new zero-credit research course, and a possible fall capstone or seminar that produces the literature review.\nAn NSF submission is planned."
   },
   {
     "objectID": "analyses/01_study_area.html",

@@ -26,6 +26,7 @@ Site home: <https://dyerlab.github.io/Licensed_to_Ilex/>
    - [Notes](https://dyerlab.github.io/Licensed_to_Ilex/analyses/02_gradient.html#notes)
 3. [Holly candidates](https://dyerlab.github.io/Licensed_to_Ilex/analyses/03_holly_classification.html) (source: [`analyses/03_holly_classification.qmd`](analyses/03_holly_classification.qmd))
    - [Purpose](https://dyerlab.github.io/Licensed_to_Ilex/analyses/03_holly_classification.html#purpose)
+   - [Why NDVI and measuring the gain from NIR](https://dyerlab.github.io/Licensed_to_Ilex/analyses/03_holly_classification.html#why-ndvi)
    - [Approach and example](https://dyerlab.github.io/Licensed_to_Ilex/analyses/03_holly_classification.html#approach)
    - [Candidates, map, and density along the transect](https://dyerlab.github.io/Licensed_to_Ilex/analyses/03_holly_classification.html#candidates)
    - [Ground truth](https://dyerlab.github.io/Licensed_to_Ilex/analyses/03_holly_classification.html#ground-truth)

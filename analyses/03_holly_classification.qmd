@@ -32,6 +32,16 @@ reason_cols <- c(candidate = "#d95f02", `not isolated` = "#7570b3",
                  `developed/water` = "#999999", size = "#cccccc")
 ```
 
+::: {.callout-warning}
+## Preliminary results
+
+These candidates come from the RGB imagery only, using a green leaf index as a stand-in for
+NDVI while we wait for the near-infrared (4-band) coverages. RGB greenness separates evergreen
+foliage from bare branches, dormant grass, and shadow less cleanly than NDVI, so **the current
+candidate counts and densities are overestimates**. This page shows the approach; the numbers
+will become more realistic once NDVI replaces the RGB index.
+:::
+
 ## Purpose
 
 American holly (*Ilex opaca*) is evergreen, so in leaf-off imagery (flown February to March
@@ -53,6 +63,46 @@ first step of a holly classification workflow:
 The current imagery is RGB only, so greenness comes from the green leaf index (GLI). When the
 4-band imagery arrives and the mosaic is rebuilt with a `nir` band, `veg_index()` switches to
 NDVI automatically; only the NDVI thresholds in `config.yml` need calibrating.
+
+## Why NDVI
+
+Healthy leaves treat red and near-infrared (NIR) light very differently. Chlorophyll absorbs
+most red light for photosynthesis, while the internal cell structure of a leaf (the spongy
+mesophyll) scatters and reflects most NIR light. Bare branches, dead or dormant grass, soil,
+and pavement show much less of this contrast. The normalized difference vegetation index
+captures it in one number:
+
+$$
+\text{NDVI} = \frac{\text{NIR} - \text{Red}}{\text{NIR} + \text{Red}}
+$$
+
+NDVI ranges from −1 to 1. Water is negative, soil, rock, and pavement sit near 0, and dense
+green foliage is typically above 0.6. Because it is a ratio, it is also less sensitive to
+illumination than a single band, so a shaded crown and a sunlit crown of the same tree give
+similar values.
+
+This contrast is what makes leaf-off imagery useful for holly. In February and March the
+deciduous canopy is bare and has low NDVI, while evergreen foliage stays green and has high
+NDVI. Holly in the understory should stand out clearly against the bare hardwoods around it.
+
+The RGB stand-in used here, the green leaf index (GLI), relies only on the small green
+reflectance peak of leaves in visible light. In this imagery GLI separates pine canopy
+(median about 0.03) from leaf-off hardwood (about −0.02) by only a narrow margin. It is also
+affected by shadows and by the imagery's slight blue cast. That narrow margin is why the
+current candidates include many false positives.
+
+### Measuring the gain from NIR
+
+When the 4-band imagery arrives, the same crowns will be described with both indices. Once
+field labels exist, the comparison will use the same ground-truth set and the same spatially
+blocked cross-validation for two classifiers:
+
+- **Visible only:** crown features from RGB (GLI, colour, brightness, size, shape, isolation).
+- **Visible + NIR:** the same features plus NDVI and NIR reflectance.
+
+The improvement will be reported as the change in precision (share of candidates that are
+holly), recall (share of holly found), and overall accuracy, along with how many candidates
+drop out of the field list.
 
 ## Approach
 

@@ -11,6 +11,12 @@ website:
   title: "Licensed to Ilex"
   repo-url: https://github.com/dyerlab/Licensed_to_Ilex
   navbar:
+    left:
+      - text: Analyses
+        menu:
+          - analyses/01_study_area.qmd
+          - analyses/02_gradient.qmd
+          - analyses/03_holly_classification.qmd
     right:
       - icon: github
         href: https://github.com/dyerlab/Licensed_to_Ilex

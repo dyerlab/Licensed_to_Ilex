@@ -21,6 +21,10 @@ subtitle: "Orthoimagery analysis along a Richmond to Pocahontas State Park trans
 </script>
 ```
 
+
+> Human activity is reshaping landscapes, and with them the plant and insect communities that live there. This project uses American holly (Ilex opaca), a common understory tree that thrives in both forests and cities, to ask how plants and their associated insects respond along a continuous gradient of urbanization, from highly managed urban sites in Richmond to secondary-growth forest. Rather than treating “urban” and “rural” as two categories, we are looking for where along the gradient key changes happen: shifts in sex ratios, mating patterns, pollinator communities, herbivory by the holly leaf miner and its parasitoids, leaf traits and physiology, and seed production. The work combines geospatial mapping, field surveys, greenhouse germination, common gardens, and potentially genetic analyses, with the goal of understanding how to manage human-modified landscapes to reduce their impacts.
+
+
 This site documents analyses of 2025 Virginia Base Mapping Program (VBMP) 12-inch
 orthoimagery along a 25 km transect from industrial Richmond, Virginia
 (37.584817° N, 77.472433° W) to Pocahontas State Park (37.373768° N, 77.570813° W),
@@ -33,8 +37,38 @@ buffered by 2 km on each side.
 | 01 | [Study area and orthoimagery](analyses/01_study_area.qmd) | Transect, study area, imagery tiles, and mosaic |
 | 02 | [Urban to forest gradient](analyses/02_gradient.qmd) | Annual NLCD land cover and impervious surface in 1 km windows along the transect |
 
-## Reproducing
 
-The code is on [GitHub](https://github.com/dyerlab/Licensed_to_Ilex). The imagery is not
-included in the repository; see the README for how to download the source MrSID tiles
-from VGIN and rebuild the data locally.
+## Overview
+
+### Framing 
+
+- Urbanization is treated as a continuous gradient, not an urban-versus-rural comparison. The goal is to identify “phase shifts” from urban to peri-urban to secondary forest, with applied value for managing human-modified landscapes.
+- It builds directly on the dogwood work: about 60 maternal trees sampled from Richmond to Pocahontas State Park, with mating system parameters analyzed against spatial, impervious surface, and land cover gradients.
+- Holly is framed as an Anthropocene “winner,” like pigeons and rats, a species doing well in human landscapes that’s worth understanding for that reason.
+
+### Questions raised
+
+1. Sex ratios: Holly is dioecious, and the nursery trade sells grafted female clones. Urban areas may be female-biased, which could lower seed set through limited pollen.
+2. Pollination: Little is known about who pollinates holly. The visitors appear to be mostly generalists. One hypothesis is that non-native urban pollinators compensate, so there’s no net effect on seed set.
+3. Herbivory: The holly leaf miner and its parasitoids, including possible co-evolution along the gradient.
+4. Leaf traits and physiology: Leaf toughness, LI-COR gas exchange, and water-use efficiency, linked to herbivore performance (modeled on the Costa Rica caterpillar study).
+5. Fragmentation: Holly often grows on forest edges, so edge versus interior is a related axis.
+6. Longer term: Reciprocal common gardens (Rice Rivers Center and an urban site near the Science Museum), and range-wide phylogeography, including high-elevation Appalachian populations.
+
+### Approach 
+
+- Start with low-cost observational data: 
+  - Map and sex trees after leaf drop, 
+  - Collect seeds from mother trees through December (freezer storage), 
+  - Photograph leaves on target trees for herbivory, 
+  - Rear leaf miners for parasitoids, 
+  - Run pollinator counts in April–June.
+  - Germination tests, seed abortion, etc. ~ (landscape location).
+
+
+### People and teaching
+
+- Recruit undergraduates by pitching to targeted courses: GIS/cartography for spatial work, ecology for herbivory & pollinators, and evolution for co-evolution.
+- Formats include independent study, the new zero-credit research course, and a possible fall capstone or seminar that produces the literature review.
+- An NSF submission is planned.
+

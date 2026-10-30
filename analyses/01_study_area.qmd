@@ -70,7 +70,7 @@ pal <- colorFactor(unname(state_cols), levels = names(state_cols))
 
 leaflet() |>
   addProviderTiles(providers$Esri.WorldImagery, group = "Imagery") |>
-  addProviderTiles(providers$CartoDB.Positron, group = "Light") |>
+  addProviderTiles(providers$Esri.WorldGrayCanvas, group = "Light") |>
   addPolygons(data = to_ll(tiles), color = "white", weight = 1,
               fillColor = ~pal(state), fillOpacity = 0.4,
               label = ~paste0(tile_name, " (", state, ")"), group = "Tiles") |>

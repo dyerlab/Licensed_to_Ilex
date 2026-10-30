@@ -134,7 +134,13 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#analyses" id="toc-analyses" class="nav-link active" data-scroll-target="#analyses">Analyses</a></li>
-  <li><a href="#reproducing" id="toc-reproducing" class="nav-link" data-scroll-target="#reproducing">Reproducing</a></li>
+  <li><a href="#overview" id="toc-overview" class="nav-link" data-scroll-target="#overview">Overview</a>
+  <ul class="collapse">
+  <li><a href="#framing" id="toc-framing" class="nav-link" data-scroll-target="#framing">Framing</a></li>
+  <li><a href="#questions-raised" id="toc-questions-raised" class="nav-link" data-scroll-target="#questions-raised">Questions raised</a></li>
+  <li><a href="#approach" id="toc-approach" class="nav-link" data-scroll-target="#approach">Approach</a></li>
+  <li><a href="#people-and-teaching" id="toc-people-and-teaching" class="nav-link" data-scroll-target="#people-and-teaching">People and teaching</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -175,6 +181,9 @@ ul.task-list li input[type="checkbox"] {
     v.removeAttribute("autoplay"); v.pause();
   }
 </script>
+<blockquote class="blockquote">
+<p>Human activity is reshaping landscapes, and with them the plant and insect communities that live there. This project uses American holly (Ilex opaca), a common understory tree that thrives in both forests and cities, to ask how plants and their associated insects respond along a continuous gradient of urbanization, from highly managed urban sites in Richmond to secondary-growth forest. Rather than treating “urban” and “rural” as two categories, we are looking for where along the gradient key changes happen: shifts in sex ratios, mating patterns, pollinator communities, herbivory by the holly leaf miner and its parasitoids, leaf traits and physiology, and seed production. The work combines geospatial mapping, field surveys, greenhouse germination, common gardens, and potentially genetic analyses, with the goal of understanding how to manage human-modified landscapes to reduce their impacts.</p>
+</blockquote>
 <p>This site documents analyses of 2025 Virginia Base Mapping Program (VBMP) 12-inch orthoimagery along a 25 km transect from industrial Richmond, Virginia (37.584817° N, 77.472433° W) to Pocahontas State Park (37.373768° N, 77.570813° W), buffered by 2 km on each side.</p>
 <section id="analyses" class="level2">
 <h2 class="anchored" data-anchor-id="analyses">Analyses</h2>
@@ -200,11 +209,51 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 </section>
-<section id="reproducing" class="level2">
-<h2 class="anchored" data-anchor-id="reproducing">Reproducing</h2>
-<p>The code is on <a href="https://github.com/dyerlab/Licensed_to_Ilex">GitHub</a>. The imagery is not included in the repository; see the README for how to download the source MrSID tiles from VGIN and rebuild the data locally.</p>
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<section id="framing" class="level3">
+<h3 class="anchored" data-anchor-id="framing">Framing</h3>
+<ul>
+<li>Urbanization is treated as a continuous gradient, not an urban-versus-rural comparison. The goal is to identify “phase shifts” from urban to peri-urban to secondary forest, with applied value for managing human-modified landscapes.</li>
+<li>It builds directly on the dogwood work: about 60 maternal trees sampled from Richmond to Pocahontas State Park, with mating system parameters analyzed against spatial, impervious surface, and land cover gradients.</li>
+<li>Holly is framed as an Anthropocene “winner,” like pigeons and rats, a species doing well in human landscapes that’s worth understanding for that reason.</li>
+</ul>
+</section>
+<section id="questions-raised" class="level3">
+<h3 class="anchored" data-anchor-id="questions-raised">Questions raised</h3>
+<ol type="1">
+<li>Sex ratios: Holly is dioecious, and the nursery trade sells grafted female clones. Urban areas may be female-biased, which could lower seed set through limited pollen.</li>
+<li>Pollination: Little is known about who pollinates holly. The visitors appear to be mostly generalists. One hypothesis is that non-native urban pollinators compensate, so there’s no net effect on seed set.</li>
+<li>Herbivory: The holly leaf miner and its parasitoids, including possible co-evolution along the gradient.</li>
+<li>Leaf traits and physiology: Leaf toughness, LI-COR gas exchange, and water-use efficiency, linked to herbivore performance (modeled on the Costa Rica caterpillar study).</li>
+<li>Fragmentation: Holly often grows on forest edges, so edge versus interior is a related axis.</li>
+<li>Longer term: Reciprocal common gardens (Rice Rivers Center and an urban site near the Science Museum), and range-wide phylogeography, including high-elevation Appalachian populations.</li>
+</ol>
+</section>
+<section id="approach" class="level3">
+<h3 class="anchored" data-anchor-id="approach">Approach</h3>
+<ul>
+<li>Start with low-cost observational data:
+<ul>
+<li>Map and sex trees after leaf drop,</li>
+<li>Collect seeds from mother trees through December (freezer storage),</li>
+<li>Photograph leaves on target trees for herbivory,</li>
+<li>Rear leaf miners for parasitoids,</li>
+<li>Run pollinator counts in April–June.</li>
+<li>Germination tests, seed abortion, etc. ~ (landscape location).</li>
+</ul></li>
+</ul>
+</section>
+<section id="people-and-teaching" class="level3">
+<h3 class="anchored" data-anchor-id="people-and-teaching">People and teaching</h3>
+<ul>
+<li>Recruit undergraduates by pitching to targeted courses: GIS/cartography for spatial work, ecology for herbivory &amp; pollinators, and evolution for co-evolution.</li>
+<li>Formats include independent study, the new zero-credit research course, and a possible fall capstone or seminar that produces the literature review.</li>
+<li>An NSF submission is planned.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

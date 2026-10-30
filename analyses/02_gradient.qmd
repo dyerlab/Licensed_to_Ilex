@@ -23,7 +23,8 @@ nlcd    <- read.csv(file.path(derived, "nlcd_windows.csv"))
 classes <- read.csv(file.path(derived, "nlcd_window_classes.csv"))
 lc      <- rast(here(cfg$nlcd$dir, sprintf("LndCov_%d.tif", cfg$nlcd$year)))
 
-windows <- left_join(windows, nlcd, by = c("window", "u_start_km", "u_end_km", "u_mid_km", "area_km2"))
+# Join on the window id only; the distance columns are floats and may not match exactly
+windows <- left_join(windows, select(nlcd, -u_start_km, -u_end_km, -u_mid_km, -area_km2), by = "window")
 
 # Grouped cover, ordered from most to least urban; colors follow the NLCD legend
 cover_cols <- c(
@@ -73,21 +74,60 @@ n_win <- nrow(windows)
   the Richmond endpoint; `transect_position()` in `R/functions.R` returns *u*, the signed
   lateral offset *v*, and the window id for any point.
 
+Use the layer control (top right) to choose which value colors the windows; hover a window
+for all of its values.
+
 ```{r map-leaflet}
 to_ll <- function(x) st_transform(x, 4326)
-pal <- colorNumeric("Reds", domain = c(0, 100))
+win_ll <- to_ll(windows)
+win_ll$label <- sprintf(
+  "<b>Window %d</b> (%.0f–%.0f km)<br>Impervious: %.1f%%<br>Developed: %.1f%%<br>
+   Developed, open: %.1f%%<br>Forest: %.1f%%<br>Wetland + water: %.1f%%",
+  win_ll$window, win_ll$u_start_km, win_ll$u_end_km, win_ll$imperv_mean, win_ll$developed_pct,
+  win_ll$developed_open_pct, win_ll$forest_pct, win_ll$wetland_pct + win_ll$water_pct
+)
+win_ll$wet_water <- win_ll$wetland_pct + win_ll$water_pct
 
-leaflet() |>
-  addProviderTiles(providers$Esri.WorldImagery, group = "Imagery") |>
-  addProviderTiles(providers$CartoDB.Positron, group = "Light") |>
-  addPolygons(data = to_ll(windows), color = "white", weight = 1,
-              fillColor = ~pal(imperv_mean), fillOpacity = 0.6,
-              label = ~sprintf("Window %d (%.1f km): %.0f%% impervious, %.0f%% forest",
-                               window, u_mid_km, imperv_mean, forest_pct),
-              group = "Windows") |>
+# One single-hue sequential scale per metric, all on a shared 0-100% domain
+metrics <- list(
+  "Impervious surface" = list(col = "imperv_mean",   pal = "Purples"),
+  "Developed"          = list(col = "developed_pct", pal = "Reds"),
+  "Forest"             = list(col = "forest_pct",    pal = "Greens"),
+  "Wetland + water"    = list(col = "wet_water",     pal = "Blues")
+)
+
+m <- leaflet(win_ll) |>
+  addProviderTiles(providers$Esri.WorldGrayCanvas) |>
+  addProviderTiles(providers$Esri.WorldImagery, group = "Imagery")
+for (nm in names(metrics)) {
+  pal <- colorNumeric(metrics[[nm]]$pal, domain = c(0, 100))
+  m <- m |>
+    addPolygons(color = "white", weight = 1, fillOpacity = 0.7,
+                fillColor = pal(win_ll[[metrics[[nm]]$col]]),
+                label = lapply(win_ll$label, htmltools::HTML),
+                highlightOptions = highlightOptions(color = "black", weight = 2, bringToFront = TRUE),
+                group = nm) |>
+    addLegend(pal = pal, values = c(0, 100), title = paste(nm, "(%)"),
+              position = "bottomright", className = "info legend metric-legend",
+              layerId = nm)
+}
+m |>
   addPolylines(data = to_ll(line), color = "black", dashArray = "6", weight = 2) |>
-  addLegend(pal = pal, values = c(0, 100), title = "Mean impervious (%)") |>
-  addLayersControl(baseGroups = c("Light", "Imagery"), overlayGroups = "Windows")
+  addLayersControl(baseGroups = names(metrics), overlayGroups = "Imagery",
+                   options = layersControlOptions(collapsed = FALSE)) |>
+  hideGroup("Imagery") |>
+  # Leaflet does not hide legends for radio (base) layers; show only the selected metric's
+  htmlwidgets::onRender(sprintf("
+    function(el, x) {
+      var map = this;
+      function show(name) {
+        el.querySelectorAll('.metric-legend').forEach(function(lg) {
+          lg.style.display = lg.textContent.trim().startsWith(name + ' (%%)') ? '' : 'none';
+        });
+      }
+      show(%s);
+      map.on('baselayerchange', function(e) { show(e.name); });
+    }", jsonlite::toJSON(names(metrics)[1], auto_unbox = TRUE)))
 ```
 
 ## Land cover
@@ -112,48 +152,87 @@ plot(vect(st_transform(line, crs(lc))), add = TRUE, col = "black", lty = 2)
 
 ## Gradient
 
-Share of each window in each grouped cover type, from Richmond (left) to Pocahontas
-State Park (right).
+The charts below are interactive: hover to read every value at one distance, click a legend
+entry to hide it (double-click to show it alone), and drag to zoom (double-click to reset).
+Lines connect window midpoints, so values between midpoints are interpolated.
 
-```{r cover-stack, fig.width=8, fig.height=4.5}
-cover_long <- nlcd |>
-  select(window, u_mid_km, ends_with("_pct")) |>
-  pivot_longer(ends_with("_pct"), names_to = "cover", values_to = "pct") |>
-  mutate(cover = factor(sub("_pct$", "", cover), levels = names(cover_cols)))
+```{r plotly-setup}
+library(plotly)
 
-ggplot(cover_long, aes(u_mid_km, pct, fill = cover)) +
-  geom_col(width = cfg$windows$length_km * 0.95) +
-  scale_fill_manual(values = cover_cols, labels = cover_labels, name = NULL) +
-  scale_x_continuous(breaks = seq(0, 25, 5), expand = expansion(add = 0.3)) +
-  labs(x = "Distance from Richmond (km)", y = "Share of window (%)") +
-  theme_minimal() +
-  theme(panel.grid.major.x = element_blank(), panel.grid.minor = element_blank())
+# Shared x axis and landmarks
+river_km  <- nlcd$u_mid_km[which.max(nlcd$water_pct)]
+end_km    <- max(nlcd$u_end_km)
+x_axis <- list(title = "Distance from Richmond (km)", range = c(0, end_km),
+               dtick = 5, zeroline = FALSE, showgrid = FALSE)
+landmarks <- list(
+  list(x = 0, y = 1.02, yref = "paper", text = "Richmond", showarrow = FALSE,
+       xanchor = "left", yanchor = "bottom", font = list(size = 12)),
+  list(x = end_km, y = 1.02, yref = "paper", text = "Pocahontas State Park", showarrow = FALSE,
+       xanchor = "right", yanchor = "bottom", font = list(size = 12)),
+  list(x = river_km, y = 1.02, yref = "paper", text = "James River", showarrow = FALSE,
+       yanchor = "bottom", font = list(size = 12, color = "#466b9f"))
+)
+river_line <- list(type = "line", x0 = river_km, x1 = river_km, y0 = 0, y1 = 1,
+                   yref = "paper", line = list(color = "#466b9f", width = 1, dash = "dot"))
+plotly_cfg <- function(p) {
+  config(p, displaylogo = FALSE,
+         modeBarButtonsToRemove = c("lasso2d", "select2d", "autoScale2d"))
+}
 ```
 
-Mean fractional impervious surface and forest cover per window. Shaded bands are ± 1 SD of
-impervious surface among the 30 m cells in each window.
+### Land cover composition
 
-```{r imperv-forest, fig.width=8, fig.height=4}
-grad <- nlcd |>
-  transmute(u_mid_km,
-            `Impervious surface` = imperv_mean,
-            Forest = forest_pct,
-            lo = pmax(imperv_mean - imperv_sd, 0),
-            hi = imperv_mean + imperv_sd) |>
-  pivot_longer(c(`Impervious surface`, Forest), names_to = "measure", values_to = "pct")
+Share of each window in each grouped cover type. Developed land is stacked from the bottom
+and forest above it, so the urban-to-forest transition reads as the green band widening
+toward Pocahontas State Park.
 
-ggplot(grad, aes(u_mid_km, pct, colour = measure)) +
-  geom_ribbon(data = filter(grad, measure == "Impervious surface"),
-              aes(ymin = lo, ymax = hi), fill = "grey80", colour = NA, alpha = 0.6) +
-  geom_line(linewidth = 0.8) +
-  geom_point(size = 1.8) +
-  scale_colour_manual(values = c(`Impervious surface` = "#5e3c99", Forest = "#38814e"),
-                      name = NULL) +
-  scale_x_continuous(breaks = seq(0, 25, 5)) +
-  scale_y_continuous(limits = c(0, 100)) +
-  labs(x = "Distance from Richmond (km)", y = "Percent") +
-  theme_minimal() +
-  theme(legend.position = "top", panel.grid.minor = element_blank())
+```{r cover-area}
+p <- plot_ly()
+for (k in names(cover_cols)) {
+  p <- add_trace(p, data = nlcd, x = ~u_mid_km, y = nlcd[[paste0(k, "_pct")]],
+                 type = "scatter", mode = "lines", stackgroup = "cover",
+                 name = cover_labels[[k]], fillcolor = cover_cols[[k]],
+                 line = list(color = "white", width = 0.5),
+                 hovertemplate = paste0(cover_labels[[k]], ": %{y:.1f}%<extra></extra>"))
+}
+p |>
+  layout(xaxis = c(x_axis, list(hoverformat = ".1f")),
+         yaxis = list(title = "Share of window (%)", range = c(0, 100), ticksuffix = "%"),
+         hovermode = "x unified",
+         legend = list(traceorder = "reversed"),
+         annotations = landmarks, shapes = list(river_line),
+         margin = list(t = 40)) |>
+  plotly_cfg()
+```
+
+### Impervious surface and forest
+
+Mean fractional impervious surface and forest cover per window. The shaded band is ± 1 SD of
+impervious surface among the 30 m cells in each window, a measure of how mixed the window is.
+
+```{r imperv-forest}
+imp_col <- "#5e3c99"
+for_col <- "#38814e"
+band <- nlcd |> mutate(lo = pmax(imperv_mean - imperv_sd, 0), hi = pmin(imperv_mean + imperv_sd, 100))
+
+plot_ly(band, x = ~u_mid_km) |>
+  add_ribbons(ymin = ~lo, ymax = ~hi, name = "Impervious ± 1 SD",
+              fillcolor = "rgba(94, 60, 153, 0.15)", line = list(width = 0),
+              hovertemplate = "Impervious ± 1 SD: %{customdata}<extra></extra>",
+              customdata = ~sprintf("%.0f–%.0f%%", lo, hi)) |>
+  add_trace(y = ~imperv_mean, type = "scatter", mode = "lines+markers", name = "Impervious surface",
+            line = list(color = imp_col, width = 2), marker = list(color = imp_col, size = 8),
+            hovertemplate = "Impervious surface: %{y:.1f}%<extra></extra>") |>
+  add_trace(y = ~forest_pct, type = "scatter", mode = "lines+markers", name = "Forest",
+            line = list(color = for_col, width = 2), marker = list(color = for_col, size = 8),
+            hovertemplate = "Forest: %{y:.1f}%<extra></extra>") |>
+  layout(xaxis = c(x_axis, list(hoverformat = ".1f")),
+         yaxis = list(title = "Percent", range = c(0, 100), ticksuffix = "%"),
+         hovermode = "x unified",
+         legend = list(orientation = "h", y = -0.2),
+         annotations = landmarks, shapes = list(river_line),
+         margin = list(t = 40)) |>
+  plotly_cfg()
 ```
 
 ### Window table

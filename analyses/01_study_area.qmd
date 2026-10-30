@@ -1,0 +1,178 @@
+---
+title: "Study Area and Orthoimagery"
+subtitle: "Transect from industrial Richmond to Pocahontas State Park"
+date: today
+---
+
+```{r setup}
+library(sf)
+library(dplyr)
+library(ggplot2)
+library(leaflet)
+library(yaml)
+library(here)
+
+cfg <- read_yaml(here("config.yml"))
+derived <- here(cfg$paths$derived)
+
+pts   <- st_read(file.path(derived, "aoi.gpkg"), layer = "transect_points", quiet = TRUE)
+line  <- st_read(file.path(derived, "aoi.gpkg"), layer = "transect_line",   quiet = TRUE)
+aoi   <- st_read(file.path(derived, "aoi.gpkg"), layer = "aoi",             quiet = TRUE)
+tiles <- st_read(file.path(derived, "tiles_needed.gpkg"), quiet = TRUE)
+
+# Status is checked at render time; tile paths are relative to the project root
+tiles$converted <- file.exists(here(tiles$tif_path))
+tiles$state <- case_when(
+  tiles$converted          ~ "converted",
+  tiles$status == "local"  ~ "local (not converted)",
+  TRUE                     ~ "missing (download needed)"
+)
+state_cols <- c("converted" = "#1b9e77",
+                "local (not converted)" = "#7570b3",
+                "missing (download needed)" = "#d95f02")
+```
+
+## Purpose
+
+This project uses 2025 Virginia Base Mapping Program (VBMP) orthoimagery along a transect
+from industrial Richmond to Pocahontas State Park. The statewide imagery is distributed as
+MrSID tiles. Only the tiles that overlap the study area are converted to GeoTIFF and combined
+into a single virtual mosaic.
+
+| Step | Script | Output |
+|---|---|---|
+| 1. Build transect and buffer | `R/01_build_aoi.R` | `data/derived/aoi.gpkg` |
+| 2. Select intersecting tiles | `R/02_select_tiles.R` | `data/derived/tiles_needed.{gpkg,csv}` |
+| 3. Convert MrSID to GeoTIFF | `python/convert_mrsid.py` (QGIS Python console) | `data/geotiff/*.tif` |
+| 4. Virtual mosaic | `R/03_build_vrt.R` | `data/derived/ortho_12in.vrt`, `ortho_12in_preview.tif` |
+
+All parameters live in `config.yml`. Analysis scripts load the imagery with `load_ortho()`
+from `R/functions.R`, which returns the mosaic limited to the study area without copying
+any data.
+
+## Study area
+
+```{r aoi-summary}
+len_km  <- as.numeric(line$length_km)
+area_km <- as.numeric(aoi$area_km2)
+```
+
+- **Start:** `r cfg$transect$start$name` (`r cfg$transect$start$lat`° N, `r abs(cfg$transect$start$lon)`° W)
+- **End:** `r cfg$transect$end$name` (`r cfg$transect$end$lat`° N, `r abs(cfg$transect$end$lon)`° W)
+- **Transect length:** `r sprintf("%.2f", len_km)` km
+- **Buffer:** `r cfg$buffer$half_width_km` km each side, `r tolower(cfg$buffer$end_cap)` end caps
+- **Study area:** `r sprintf("%.1f", area_km)` km²
+- **CRS:** EPSG:`r cfg$crs` (`r st_crs(cfg$crs)$Name`)
+
+```{r map-leaflet}
+to_ll <- function(x) st_transform(x, 4326)
+pal <- colorFactor(unname(state_cols), levels = names(state_cols))
+
+leaflet() |>
+  addProviderTiles(providers$Esri.WorldImagery, group = "Imagery") |>
+  addProviderTiles(providers$CartoDB.Positron, group = "Light") |>
+  addPolygons(data = to_ll(tiles), color = "white", weight = 1,
+              fillColor = ~pal(state), fillOpacity = 0.4,
+              label = ~paste0(tile_name, " (", state, ")"), group = "Tiles") |>
+  addPolygons(data = to_ll(aoi), color = "black", weight = 2, fill = FALSE, group = "Study area") |>
+  addPolylines(data = to_ll(line), color = "black", dashArray = "6", weight = 2) |>
+  addCircleMarkers(data = to_ll(pts), radius = 5, color = "black", label = ~name) |>
+  addLegend(pal = pal, values = names(state_cols), title = "Tile status") |>
+  addLayersControl(baseGroups = c("Imagery", "Light"), overlayGroups = c("Tiles", "Study area"))
+```
+
+## Orthoimagery tiles
+
+Tiles were selected by intersecting the study area with the VBMP 2025 12-inch tile
+index footprints (South and North state plane zones searched).
+
+```{r tile-summary}
+tiles |>
+  st_drop_geometry() |>
+  count(state, name = "tiles") |>
+  knitr::kable(col.names = c("Status", "Tiles"))
+```
+
+```{r map-static, fig.width=7, fig.height=8}
+ggplot() +
+  geom_sf(data = tiles, aes(fill = state), colour = "white", linewidth = 0.2, alpha = 0.8) +
+  geom_sf(data = aoi, fill = NA, colour = "black", linewidth = 0.6) +
+  geom_sf(data = line, colour = "black", linetype = "dashed") +
+  geom_sf(data = pts, size = 2.5) +
+  geom_sf_label(data = pts, aes(label = name), nudge_y = 3000, size = 3) +
+  scale_fill_manual(values = state_cols, name = NULL) +
+  coord_sf(datum = st_crs(cfg$crs)) +
+  labs(x = NULL, y = NULL, caption = "Coordinates in EPSG:2925 (US survey feet)") +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+```
+
+### Tiles required to reproduce
+
+To rebuild the data, download these MrSID tiles (`.sid` and `.sdw`) from the VGIN VBMP site
+into `data/raw/tiles/`.
+
+```{r required}
+tiles |>
+  st_drop_geometry() |>
+  mutate(section = sub("^DO_(S\\d+_\\d{4})_.*", "\\1", tile_name),
+         quarter = sub("^DO_S\\d+_\\d{4}_(\\d+)\\..*", "\\1", tile_name)) |>
+  group_by(section) |>
+  summarise(tiles = n(), quarters = paste(quarter, collapse = ", ")) |>
+  knitr::kable(col.names = c("Section", "Tiles", "Quarter codes"))
+```
+
+```{r conversion, results='asis'}
+log_path <- file.path(derived, "conversion_log.csv")
+if (file.exists(log_path)) {
+  log <- read.csv(log_path)
+  cat(sprintf("**Conversion:** %d of %d tiles converted to GeoTIFF (%d errors logged).",
+              sum(tiles$converted), nrow(tiles), sum(log$result == "error")))
+} else {
+  cat(sprintf("**Conversion:** %d of %d tiles converted to GeoTIFF.",
+              sum(tiles$converted), nrow(tiles)))
+}
+```
+
+## Mosaic
+
+```{r mosaic}
+vrt_path     <- file.path(derived, "ortho_12in.vrt")
+preview_path <- file.path(derived, "ortho_12in_preview.tif")
+has_mosaic   <- file.exists(vrt_path) && file.exists(preview_path)
+```
+
+```{r mosaic-info, eval=has_mosaic, results='asis'}
+ortho <- terra::rast(vrt_path)
+preview <- terra::rast(preview_path)
+cat(sprintf(
+  "The virtual mosaic combines %d GeoTIFF tiles into one %s × %s px image at %g ft resolution
+  (bands: %s). It only references the tiles, so it takes no extra disk space.
+  The preview below is resampled to %g ft pixels; the study area is outlined in yellow.",
+  nrow(tiles), format(terra::ncol(ortho), big.mark = ","), format(terra::nrow(ortho), big.mark = ","),
+  terra::res(ortho)[1], paste(names(ortho), collapse = ", "), terra::res(preview)[1]
+))
+```
+
+```{r mosaic-preview, eval=has_mosaic, fig.width=6, fig.height=10}
+terra::plotRGB(preview, stretch = "lin", mar = c(0, 0, 0, 0))
+terra::plot(terra::vect(aoi), add = TRUE, border = "yellow", lwd = 2)
+terra::plot(terra::vect(line), add = TRUE, col = "yellow", lty = 2)
+```
+
+```{r no-mosaic, eval=!has_mosaic, results='asis'}
+cat("The mosaic has not been built yet. Run `R/03_build_vrt.R` after conversion.")
+```
+
+## Notes
+
+- **Imagery source:** VBMP 2025 12-inch orthoimagery (Sanborn Map Company, flown February to March 2025),
+  distributed by the Virginia Geographic Information Network (VGIN).
+  The MrSID versions are RGB only. The near-infrared band is only in the TIFF deliverables.
+- **Tile layout:** each 12-inch tile is 5,000 × 5,000 px at 1 ft, covering 5,000 × 5,000 ft.
+  Tile names follow `DO_S13_<section>_<quarter>.2025`.
+- **MrSID decoding:** the MrSID GDAL driver only loads inside the QGIS application
+  (macOS code-signing blocks it from the command line), so conversion runs in the QGIS
+  Python console.
+- **Mosaic edges:** the VRT has no nodata value. Areas outside the tiles read as 0 in all
+  three bands; all such areas lie outside the study area.

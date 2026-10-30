@@ -1,0 +1,65 @@
+[
+  {
+    "objectID": "analyses/01_study_area.html",
+    "href": "analyses/01_study_area.html",
+    "title": "Study Area and Orthoimagery",
+    "section": "",
+    "text": "Code\nlibrary(sf)\nlibrary(dplyr)\nlibrary(ggplot2)\nlibrary(leaflet)\nlibrary(yaml)\nlibrary(here)\n\ncfg &lt;- read_yaml(here(\"config.yml\"))\nderived &lt;- here(cfg$paths$derived)\n\npts   &lt;- st_read(file.path(derived, \"aoi.gpkg\"), layer = \"transect_points\", quiet = TRUE)\nline  &lt;- st_read(file.path(derived, \"aoi.gpkg\"), layer = \"transect_line\",   quiet = TRUE)\naoi   &lt;- st_read(file.path(derived, \"aoi.gpkg\"), layer = \"aoi\",             quiet = TRUE)\ntiles &lt;- st_read(file.path(derived, \"tiles_needed.gpkg\"), quiet = TRUE)\n\n# Status is checked at render time; tile paths are relative to the project root\ntiles$converted &lt;- file.exists(here(tiles$tif_path))\ntiles$state &lt;- case_when(\n  tiles$converted          ~ \"converted\",\n  tiles$status == \"local\"  ~ \"local (not converted)\",\n  TRUE                     ~ \"missing (download needed)\"\n)\nstate_cols &lt;- c(\"converted\" = \"#1b9e77\",\n                \"local (not converted)\" = \"#7570b3\",\n                \"missing (download needed)\" = \"#d95f02\")"
+  },
+  {
+    "objectID": "analyses/01_study_area.html#purpose",
+    "href": "analyses/01_study_area.html#purpose",
+    "title": "Study Area and Orthoimagery",
+    "section": "Purpose",
+    "text": "Purpose\nThis project uses 2025 Virginia Base Mapping Program (VBMP) orthoimagery along a transect from industrial Richmond to Pocahontas State Park. The statewide imagery is distributed as MrSID tiles. Only the tiles that overlap the study area are converted to GeoTIFF and combined into a single virtual mosaic.\n\n\n\n\n\n\n\n\nStep\nScript\nOutput\n\n\n\n\n1. Build transect and buffer\nR/01_build_aoi.R\ndata/derived/aoi.gpkg\n\n\n2. Select intersecting tiles\nR/02_select_tiles.R\ndata/derived/tiles_needed.{gpkg,csv}\n\n\n3. Convert MrSID to GeoTIFF\npython/convert_mrsid.py (QGIS Python console)\ndata/geotiff/*.tif\n\n\n4. Virtual mosaic\nR/03_build_vrt.R\ndata/derived/ortho_12in.vrt, ortho_12in_preview.tif\n\n\n\nAll parameters live in config.yml. Analysis scripts load the imagery with load_ortho() from R/functions.R, which returns the mosaic limited to the study area without copying any data."
+  },
+  {
+    "objectID": "analyses/01_study_area.html#study-area",
+    "href": "analyses/01_study_area.html#study-area",
+    "title": "Study Area and Orthoimagery",
+    "section": "Study area",
+    "text": "Study area\n\n\nCode\nlen_km  &lt;- as.numeric(line$length_km)\narea_km &lt;- as.numeric(aoi$area_km2)\n\n\n\nStart: Industrial Richmond (37.584817° N, 77.472433° W)\nEnd: Pocahontas State Park (37.373768° N, 77.570813° W)\nTransect length: 24.99 km\nBuffer: 2 km each side, round end caps\nStudy area: 112.5 km²\nCRS: EPSG:2925 (NAD83(HARN) / Virginia South (ftUS))\n\n\n\nCode\nto_ll &lt;- function(x) st_transform(x, 4326)\npal &lt;- colorFactor(unname(state_cols), levels = names(state_cols))\n\nleaflet() |&gt;\n  addProviderTiles(providers$Esri.WorldImagery, group = \"Imagery\") |&gt;\n  addProviderTiles(providers$CartoDB.Positron, group = \"Light\") |&gt;\n  addPolygons(data = to_ll(tiles), color = \"white\", weight = 1,\n              fillColor = ~pal(state), fillOpacity = 0.4,\n              label = ~paste0(tile_name, \" (\", state, \")\"), group = \"Tiles\") |&gt;\n  addPolygons(data = to_ll(aoi), color = \"black\", weight = 2, fill = FALSE, group = \"Study area\") |&gt;\n  addPolylines(data = to_ll(line), color = \"black\", dashArray = \"6\", weight = 2) |&gt;\n  addCircleMarkers(data = to_ll(pts), radius = 5, color = \"black\", label = ~name) |&gt;\n  addLegend(pal = pal, values = names(state_cols), title = \"Tile status\") |&gt;\n  addLayersControl(baseGroups = c(\"Imagery\", \"Light\"), overlayGroups = c(\"Tiles\", \"Study area\"))"
+  },
+  {
+    "objectID": "analyses/01_study_area.html#orthoimagery-tiles",
+    "href": "analyses/01_study_area.html#orthoimagery-tiles",
+    "title": "Study Area and Orthoimagery",
+    "section": "Orthoimagery tiles",
+    "text": "Orthoimagery tiles\nTiles were selected by intersecting the study area with the VBMP 2025 12-inch tile index footprints (South and North state plane zones searched).\n\n\nCode\ntiles |&gt;\n  st_drop_geometry() |&gt;\n  count(state, name = \"tiles\") |&gt;\n  knitr::kable(col.names = c(\"Status\", \"Tiles\"))\n\n\n\n\n\nStatus\nTiles\n\n\n\n\nconverted\n75\n\n\n\n\n\n\n\nCode\nggplot() +\n  geom_sf(data = tiles, aes(fill = state), colour = \"white\", linewidth = 0.2, alpha = 0.8) +\n  geom_sf(data = aoi, fill = NA, colour = \"black\", linewidth = 0.6) +\n  geom_sf(data = line, colour = \"black\", linetype = \"dashed\") +\n  geom_sf(data = pts, size = 2.5) +\n  geom_sf_label(data = pts, aes(label = name), nudge_y = 3000, size = 3) +\n  scale_fill_manual(values = state_cols, name = NULL) +\n  coord_sf(datum = st_crs(cfg$crs)) +\n  labs(x = NULL, y = NULL, caption = \"Coordinates in EPSG:2925 (US survey feet)\") +\n  theme_minimal() +\n  theme(legend.position = \"bottom\")\n\n\n\n\n\n\n\n\n\n\nTiles required to reproduce\nTo rebuild the data, download these MrSID tiles (.sid and .sdw) from the VGIN VBMP site into data/raw/tiles/.\n\n\nCode\ntiles |&gt;\n  st_drop_geometry() |&gt;\n  mutate(section = sub(\"^DO_(S\\\\d+_\\\\d{4})_.*\", \"\\\\1\", tile_name),\n         quarter = sub(\"^DO_S\\\\d+_\\\\d{4}_(\\\\d+)\\\\..*\", \"\\\\1\", tile_name)) |&gt;\n  group_by(section) |&gt;\n  summarise(tiles = n(), quarters = paste(quarter, collapse = \", \")) |&gt;\n  knitr::kable(col.names = c(\"Section\", \"Tiles\", \"Quarter codes\"))\n\n\n\n\n\nSection\nTiles\nQuarter codes\n\n\n\n\nS13_7645\n1\n30\n\n\nS13_7646\n2\n30, 40\n\n\nS13_7647\n1\n40\n\n\nS13_7655\n4\n10, 20, 30, 40\n\n\nS13_7656\n4\n10, 20, 30, 40\n\n\nS13_7657\n4\n10, 20, 30, 40\n\n\nS13_7658\n4\n10, 20, 30, 40\n\n\nS13_7659\n2\n30, 40\n\n\nS13_7666\n2\n10, 20\n\n\nS13_7667\n3\n10, 20, 30\n\n\nS13_7668\n4\n10, 20, 30, 40\n\n\nS13_7669\n4\n10, 20, 30, 40\n\n\nS13_7678\n1\n20\n\n\nS13_7679\n2\n10, 20\n\n\nS13_7750\n1\n40\n\n\nS13_7760\n4\n10, 20, 30, 40\n\n\nS13_7761\n3\n10, 30, 40\n\n\nS13_7762\n2\n30, 40\n\n\nS13_7770\n4\n10, 20, 30, 40\n\n\nS13_7771\n4\n10, 20, 30, 40\n\n\nS13_7772\n4\n10, 20, 30, 40\n\n\nS13_7773\n4\n10, 20, 30, 40\n\n\nS13_7774\n2\n10, 40\n\n\nS13_7781\n1\n20\n\n\nS13_7782\n2\n10, 20\n\n\nS13_7783\n4\n10, 20, 30, 40\n\n\nS13_7784\n2\n10, 40\n\n\n\n\n\n\nCode\nlog_path &lt;- file.path(derived, \"conversion_log.csv\")\nif (file.exists(log_path)) {\n  log &lt;- read.csv(log_path)\n  cat(sprintf(\"**Conversion:** %d of %d tiles converted to GeoTIFF (%d errors logged).\",\n              sum(tiles$converted), nrow(tiles), sum(log$result == \"error\")))\n} else {\n  cat(sprintf(\"**Conversion:** %d of %d tiles converted to GeoTIFF.\",\n              sum(tiles$converted), nrow(tiles)))\n}\n\nConversion: 75 of 75 tiles converted to GeoTIFF (0 errors logged)."
+  },
+  {
+    "objectID": "analyses/01_study_area.html#mosaic",
+    "href": "analyses/01_study_area.html#mosaic",
+    "title": "Study Area and Orthoimagery",
+    "section": "Mosaic",
+    "text": "Mosaic\n\n\nCode\nvrt_path     &lt;- file.path(derived, \"ortho_12in.vrt\")\npreview_path &lt;- file.path(derived, \"ortho_12in_preview.tif\")\nhas_mosaic   &lt;- file.exists(vrt_path) && file.exists(preview_path)\n\n\n\nCode\northo &lt;- terra::rast(vrt_path)\npreview &lt;- terra::rast(preview_path)\ncat(sprintf(\n  \"The virtual mosaic combines %d GeoTIFF tiles into one %s × %s px image at %g ft resolution\n  (bands: %s). It only references the tiles, so it takes no extra disk space.\n  The preview below is resampled to %g ft pixels; the study area is outlined in yellow.\",\n  nrow(tiles), format(terra::ncol(ortho), big.mark = \",\"), format(terra::nrow(ortho), big.mark = \",\"),\n  terra::res(ortho)[1], paste(names(ortho), collapse = \", \"), terra::res(preview)[1]\n))\n\nThe virtual mosaic combines 75 GeoTIFF tiles into one 45,000 × 95,000 px image at 1 ft resolution (bands: red, green, blue). It only references the tiles, so it takes no extra disk space. The preview below is resampled to 25 ft pixels; the study area is outlined in yellow.\n\n\nCode\nterra::plotRGB(preview, stretch = \"lin\", mar = c(0, 0, 0, 0))\nterra::plot(terra::vect(aoi), add = TRUE, border = \"yellow\", lwd = 2)\nterra::plot(terra::vect(line), add = TRUE, col = \"yellow\", lty = 2)\n\n\n\n\n\n\n\n\n\n\nCode\ncat(\"The mosaic has not been built yet. Run `R/03_build_vrt.R` after conversion.\")"
+  },
+  {
+    "objectID": "analyses/01_study_area.html#notes",
+    "href": "analyses/01_study_area.html#notes",
+    "title": "Study Area and Orthoimagery",
+    "section": "Notes",
+    "text": "Notes\n\nImagery source: VBMP 2025 12-inch orthoimagery (Sanborn Map Company, flown February to March 2025), distributed by the Virginia Geographic Information Network (VGIN). The MrSID versions are RGB only. The near-infrared band is only in the TIFF deliverables.\nTile layout: each 12-inch tile is 5,000 × 5,000 px at 1 ft, covering 5,000 × 5,000 ft. Tile names follow DO_S13_&lt;section&gt;_&lt;quarter&gt;.2025.\nMrSID decoding: the MrSID GDAL driver only loads inside the QGIS application (macOS code-signing blocks it from the command line), so conversion runs in the QGIS Python console.\nMosaic edges: the VRT has no nodata value. Areas outside the tiles read as 0 in all three bands; all such areas lie outside the study area."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Licensed to Ilex",
+    "section": "",
+    "text": "This site documents analyses of 2025 Virginia Base Mapping Program (VBMP) 12-inch orthoimagery along a 25 km transect from industrial Richmond, Virginia (37.584817° N, 77.472433° W) to Pocahontas State Park (37.373768° N, 77.570813° W), buffered by 2 km on each side."
+  },
+  {
+    "objectID": "index.html#analyses",
+    "href": "index.html#analyses",
+    "title": "Licensed to Ilex",
+    "section": "Analyses",
+    "text": "Analyses\n\n\n\n\nAnalysis\nDescription\n\n\n\n\n01\nStudy area and orthoimagery\nTransect, study area, imagery tiles, and mosaic"
+  },
+  {
+    "objectID": "index.html#reproducing",
+    "href": "index.html#reproducing",
+    "title": "Licensed to Ilex",
+    "section": "Reproducing",
+    "text": "Reproducing\nThe code is on GitHub. The imagery is not included in the repository; see the README for how to download the source MrSID tiles from VGIN and rebuild the data locally."
+  }
+]

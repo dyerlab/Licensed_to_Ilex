@@ -1,0 +1,21 @@
+---
+title: "Licensed to Ilex"
+subtitle: "Orthoimagery analysis along a Richmond to Pocahontas State Park transect"
+---
+
+This site documents analyses of 2025 Virginia Base Mapping Program (VBMP) 12-inch
+orthoimagery along a 25 km transect from industrial Richmond, Virginia
+(37.584817° N, 77.472433° W) to Pocahontas State Park (37.373768° N, 77.570813° W),
+buffered by 2 km on each side.
+
+## Analyses
+
+| | Analysis | Description |
+|---|---|---|
+| 01 | [Study area and orthoimagery](analyses/01_study_area.qmd) | Transect, study area, imagery tiles, and mosaic |
+
+## Reproducing
+
+The code is on [GitHub](https://github.com/dyerlab/Licensed_to_Ilex). The imagery is not
+included in the repository; see the README for how to download the source MrSID tiles
+from VGIN and rebuild the data locally.

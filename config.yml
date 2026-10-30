@@ -1,0 +1,35 @@
+# Ilex transect project configuration
+# All paths are relative to the project root (located with here::here()).
+# Everything under data/ is local only and not tracked by git.
+
+transect:
+  start:
+    name: "Industrial Richmond"
+    lat: 37.584817
+    lon: -77.472433
+  end:
+    name: "Pocahontas State Park"
+    lat: 37.373768
+    lon: -77.570813
+  input_crs: 4326          # coordinates above are WGS84 lat/lon
+
+buffer:
+  half_width_km: 2         # distance on each side of the transect (total width 4 km)
+  end_cap: "ROUND"         # ROUND, FLAT, or SQUARE
+  quad_segs: 30            # segments per quarter circle for the round ends
+
+crs: 2925                  # NAD83(HARN) / Virginia South (ftUS), native CRS of the 12in South tiles
+
+tile_index:
+  dir: "data/raw/tile_index"
+  name_field: "Name"
+  # Searched in order. North zone is included only to catch zone-boundary overlap;
+  # its tiles are in EPSG:2924 and would need reprojection if any are selected.
+  layers:
+    - "2025_VGIN_12in_South_Tiles"
+    - "2025_VGIN_12in_North_Tiles"
+
+paths:
+  tiles_dir: "data/raw/tiles"        # searched recursively for .sid files
+  derived: "data/derived"            # AOI, tile lists, footprints
+  geotiff: "data/geotiff"            # converted GeoTIFFs (written by convert_mrsid.py)

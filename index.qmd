@@ -4,7 +4,7 @@ subtitle: "Orthoimagery analysis along a Richmond to Pocahontas State Park trans
 ---
 
 ```{=html}
-<video class="hero" autoplay muted loop playsinline controls preload="metadata"
+<video class="hero" muted playsinline controls preload="metadata"
        poster="media/licensed_to_Ilex.jpeg" aria-label="Licensed to Ilex">
   <source src="media/licensed_to_Ilex.mp4" type="video/mp4">
   <img src="media/licensed_to_Ilex.jpeg" alt="Licensed to Ilex">
@@ -13,11 +13,18 @@ subtitle: "Orthoimagery analysis along a Richmond to Pocahontas State Park trans
   video.hero { width: 100%; height: auto; border-radius: 6px; margin-bottom: 1.5rem; }
 </style>
 <script>
-  // Respect reduced-motion settings: show the still image and leave playback to the viewer
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  // Play once, on the first visit only (remembered in this browser). Later visits, and
+  // viewers with reduced motion turned on, see the still image; the play button still works.
+  (function () {
     const v = document.querySelector("video.hero");
-    v.removeAttribute("autoplay"); v.pause();
-  }
+    const key = "ilex-hero-played";
+    let played = false;
+    try { played = localStorage.getItem(key) === "1"; } catch (e) {}
+    if (played || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    v.play().then(function () {
+      try { localStorage.setItem(key, "1"); } catch (e) {}
+    }).catch(function () {});   // autoplay blocked: leave the still image
+  })();
 </script>
 ```
 

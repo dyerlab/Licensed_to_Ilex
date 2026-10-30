@@ -167,7 +167,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<video class="hero" autoplay="" muted="" loop="" playsinline="" controls="" preload="metadata" poster="media/licensed_to_Ilex.jpeg" aria-label="Licensed to Ilex">
+<video class="hero" muted="" playsinline="" controls="" preload="metadata" poster="media/licensed_to_Ilex.jpeg" aria-label="Licensed to Ilex">
   <source src="media/licensed_to_Ilex.mp4" type="video/mp4">
   <img src="media/licensed_to_Ilex.jpeg" alt="Licensed to Ilex">
 </video>
@@ -175,11 +175,18 @@ ul.task-list li input[type="checkbox"] {
   video.hero { width: 100%; height: auto; border-radius: 6px; margin-bottom: 1.5rem; }
 </style>
 <script>
-  // Respect reduced-motion settings: show the still image and leave playback to the viewer
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  // Play once, on the first visit only (remembered in this browser). Later visits, and
+  // viewers with reduced motion turned on, see the still image; the play button still works.
+  (function () {
     const v = document.querySelector("video.hero");
-    v.removeAttribute("autoplay"); v.pause();
-  }
+    const key = "ilex-hero-played";
+    let played = false;
+    try { played = localStorage.getItem(key) === "1"; } catch (e) {}
+    if (played || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    v.play().then(function () {
+      try { localStorage.setItem(key, "1"); } catch (e) {}
+    }).catch(function () {});   // autoplay blocked: leave the still image
+  })();
 </script>
 <blockquote class="blockquote">
 <p>Human activity is reshaping landscapes, and with them the plant and insect communities that live there. This project uses American holly (Ilex opaca), a common understory tree that thrives in both forests and cities, to ask how plants and their associated insects respond along a continuous gradient of urbanization, from highly managed urban sites in Richmond to secondary-growth forest. Rather than treating “urban” and “rural” as two categories, we are looking for where along the gradient key changes happen: shifts in sex ratios, mating patterns, pollinator communities, herbivory by the holly leaf miner and its parasitoids, leaf traits and physiology, and seed production. The work combines geospatial mapping, field surveys, greenhouse germination, common gardens, and potentially genetic analyses, with the goal of understanding how to manage human-modified landscapes to reduce their impacts.</p>

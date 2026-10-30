@@ -104,6 +104,10 @@ ul.task-list li input[type="checkbox"] {
     <a class="dropdown-item" href="./analyses/01_study_area.html">
  <span class="dropdown-text">Study Area and Orthoimagery</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="./analyses/02_gradient.html">
+ <span class="dropdown-text">Urban to Forest Gradient</span></a>
+  </li>  
     </ul>
   </li>
 </ul>
@@ -157,6 +161,20 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<video class="hero" autoplay="" muted="" loop="" playsinline="" controls="" preload="metadata" poster="media/licensed_to_Ilex.jpeg" aria-label="Licensed to Ilex">
+  <source src="media/licensed_to_Ilex.mp4" type="video/mp4">
+  <img src="media/licensed_to_Ilex.jpeg" alt="Licensed to Ilex">
+</video>
+<style>
+  video.hero { width: 100%; height: auto; border-radius: 6px; margin-bottom: 1.5rem; }
+</style>
+<script>
+  // Respect reduced-motion settings: show the still image and leave playback to the viewer
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const v = document.querySelector("video.hero");
+    v.removeAttribute("autoplay"); v.pause();
+  }
+</script>
 <p>This site documents analyses of 2025 Virginia Base Mapping Program (VBMP) 12-inch orthoimagery along a 25 km transect from industrial Richmond, Virginia (37.584817° N, 77.472433° W) to Pocahontas State Park (37.373768° N, 77.570813° W), buffered by 2 km on each side.</p>
 <section id="analyses" class="level2">
 <h2 class="anchored" data-anchor-id="analyses">Analyses</h2>
@@ -173,6 +191,11 @@ ul.task-list li input[type="checkbox"] {
 <td>01</td>
 <td><a href="./analyses/01_study_area.html">Study area and orthoimagery</a></td>
 <td>Transect, study area, imagery tiles, and mosaic</td>
+</tr>
+<tr class="even">
+<td>02</td>
+<td><a href="./analyses/02_gradient.html">Urban to forest gradient</a></td>
+<td>Annual NLCD land cover and impervious surface in 1 km windows along the transect</td>
 </tr>
 </tbody>
 </table>

@@ -1,0 +1,184 @@
+---
+title: "Urban to Forest Gradient"
+subtitle: "Annual NLCD land cover and impervious surface along the transect"
+date: today
+---
+
+```{r setup}
+library(sf)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(leaflet)
+library(terra)
+library(here)
+
+source(here("R", "functions.R"))
+derived <- here(cfg$paths$derived)
+
+line    <- load_transect()
+aoi     <- load_aoi()
+windows <- load_windows()
+nlcd    <- read.csv(file.path(derived, "nlcd_windows.csv"))
+classes <- read.csv(file.path(derived, "nlcd_window_classes.csv"))
+lc      <- rast(here(cfg$nlcd$dir, sprintf("LndCov_%d.tif", cfg$nlcd$year)))
+
+windows <- left_join(windows, nlcd, by = c("window", "u_start_km", "u_end_km", "u_mid_km", "area_km2"))
+
+# Grouped cover, ordered from most to least urban; colors follow the NLCD legend
+cover_cols <- c(
+  developed      = "#eb0000",
+  developed_open = "#dec5c5",
+  barren         = "#b3ac9f",
+  agriculture    = "#dcd939",
+  shrub_grass    = "#ccb879",
+  forest         = "#38814e",
+  wetland        = "#b8d9eb",
+  water          = "#466b9f"
+)
+cover_labels <- c(
+  developed = "Developed (low to high)", developed_open = "Developed, open space",
+  barren = "Barren", agriculture = "Agriculture", shrub_grass = "Shrub and grassland",
+  forest = "Forest", wetland = "Wetland", water = "Water"
+)
+```
+
+## Purpose
+
+A first look at how land use changes from downtown Richmond to Pocahontas State Park.
+The study area is cut into non-overlapping 1 km windows along the transect, each spanning
+the full 4 km buffer width, and each window is summarized from the
+[Annual NLCD](https://www.usgs.gov/centers/eros/science/annual-national-land-cover-database)
+`r cfg$nlcd$year` land cover and fractional impervious surface layers (30 m).
+
+| Step | Script | Output |
+|---|---|---|
+| 5. Transect windows | `R/04_transect_windows.R` | `data/derived/transect_windows.gpkg` |
+| 6. NLCD download and window summaries | `R/05_nlcd.R` | `data/raw/nlcd/*.tif`, `data/derived/nlcd_windows.csv`, `nlcd_window_classes.csv` |
+
+NLCD is kept on its native grid (EPSG:5070). Windows are projected to it and summarized
+with `exactextractr`, which weights each 30 m cell by the fraction of it inside the window.
+
+## Windows
+
+```{r window-summary}
+n_win <- nrow(windows)
+```
+
+- **Windows:** `r n_win`, each `r cfg$windows$length_km` km long by `r 2 * cfg$buffer$half_width_km` km wide
+  (the last is `r sprintf("%.2f", tail(windows$length_km, 1))` km)
+- **Area covered:** `r sprintf("%.1f", sum(windows$area_km2))` of `r sprintf("%.1f", as.numeric(aoi$area_km2))` km².
+  The round end caps beyond the endpoints are not part of any window.
+- Window 1 is at the Richmond end. Distance along the transect (*u*, km) is measured from
+  the Richmond endpoint; `transect_position()` in `R/functions.R` returns *u*, the signed
+  lateral offset *v*, and the window id for any point.
+
+```{r map-leaflet}
+to_ll <- function(x) st_transform(x, 4326)
+pal <- colorNumeric("Reds", domain = c(0, 100))
+
+leaflet() |>
+  addProviderTiles(providers$Esri.WorldImagery, group = "Imagery") |>
+  addProviderTiles(providers$CartoDB.Positron, group = "Light") |>
+  addPolygons(data = to_ll(windows), color = "white", weight = 1,
+              fillColor = ~pal(imperv_mean), fillOpacity = 0.6,
+              label = ~sprintf("Window %d (%.1f km): %.0f%% impervious, %.0f%% forest",
+                               window, u_mid_km, imperv_mean, forest_pct),
+              group = "Windows") |>
+  addPolylines(data = to_ll(line), color = "black", dashArray = "6", weight = 2) |>
+  addLegend(pal = pal, values = c(0, 100), title = "Mean impervious (%)") |>
+  addLayersControl(baseGroups = c("Light", "Imagery"), overlayGroups = "Windows")
+```
+
+## Land cover
+
+```{r lc-map, fig.width=7, fig.height=8}
+nlcd_names <- c(
+  `11` = "Open water", `21` = "Developed, open space", `22` = "Developed, low",
+  `23` = "Developed, medium", `24` = "Developed, high", `31` = "Barren",
+  `41` = "Deciduous forest", `42` = "Evergreen forest", `43` = "Mixed forest",
+  `52` = "Shrub/scrub", `71` = "Grassland", `81` = "Pasture/hay", `82` = "Cultivated crops",
+  `90` = "Woody wetlands", `95` = "Emergent wetlands"
+)
+aoi_lc <- vect(st_transform(aoi, crs(lc)))
+lc_aoi <- mask(crop(lc, aoi_lc), aoi_lc)
+present <- sort(unique(values(lc_aoi, na.rm = TRUE)[, 1]))
+levels(lc_aoi) <- data.frame(value = present, class = nlcd_names[as.character(present)])
+plot(lc_aoi, mar = c(0.5, 0.5, 0.5, 12), axes = FALSE,
+     plg = list(cex = 0.8))
+plot(vect(st_transform(windows, crs(lc))), add = TRUE, border = "grey20", lwd = 0.5)
+plot(vect(st_transform(line, crs(lc))), add = TRUE, col = "black", lty = 2)
+```
+
+## Gradient
+
+Share of each window in each grouped cover type, from Richmond (left) to Pocahontas
+State Park (right).
+
+```{r cover-stack, fig.width=8, fig.height=4.5}
+cover_long <- nlcd |>
+  select(window, u_mid_km, ends_with("_pct")) |>
+  pivot_longer(ends_with("_pct"), names_to = "cover", values_to = "pct") |>
+  mutate(cover = factor(sub("_pct$", "", cover), levels = names(cover_cols)))
+
+ggplot(cover_long, aes(u_mid_km, pct, fill = cover)) +
+  geom_col(width = cfg$windows$length_km * 0.95) +
+  scale_fill_manual(values = cover_cols, labels = cover_labels, name = NULL) +
+  scale_x_continuous(breaks = seq(0, 25, 5), expand = expansion(add = 0.3)) +
+  labs(x = "Distance from Richmond (km)", y = "Share of window (%)") +
+  theme_minimal() +
+  theme(panel.grid.major.x = element_blank(), panel.grid.minor = element_blank())
+```
+
+Mean fractional impervious surface and forest cover per window. Shaded bands are ± 1 SD of
+impervious surface among the 30 m cells in each window.
+
+```{r imperv-forest, fig.width=8, fig.height=4}
+grad <- nlcd |>
+  transmute(u_mid_km,
+            `Impervious surface` = imperv_mean,
+            Forest = forest_pct,
+            lo = pmax(imperv_mean - imperv_sd, 0),
+            hi = imperv_mean + imperv_sd) |>
+  pivot_longer(c(`Impervious surface`, Forest), names_to = "measure", values_to = "pct")
+
+ggplot(grad, aes(u_mid_km, pct, colour = measure)) +
+  geom_ribbon(data = filter(grad, measure == "Impervious surface"),
+              aes(ymin = lo, ymax = hi), fill = "grey80", colour = NA, alpha = 0.6) +
+  geom_line(linewidth = 0.8) +
+  geom_point(size = 1.8) +
+  scale_colour_manual(values = c(`Impervious surface` = "#5e3c99", Forest = "#38814e"),
+                      name = NULL) +
+  scale_x_continuous(breaks = seq(0, 25, 5)) +
+  scale_y_continuous(limits = c(0, 100)) +
+  labs(x = "Distance from Richmond (km)", y = "Percent") +
+  theme_minimal() +
+  theme(legend.position = "top", panel.grid.minor = element_blank())
+```
+
+### Window table
+
+```{r table}
+nlcd |>
+  transmute(Window = window,
+            `Distance (km)` = sprintf("%.1f–%.1f", u_start_km, u_end_km),
+            `Impervious (%)` = round(imperv_mean, 1),
+            `Developed (%)` = round(developed_pct + developed_open_pct, 1),
+            `Forest (%)` = round(forest_pct, 1),
+            `Wetland (%)` = round(wetland_pct, 1),
+            `Water (%)` = round(water_pct, 1)) |>
+  knitr::kable()
+```
+
+## Notes
+
+- **Data:** Annual NLCD Collection 1, `r cfg$nlcd$year` land cover (`LndCov`) and fractional
+  impervious surface (`FctImp`), read for the AOI bounding box from the USGS web coverage
+  service (`r cfg$nlcd$wcs_url`). No resampling or reprojection of the rasters.
+- **Developed** combines NLCD classes 22–24 (low, medium, high intensity). Developed open
+  space (21) is mostly lawns, parks, and road verges and is kept separate. **Forest** is
+  classes 41–43; **wetland** is 90 and 95.
+- **Windows are not replicated samples.** Adjacent windows are spatially autocorrelated, so
+  the curves describe the gradient but should not be treated as 25 independent observations.
+- The 4 km width averages across very different ground on either side of the line (e.g. the
+  James River crossing near 5–7 km). A narrower center band would test how much that matters.

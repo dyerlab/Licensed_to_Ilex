@@ -160,7 +160,7 @@ terra::plot(terra::vect(aoi), add = TRUE, border = "yellow", lwd = 2)
 terra::plot(terra::vect(line), add = TRUE, col = "yellow", lty = 2)
 ```
 
-```{r no-mosaic, eval=!has_mosaic, results='asis'}
+```{r no-mosaic, include=!has_mosaic, echo=FALSE, results="asis"}
 cat("The mosaic has not been built yet. Run `R/03_build_vrt.R` after conversion.")
 ```
 

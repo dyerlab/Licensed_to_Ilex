@@ -33,3 +33,20 @@ paths:
   tiles_dir: "data/raw/tiles"        # searched recursively for .sid files
   derived: "data/derived"            # AOI, tile lists, footprints
   geotiff: "data/geotiff"            # converted GeoTIFFs (written by convert_mrsid.py)
+
+windows:
+  length_km: 1             # window length along the transect; windows tile it without overlap
+  # Windows span the full buffer width (2 * half_width_km). The round end caps beyond the
+  # transect endpoints are not included in any window.
+
+nlcd:
+  # Annual NLCD (USGS), read for the AOI through the USGS web coverage service.
+  wcs_url: "https://dmsdata.cr.usgs.gov/geoserver"
+  year: 2025               # matches the 2025 imagery
+  crs: 5070                # NAD83 / CONUS Albers, native NLCD grid (kept, not reprojected)
+  res_m: 30
+  margin_m: 300            # extra margin around the AOI bounding box
+  products:                # short name: WCS coverage name (workspace is "mrlc_" + coverage)
+    LndCov: "Land-Cover-Native_conus_year_data"
+    FctImp: "Fractional-Impervious-Surface-Native_conus_year_data"
+  dir: "data/raw/nlcd"

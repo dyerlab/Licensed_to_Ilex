@@ -17,6 +17,13 @@ Site home: <https://dyerlab.github.io/Licensed_to_Ilex/>
    - [Tiles required to reproduce](https://dyerlab.github.io/Licensed_to_Ilex/analyses/01_study_area.html#tiles-required-to-reproduce)
    - [Mosaic preview](https://dyerlab.github.io/Licensed_to_Ilex/analyses/01_study_area.html#mosaic)
    - [Notes](https://dyerlab.github.io/Licensed_to_Ilex/analyses/01_study_area.html#notes)
+2. [Urban to forest gradient](https://dyerlab.github.io/Licensed_to_Ilex/analyses/02_gradient.html) (source: [`analyses/02_gradient.qmd`](analyses/02_gradient.qmd))
+   - [Purpose](https://dyerlab.github.io/Licensed_to_Ilex/analyses/02_gradient.html#purpose)
+   - [Windows and interactive map](https://dyerlab.github.io/Licensed_to_Ilex/analyses/02_gradient.html#windows)
+   - [Land cover](https://dyerlab.github.io/Licensed_to_Ilex/analyses/02_gradient.html#land-cover)
+   - [Gradient](https://dyerlab.github.io/Licensed_to_Ilex/analyses/02_gradient.html#gradient)
+   - [Window table](https://dyerlab.github.io/Licensed_to_Ilex/analyses/02_gradient.html#window-table)
+   - [Notes](https://dyerlab.github.io/Licensed_to_Ilex/analyses/02_gradient.html#notes)
 
 <!-- When adding an analysis: add analyses/NN_name.qmd, list it in _quarto.yml and index.qmd,
      then add an entry here (section anchors are the lowercased, hyphenated headings). -->
@@ -49,7 +56,7 @@ run steps 1–2 with only the tile index and download tiles afterwards.
 
 ## Workflow
 
-Requirements: R (sf, terra, units, dplyr, ggplot2, leaflet, yaml, here, xml2), Quarto, and
+Requirements: R (sf, terra, units, dplyr, tidyr, ggplot2, leaflet, exactextractr, httr, yaml, here, xml2), Quarto, and
 QGIS with a MrSID-enabled GDAL driver for the conversion step.
 
 ```sh
@@ -59,6 +66,8 @@ Rscript R/02_select_tiles.R    # tiles intersecting the buffer       -> data/der
 #   exec(open("/path/to/Licensed_to_Ilex/python/convert_mrsid.py").read())
 #                              # MrSID -> GeoTIFF                    -> data/geotiff/*.tif
 Rscript R/03_build_vrt.R       # virtual mosaic + preview            -> data/derived/ortho_12in.vrt
+Rscript R/04_transect_windows.R  # 1 km windows along the transect  -> data/derived/transect_windows.gpkg
+Rscript R/05_nlcd.R            # Annual NLCD download + summaries    -> data/derived/nlcd_windows.csv
 quarto render                  # rebuild the website                 -> docs/
 ```
 

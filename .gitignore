@@ -45,14 +45,8 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
-
-# Project data: kept local, never committed (rebuild with the scripts in R/)
 data/
-
-# Quarto build cache
 /.quarto/
-
-# macOS
 .DS_Store
-
+CLAUDE.md
 **/*.quarto_ipynb

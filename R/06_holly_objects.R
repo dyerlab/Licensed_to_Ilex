@@ -8,10 +8,13 @@
 #   2. crown mask: index > crown threshold; crowns are 8-connected patches of the mask
 #   3. context: share of evergreen pixels (index > context threshold) in a 70 ft neighbourhood
 #      around each crown, from the mask aggregated to 10 ft cells (isolation measure)
-#   4. features per crown: area, equivalent diameter, compactness, mean/max index, mean RGB
+#   4. features per crown: area, equivalent diameter, compactness, mean/max index, mean band
+#      values, and the mean of both indices (GLI, and NDVI when a nir band exists), so visible-only
+#      and visible + NIR classifiers can be compared on the same crowns
 # Then all tiles are combined, limited to the AOI, and given NLCD class and transect position.
 #
-# Inputs:  data/derived/tiles_needed.csv, data/geotiff/*.tif, data/raw/nlcd/LndCov_<year>.tif
+# Inputs:  data/derived/tiles_needed.csv, tiles from cfg$imagery_source (ortho_tile_paths()),
+#          data/raw/nlcd/LndCov_<year>.tif
 # Outputs: data/derived/holly/tiles/<tile>.gpkg   - per-tile crowns (cache; delete to redo)
 #          data/derived/holly_objects.gpkg         - all crowns in the AOI with features
 #          data/derived/holly_candidates.csv, .gpx - crowns passing the candidate rule, for the field
@@ -27,6 +30,7 @@ h <- cfg$holly
 tile_dir <- here(h$dir, "tiles")
 dir.create(tile_dir, recursive = TRUE, showWarnings = FALSE)
 tiles <- read.csv(here(cfg$paths$derived, "tiles_needed.csv"))
+tiles$tif_path <- ortho_tile_paths(tiles$tile_name)
 
 # Per-tile crown extraction ---------------------------------------------------
 crowns_in_tile <- function(tile_name, tif_path) {
@@ -67,9 +71,12 @@ crowns_in_tile <- function(tile_name, tif_path) {
   pol$diam_ft <- 2 * sqrt(pol$area_ft2 / pi)
   perim_ft <- as.numeric(st_length(st_cast(st_set_crs(st_geometry(st_as_sf(pol)), cfg$crs), "MULTILINESTRING")))
   pol$compactness <- 4 * pi * pol$area_ft2 / perim_ft^2
-  zmean <- zonal(c(vi, r[[c("red", "green", "blue")]]), crowns, "mean", na.rm = TRUE)
+  # Unsmoothed index means for both indices (GLI always; NDVI when a nir band exists)
+  both <- veg_index(r, "gli")
+  if ("nir" %in% names(r)) both <- c(both, veg_index(r, "ndvi"))
+  zmean <- zonal(c(vi, both, r), crowns, "mean", na.rm = TRUE)
   zmax  <- zonal(vi, crowns, "max", na.rm = TRUE)
-  names(zmean) <- c("patch", "vi_mean", "red", "green", "blue")
+  names(zmean) <- c("patch", "vi_mean", paste0(names(both), "_mean"), names(r))
   names(zmax)  <- c("patch", "vi_max")
   pol <- merge(merge(pol, zmean, by = "patch"), zmax, by = "patch")
   pol$brightness <- (pol$red + pol$green + pol$blue) / 3
@@ -130,8 +137,9 @@ st_write(obj, here(cfg$paths$derived, "holly_objects.gpkg"), delete_dsn = TRUE, 
 # Candidates for the field ----------------------------------------------------
 cand <- holly_candidates(obj)
 cand <- cand[cand$candidate & !cand$tile_edge, ]
-field <- st_drop_geometry(cand)[, c("obj_id", "lat", "lon", "u_km", "v_km", "window",
-                                    "diam_ft", "context", "vi_mean", "nlcd")]
+field_cols <- c("obj_id", "lat", "lon", "u_km", "v_km", "window",
+                "diam_ft", "context", "vi_mean", "gli_mean", "ndvi_mean", "nlcd")
+field <- st_drop_geometry(cand)[, intersect(field_cols, names(cand))]
 write.csv(field, here(cfg$paths$derived, "holly_candidates.csv"), row.names = FALSE)
 
 gpx <- st_as_sf(data.frame(name = field$obj_id,

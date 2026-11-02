@@ -21,6 +21,10 @@ h <- cfg$holly
 line    <- load_transect()
 windows <- load_windows()
 obj     <- holly_candidates(load_holly_objects())
+gli_path <- file.path(derived, "holly_objects_gli.gpkg")   # first pass, RGB only (GLI)
+obj_gli <- if (file.exists(gli_path)) holly_candidates(st_read(gli_path, quiet = TRUE)) else NULL
+cal_path <- file.path(derived, "ndvi_calibration.csv")
+cal     <- if (file.exists(cal_path)) read.csv(cal_path) else NULL
 classes <- read.csv(file.path(derived, "nlcd_window_classes.csv"))
 nlcd    <- read.csv(file.path(derived, "nlcd_windows.csv"))
 
@@ -32,14 +36,13 @@ reason_cols <- c(candidate = "#d95f02", `not isolated` = "#7570b3",
                  `developed/water` = "#999999", size = "#cccccc")
 ```
 
-::: {.callout-warning}
-## Preliminary results
+::: {.callout-note}
+## Candidates now use NDVI
 
-These candidates come from the RGB imagery only, using a green leaf index as a stand-in for
-NDVI while we wait for the near-infrared (4-band) coverages. RGB greenness separates evergreen
-foliage from bare branches, dormant grass, and shadow less cleanly than NDVI, so **the current
-candidate counts and densities are overestimates**. This page shows the approach; the numbers
-will become more realistic once NDVI replaces the RGB index.
+The candidates on this page come from NDVI computed from the 4-band (RGB + near-infrared)
+imagery. The first pass used the RGB-only green leaf index (GLI); its results are kept for
+comparison in [GLI versus NDVI](#gli-versus-ndvi). Candidates are still unverified: until
+field data exist, they are locations to visit, not holly.
 :::
 
 ## Purpose
@@ -52,17 +55,17 @@ first step of a holly classification workflow:
    non-developed areas.
 2. **Ground truth**: visit candidate locations and record what is there (holly, sex if known,
    or the false-positive species).
-3. **Classification**: train a supervised classifier on crown features (and NDVI once the
-   4-band imagery arrives) using the field labels, then map holly across the transect.
+3. **Classification**: train a supervised classifier on crown features (including NDVI and
+   NIR) using the field labels, then map holly across the transect.
 
 | Step | Script | Output |
 |---|---|---|
 | 7. Crown extraction | `R/06_holly_objects.R` | `data/derived/holly_objects.gpkg` (all crowns with features) |
 | 8. Candidate rule | `holly_candidates()` in `R/functions.R` | `data/derived/holly_candidates.{csv,gpx}` (field list) |
 
-The current imagery is RGB only, so greenness comes from the green leaf index (GLI). When the
-4-band imagery arrives and the mosaic is rebuilt with a `nir` band, `veg_index()` switches to
-NDVI automatically; only the NDVI thresholds in `config.yml` need calibrating.
+Greenness comes from NDVI. The mosaic is built from the 4-band tiles, and `veg_index()`
+uses NDVI whenever the imagery has a `nir` band (GLI otherwise). Every crown also records its
+mean GLI, so the two indices can be compared on the same objects.
 
 ## Why NDVI
 
@@ -85,17 +88,78 @@ This contrast is what makes leaf-off imagery useful for holly. In February and M
 deciduous canopy is bare and has low NDVI, while evergreen foliage stays green and has high
 NDVI. Holly in the understory should stand out clearly against the bare hardwoods around it.
 
-The RGB stand-in used here, the green leaf index (GLI), relies only on the small green
-reflectance peak of leaves in visible light. In this imagery GLI separates pine canopy
-(median about 0.03) from leaf-off hardwood (about −0.02) by only a narrow margin. It is also
-affected by shadows and by the imagery's slight blue cast. That narrow margin is why the
-current candidates include many false positives.
+The RGB stand-in used for the first pass, the green leaf index (GLI), relies only on the small
+green reflectance peak of leaves in visible light. In this imagery GLI separates pine canopy
+(median about 0.03) from leaf-off hardwood (about −0.01) by only a narrow margin. It is also
+affected by shadows and by the imagery's slight blue cast.
+
+### Separation in this imagery
+
+To compare the two indices and set the NDVI thresholds, both were computed (3 × 3 px
+smoothed, as in crown extraction) at `r if (!is.null(cal)) format(nrow(cal), big.mark = ",")`
+random points in the study area and grouped by NLCD class. NLCD is a 30 m product, so these
+labels are noisy at 1 ft (a "deciduous" cell can contain a pine), which blurs both indices
+equally.
+
+```{r calibration, eval=!is.null(cal)}
+auc <- function(neg, pos) {
+  r <- rank(c(neg, pos))
+  (sum(r[length(neg) + seq_along(pos)]) - length(pos) * (length(pos) + 1) / 2) /
+    (length(neg) * length(pos))
+}
+dec <- cal[cal$nlcd == 41, ]
+evg <- cal[cal$nlcd == 42, ]
+cal_tab <- data.frame(
+  Index = c("GLI (RGB)", "NDVI (NIR)"),
+  dec = c(median(dec$gli), median(dec$ndvi)),
+  evg = c(median(evg$gli), median(evg$ndvi)),
+  crown = c(h$thresholds$gli$crown, h$thresholds$ndvi$crown),
+  dec_over = c(mean(dec$gli > h$thresholds$gli$crown), mean(dec$ndvi > h$thresholds$ndvi$crown)),
+  evg_over = c(mean(evg$gli > h$thresholds$gli$crown), mean(evg$ndvi > h$thresholds$ndvi$crown)),
+  auc = c(auc(dec$gli, evg$gli), auc(dec$ndvi, evg$ndvi))
+)
+knitr::kable(cal_tab, digits = c(0, 3, 3, 2, 3, 3, 2),
+             col.names = c("Index", "Median, deciduous (41)", "Median, evergreen (42)",
+                           "Crown threshold", "Deciduous above", "Evergreen above", "AUC"))
+```
+
+```{r calibration-plot, eval=!is.null(cal), fig.width=9, fig.height=3.6}
+cal |>
+  filter(nlcd %in% c(21, 41, 42)) |>
+  mutate(cover = factor(nlcd, c(41, 42, 21),
+                        c("Deciduous forest (41)", "Evergreen forest (42)", "Developed, open (21)"))) |>
+  pivot_longer(c(gli, ndvi), names_to = "index") |>
+  mutate(index = toupper(index)) |>
+  ggplot(aes(value, colour = cover, fill = cover)) +
+  geom_density(alpha = 0.15, linewidth = 0.6) +
+  geom_vline(data = data.frame(index = c("GLI", "NDVI"),
+                               v = c(h$thresholds$gli$crown, h$thresholds$ndvi$crown)),
+             aes(xintercept = v), linetype = "dashed") +
+  facet_wrap(~index, scales = "free") +
+  scale_colour_manual(values = c("#b5651d", "#1b7837", "#999999"), name = NULL) +
+  scale_fill_manual(values = c("#b5651d", "#1b7837", "#999999"), name = NULL) +
+  labs(x = "Index (dashed line: crown threshold)", y = NULL) +
+  theme_minimal() +
+  theme(legend.position = "top", axis.text.y = element_blank(), panel.grid.minor = element_blank())
+```
+
+AUC is the probability that a random evergreen-forest point has a higher index than a random
+deciduous-forest point (0.5 = no separation, 1 = complete). NDVI separates the two forest types
+much better than GLI. Absolute NDVI is high even in leaf-off hardwood (median about 0.33)
+because the imagery's NIR band is not radiometrically calibrated and bare branches over
+leaf litter still reflect NIR. Only relative values matter here.
+
+The NDVI thresholds were chosen to match the GLI rule's false-positive rate on deciduous
+forest. The crown threshold (`r h$thresholds$ndvi$crown`) is exceeded by about 2% of
+deciduous-forest pixels, as GLI's `r h$thresholds$gli$crown` is, and the context threshold
+(`r h$thresholds$ndvi$context`) by about 9–10%, as GLI's `r h$thresholds$gli$context` is.
+At the same false-positive rate, NDVI keeps far more of the evergreen canopy above threshold.
 
 ### Measuring the gain from NIR
 
-When the 4-band imagery arrives, the same crowns will be described with both indices. Once
-field labels exist, the comparison will use the same ground-truth set and the same spatially
-blocked cross-validation for two classifiers:
+Every crown carries both GLI and NDVI means (`gli_mean`, `ndvi_mean`) along with NIR
+reflectance. Once field labels exist, the comparison will use the same ground-truth set and the
+same spatially blocked cross-validation for two classifiers:
 
 - **Visible only:** crown features from RGB (GLI, colour, brightness, size, shape, isolation).
 - **Visible + NIR:** the same features plus NDVI and NIR reflectance.
@@ -120,8 +184,8 @@ Each 12-inch tile is processed at full resolution:
    (`r paste(h$exclude_nlcd, collapse = ", ")`). Crowns cut by a tile edge are excluded from
    the field list.
 
-Thresholds were set by inspecting forest chips at 17.5 and 22.5 km: GLI in pine canopy has
-a median near 0.03, leaf-off hardwood near −0.02.
+Thresholds are calibrated on NLCD forest classes (see [Separation in this
+imagery](#separation-in-this-imagery)).
 
 ### Example
 
@@ -244,12 +308,13 @@ Features recorded for every crown, compared between candidates and crowns reject
 isolated (mostly crowns within pine or other evergreen canopy). These are the starting inputs
 for the classifier.
 
-```{r features, fig.width=9, fig.height=4.5}
+```{r features, fig.width=9, fig.height=6}
 obj |>
   st_drop_geometry() |>
   filter(reason %in% c("candidate", "not isolated")) |>
   select(reason, `Diameter (ft)` = diam_ft, Compactness = compactness,
-         `Index mean` = vi_mean, Brightness = brightness, `Evergreen share` = context) |>
+         `NDVI mean` = ndvi_mean, `GLI mean` = gli_mean, NIR = nir,
+         Brightness = brightness, `Evergreen share` = context) |>
   pivot_longer(-reason) |>
   ggplot(aes(value, fill = reason, colour = reason)) +
   geom_density(alpha = 0.25, linewidth = 0.6) +
@@ -260,6 +325,67 @@ obj |>
   theme_minimal() +
   theme(legend.position = "top", axis.text.y = element_blank(), panel.grid.minor = element_blank())
 ```
+
+## GLI versus NDVI
+
+```{r compare-setup, eval=!is.null(obj_gli)}
+cand_gli <- obj_gli[obj_gli$candidate & !obj_gli$tile_edge, ]
+match_ft <- 10    # a candidate "matches" one from the other run if their centres are this close
+near <- function(a, b) lengths(st_is_within_distance(st_centroid(st_geometry(a)),
+                                                     st_centroid(st_geometry(b)), match_ft)) > 0
+gli_kept  <- near(cand_gli, cand)     # GLI candidates also found with NDVI
+ndvi_seen <- near(cand, cand_gli)     # NDVI candidates also found with GLI
+cmp <- data.frame(
+  Measure = c("Crowns extracted (6–30 ft)", "Candidates (field list)",
+              sprintf("Candidates also found by the other index (within %d ft)", match_ft),
+              "Median candidate diameter (ft)", "Median evergreen share around candidates"),
+  GLI = c(format(nrow(obj_gli), big.mark = ","), format(nrow(cand_gli), big.mark = ","),
+          sprintf("%s (%.0f%%)", format(sum(gli_kept), big.mark = ","), 100 * mean(gli_kept)),
+          sprintf("%.1f", median(cand_gli$diam_ft)), sprintf("%.2f", median(cand_gli$context))),
+  NDVI = c(format(nrow(obj), big.mark = ","), format(nrow(cand), big.mark = ","),
+           sprintf("%s (%.0f%%)", format(sum(ndvi_seen), big.mark = ","), 100 * mean(ndvi_seen)),
+           sprintf("%.1f", median(cand$diam_ft)), sprintf("%.2f", median(cand$context)))
+)
+```
+
+The same crown extraction and candidate rule, run once with GLI (RGB only) and once with NDVI
+(4-band), with thresholds matched on deciduous-forest false positives.
+
+```{r compare-table, eval=!is.null(obj_gli)}
+knitr::kable(cmp, align = "lrr")
+```
+
+```{r compare-reasons, eval=!is.null(obj_gli)}
+bind_rows(GLI = st_drop_geometry(obj_gli)[, "reason", drop = FALSE],
+          NDVI = st_drop_geometry(obj)[, "reason", drop = FALSE], .id = "index") |>
+  mutate(reason = factor(reason, levels = names(reason_cols))) |>
+  count(index, reason) |>
+  pivot_wider(names_from = index, values_from = n) |>
+  knitr::kable(col.names = c("Rule outcome", "GLI crowns", "NDVI crowns"),
+               format.args = list(big.mark = ","))
+```
+
+```{r compare-density, eval=!is.null(obj_gli)}
+dens_gli <- count(st_drop_geometry(cand_gli), window, name = "n_gli")
+cmp_dens <- dens |>
+  left_join(dens_gli, by = "window") |>
+  mutate(n_gli = coalesce(n_gli, 0L),
+         gli_km2 = ifelse(nondev_km2 > 0.05, n_gli / nondev_km2, NA))
+
+plot_ly(cmp_dens, x = ~u_mid_km) |>
+  add_trace(y = ~gli_km2, type = "scatter", mode = "lines+markers", name = "GLI (RGB)",
+            line = list(color = "#999999", width = 2), marker = list(color = "#999999", size = 7),
+            hovertemplate = "GLI: %{y:.0f} per km²<extra></extra>") |>
+  add_trace(y = ~per_km2, type = "scatter", mode = "lines+markers", name = "NDVI (4-band)",
+            line = list(color = "#d95f02", width = 2), marker = list(color = "#d95f02", size = 7),
+            hovertemplate = "NDVI: %{y:.0f} per km²<extra></extra>") |>
+  layout(xaxis = list(title = "Distance from Richmond (km)", dtick = 5, hoverformat = ".1f"),
+         yaxis = list(title = "Candidates per km² non-developed", rangemode = "tozero"),
+         hovermode = "x unified", legend = list(orientation = "h", y = -0.2)) |>
+  config(displaylogo = FALSE)
+```
+
+COMPARE_TEXT
 
 ## Ground truth
 
@@ -285,9 +411,8 @@ to crowns by location rather than id. Keep field data outside `data/derived/` (f
   class), so the field effort covers the full gradient.
 - **Classifier:** with field labels, fit a supervised model (e.g. random forest) on crown
   features, validated with spatially blocked cross-validation (hold out whole windows).
-- **NDVI:** when the 4-band imagery arrives, rebuild the mosaic, calibrate the NDVI thresholds,
-  and add NDVI and NIR features. In leaf-off imagery NDVI should separate evergreen foliage from
-  bare branches and dormant grass more cleanly than GLI.
+- **Threshold check:** once field data exist, check the NDVI thresholds against crowns of
+  known holly (the current values are calibrated on NLCD forest classes, not on holly).
 
 ## Notes
 
@@ -297,5 +422,8 @@ to crowns by location rather than id. Keep field data outside `data/derived/` (f
 - **What is missed:** holly under evergreen canopy (hidden), crowns smaller than
   `r h$candidate_diam_ft[1]` ft, holly in developed areas (excluded by design), and crowns merged
   with neighbouring evergreens into one larger object.
-- **Shadows:** the imagery has long shadows in places; shaded crowns may fall below the index
-  threshold.
+- **Shadows:** the imagery has long shadows in places. NDVI is a ratio, so it is less affected
+  than GLI, but deep shadow lowers both bands to near the noise level and makes NDVI unreliable
+  there.
+- **Winter lawns:** cool-season grass is green in February and March and has high NDVI. Lawns
+  are mostly removed by the NLCD rule (developed classes) and by crown size and shape.

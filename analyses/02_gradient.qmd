@@ -1,6 +1,6 @@
 ---
 title: "Urban to Forest Gradient"
-subtitle: "Annual NLCD land cover and impervious surface along the transect"
+subtitle: "Annual NLCD land cover, impervious surface, and leaf-off NDVI along the transect"
 date: today
 ---
 
@@ -23,8 +23,12 @@ nlcd    <- read.csv(file.path(derived, "nlcd_windows.csv"))
 classes <- read.csv(file.path(derived, "nlcd_window_classes.csv"))
 lc      <- rast(here(cfg$nlcd$dir, sprintf("LndCov_%d.tif", cfg$nlcd$year)))
 
+ndvi_path <- file.path(derived, "ndvi_windows.csv")
+ndvi <- if (file.exists(ndvi_path)) read.csv(ndvi_path) else NULL
+
 # Join on the window id only; the distance columns are floats and may not match exactly
 windows <- left_join(windows, select(nlcd, -u_start_km, -u_end_km, -u_mid_km, -area_km2), by = "window")
+if (!is.null(ndvi)) windows <- left_join(windows, select(ndvi, -u_mid_km), by = "window")
 
 # Grouped cover, ordered from most to least urban; colors follow the NLCD legend
 cover_cols <- c(
@@ -50,12 +54,14 @@ A first look at how land use changes from downtown Richmond to Pocahontas State 
 The study area is cut into non-overlapping 1 km windows along the transect, each spanning
 the full 4 km buffer width, and each window is summarized from the
 [Annual NLCD](https://www.usgs.gov/centers/eros/science/annual-national-land-cover-database)
-`r cfg$nlcd$year` land cover and fractional impervious surface layers (30 m).
+`r cfg$nlcd$year` land cover and fractional impervious surface layers (30 m) and from NDVI
+computed from the 4-band (RGB + near-infrared) 12-inch imagery.
 
 | Step | Script | Output |
 |---|---|---|
 | 5. Transect windows | `R/04_transect_windows.R` | `data/derived/transect_windows.gpkg` |
 | 6. NLCD download and window summaries | `R/05_nlcd.R` | `data/raw/nlcd/*.tif`, `data/derived/nlcd_windows.csv`, `nlcd_window_classes.csv` |
+| 9. NDVI window summaries | `R/07_ndvi_windows.R` | `data/derived/ndvi_10ft.tif`, `ndvi_windows.csv`, `ndvi_calibration.csv` |
 
 NLCD is kept on its native grid (EPSG:5070). Windows are projected to it and summarized
 with `exactextractr`, which weights each 30 m cell by the fraction of it inside the window.
@@ -87,6 +93,9 @@ win_ll$label <- sprintf(
   win_ll$developed_open_pct, win_ll$forest_pct, win_ll$wetland_pct + win_ll$water_pct
 )
 win_ll$wet_water <- win_ll$wetland_pct + win_ll$water_pct
+if (!is.null(ndvi)) {
+  win_ll$label <- paste0(win_ll$label, sprintf("<br>Evergreen (NDVI): %.1f%%", win_ll$evg_pct))
+}
 
 # One single-hue sequential scale per metric, all on a shared 0-100% domain
 metrics <- list(
@@ -95,6 +104,7 @@ metrics <- list(
   "Forest"             = list(col = "forest_pct",    pal = "Greens"),
   "Wetland + water"    = list(col = "wet_water",     pal = "Blues")
 )
+if (!is.null(ndvi)) metrics[["Evergreen (NDVI)"]] <- list(col = "evg_pct", pal = "BuGn")
 
 m <- leaflet(win_ll) |>
   addProviderTiles(providers$Esri.WorldGrayCanvas) |>
@@ -235,6 +245,45 @@ plot_ly(band, x = ~u_mid_km) |>
   plotly_cfg()
 ```
 
+### Evergreen signal (NDVI)
+
+```{r ndvi-text, eval=!is.null(ndvi), results="asis"}
+cat(sprintf(
+"The imagery was flown leaf-off, so near-infrared greenness mostly marks evergreen foliage
+(pine, cedar, holly, magnolia, evergreen shrubs) and green winter lawns. *Evergreen* is the
+share of 1 ft pixels in a window with NDVI above %s, the same threshold used to measure
+evergreen surroundings for holly candidates; open water is excluded. The forest-only line
+uses the same measure within NLCD forest (classes 41–43) and reads as the evergreen
+share of the forest canopy. NLCD forest cover is shown for reference.",
+cfg$holly$thresholds$ndvi$context))
+```
+
+```{r ndvi-plot, eval=!is.null(ndvi)}
+nd <- left_join(ndvi, select(nlcd, window, forest_pct), by = "window")
+evg_col <- "#01665e"
+plot_ly(nd, x = ~u_mid_km) |>
+  add_trace(y = ~evg_pct, type = "scatter", mode = "lines+markers", name = "Evergreen, all land",
+            line = list(color = evg_col, width = 2), marker = list(color = evg_col, size = 8),
+            hovertemplate = "Evergreen, all land: %{y:.1f}%<extra></extra>") |>
+  add_trace(y = ~evg_forest_pct, type = "scatter", mode = "lines+markers",
+            name = "Evergreen, within forest",
+            line = list(color = evg_col, width = 2, dash = "dash"),
+            marker = list(color = evg_col, size = 8, symbol = "circle-open"),
+            hovertemplate = "Evergreen, within forest: %{y:.1f}%<extra></extra>") |>
+  add_trace(y = ~forest_pct, type = "scatter", mode = "lines", name = "NLCD forest cover",
+            line = list(color = "#38814e", width = 1.5, dash = "dot"),
+            hovertemplate = "NLCD forest: %{y:.1f}%<extra></extra>") |>
+  layout(xaxis = c(x_axis, list(hoverformat = ".1f")),
+         yaxis = list(title = "Percent", range = c(0, 100), ticksuffix = "%"),
+         hovermode = "x unified",
+         legend = list(orientation = "h", y = -0.2),
+         annotations = landmarks, shapes = list(river_line),
+         margin = list(t = 40)) |>
+  plotly_cfg()
+```
+
+NDVI_TEXT
+
 ### Window table
 
 ```{r table}
@@ -246,6 +295,10 @@ nlcd |>
             `Forest (%)` = round(forest_pct, 1),
             `Wetland (%)` = round(wetland_pct, 1),
             `Water (%)` = round(water_pct, 1)) |>
+  left_join(if (is.null(ndvi)) data.frame(Window = integer()) else
+              transmute(ndvi, Window = window, `NDVI mean` = round(ndvi_mean, 2),
+                        `Evergreen (%)` = round(evg_pct, 1)),
+            by = "Window") |>
   knitr::kable()
 ```
 
@@ -257,6 +310,11 @@ nlcd |>
 - **Developed** combines NLCD classes 22–24 (low, medium, high intensity). Developed open
   space (21) is mostly lawns, parks, and road verges and is kept separate. **Forest** is
   classes 41–43; **wetland** is 90 and 95.
+- **NDVI:** computed at full 1 ft resolution from the 4-band VBMP tiles and summarized into
+  10 ft cells (mean NDVI and share of pixels above the evergreen threshold) before the window
+  summaries. NLCD is resampled to the 10 ft grid (nearest neighbour) only to mask water and
+  select forest. The NIR band is not radiometrically calibrated, so NDVI values are relative to
+  this imagery, and leaf-off timing means NDVI says little about deciduous canopy.
 - **Windows are not replicated samples.** Adjacent windows are spatially autocorrelated, so
   the curves describe the gradient but should not be treated as 25 independent observations.
 - The 4 km width averages across very different ground on either side of the line (e.g. the

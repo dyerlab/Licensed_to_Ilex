@@ -36,14 +36,16 @@ state_cols <- c("converted" = "#1b9e77",
 
 This project uses 2025 Virginia Base Mapping Program (VBMP) orthoimagery along a transect
 from industrial Richmond to Pocahontas State Park. The statewide imagery is distributed as
-MrSID tiles. Only the tiles that overlap the study area are converted to GeoTIFF and combined
-into a single virtual mosaic.
+RGB MrSID tiles, and VGIN supplies 4-band (red, green, blue, near-infrared) GeoTIFF tiles on
+request. Only the tiles that overlap the study area are used, combined into a single virtual
+mosaic. The mosaic is built from the 4-band GeoTIFFs (`imagery_source: "4band"` in
+`config.yml`), so it carries the near-infrared band needed for NDVI.
 
 | Step | Script | Output |
 |---|---|---|
 | 1. Build transect and buffer | `R/01_build_aoi.R` | `data/derived/aoi.gpkg` |
 | 2. Select intersecting tiles | `R/02_select_tiles.R` | `data/derived/tiles_needed.{gpkg,csv}` |
-| 3. Convert MrSID to GeoTIFF | `python/convert_mrsid.py` (QGIS Python console) | `data/geotiff/*.tif` |
+| 3. Convert MrSID to GeoTIFF (RGB only; not needed with the 4-band tiles) | `python/convert_mrsid.py` (QGIS Python console) | `data/geotiff/*.tif` |
 | 4. Virtual mosaic | `R/03_build_vrt.R` | `data/derived/ortho_12in.vrt`, `ortho_12in_preview.tif` |
 
 All parameters live in `config.yml`. Analysis scripts load the imagery with `load_ortho()`
@@ -168,11 +170,15 @@ cat("The mosaic has not been built yet. Run `R/03_build_vrt.R` after conversion.
 
 - **Imagery source:** VBMP 2025 12-inch orthoimagery (Sanborn Map Company, flown February to March 2025),
   distributed by the Virginia Geographic Information Network (VGIN).
-  The MrSID versions are RGB only. The near-infrared band is only in the TIFF deliverables.
+  The MrSID versions are RGB only. The near-infrared band is only in the 4-band GeoTIFF
+  deliverables, which share the MrSID tiles' names and pixel grid exactly (same 5,000 × 5,000 px
+  extent and origin, EPSG:2925). Their RGB bands are the uncompressed originals: compared with
+  the MrSID-derived RGB they differ by about 5 digital numbers on average, with no bias
+  (MrSID compression noise), so the 4-band tiles replace the MrSID set.
 - **Tile layout:** each 12-inch tile is 5,000 × 5,000 px at 1 ft, covering 5,000 × 5,000 ft.
   Tile names follow `DO_S13_<section>_<quarter>.2025`.
-- **MrSID decoding:** the MrSID GDAL driver only loads inside the QGIS application
+- **MrSID decoding** (only needed with `imagery_source: "rgb"`): the MrSID GDAL driver only loads inside the QGIS application
   (macOS code-signing blocks it from the command line), so conversion runs in the QGIS
   Python console.
 - **Mosaic edges:** the VRT has no nodata value. Areas outside the tiles read as 0 in all
-  three bands; all such areas lie outside the study area.
+  bands; all such areas lie outside the study area.

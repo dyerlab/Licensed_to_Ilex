@@ -19,12 +19,22 @@ load_transect <- function() {
   st_read(here(cfg$paths$derived, "aoi.gpkg"), layer = "transect_line", quiet = TRUE)
 }
 
+# Paths (relative to the project root) of the GeoTIFF tiles for the configured imagery source.
+ortho_tile_paths <- function(tile_names) {
+  dir <- switch(cfg$imagery_source,
+    "4band" = cfg$paths$tiles_4band,
+    rgb     = cfg$paths$geotiff,
+    stop("Unknown imagery_source: ", cfg$imagery_source)
+  )
+  file.path(dir, paste0(tile_names, ".tif"))
+}
+
 # 12in orthoimagery mosaic (virtual, built by R/03_build_vrt.R).
 #   aoi:  TRUE to crop to the study-area extent, FALSE for the full mosaic,
 #         or an sf/SpatVector polygon to crop to instead.
 #   mask: also set pixels outside the polygon to NA. This writes a full-size
 #         temporary raster, so prefer masking per analysis (e.g. extract()) when possible.
-# The VRT has no nodata value: areas outside the tiles read as 0 in all three bands.
+# The VRT has no nodata value: areas outside the tiles read as 0 in all bands.
 # All such areas lie outside the AOI, so any analysis limited to the AOI polygon is unaffected.
 load_ortho <- function(aoi = TRUE, mask = FALSE) {
   r <- rast(here(cfg$paths$derived, "ortho_12in.vrt"))

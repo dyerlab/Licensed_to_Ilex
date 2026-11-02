@@ -41,8 +41,8 @@ This site documents spatial analyses components of this project using the 2025 V
 | | Analysis | Description |
 |---|---|---|
 | 01 | [Study area and orthoimagery](analyses/01_study_area.qmd) | Transect, study area, imagery tiles, and mosaic |
-| 02 | [Urban to forest gradient](analyses/02_gradient.qmd) | Annual NLCD land cover and impervious surface in 1 km windows along the transect |
-| 03 | [Holly candidates](analyses/03_holly_classification.qmd) | Small, isolated evergreen crowns in leaf-off imagery as candidate holly locations for ground truth |
+| 02 | [Urban to forest gradient](analyses/02_gradient.qmd) | Annual NLCD land cover, impervious surface, and leaf-off NDVI in 1 km windows along the transect |
+| 03 | [Holly candidates](analyses/03_holly_classification.qmd) | Small, isolated evergreen crowns in leaf-off NDVI as candidate holly locations for ground truth |
 
 
 

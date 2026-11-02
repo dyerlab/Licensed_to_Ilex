@@ -22,13 +22,16 @@ Site home: <https://dyerlab.github.io/Licensed_to_Ilex/>
    - [Windows and interactive map](https://dyerlab.github.io/Licensed_to_Ilex/analyses/02_gradient.html#windows)
    - [Land cover](https://dyerlab.github.io/Licensed_to_Ilex/analyses/02_gradient.html#land-cover)
    - [Gradient](https://dyerlab.github.io/Licensed_to_Ilex/analyses/02_gradient.html#gradient)
+   - [Evergreen signal (NDVI)](https://dyerlab.github.io/Licensed_to_Ilex/analyses/02_gradient.html#evergreen-signal-ndvi)
    - [Window table](https://dyerlab.github.io/Licensed_to_Ilex/analyses/02_gradient.html#window-table)
    - [Notes](https://dyerlab.github.io/Licensed_to_Ilex/analyses/02_gradient.html#notes)
 3. [Holly candidates](https://dyerlab.github.io/Licensed_to_Ilex/analyses/03_holly_classification.html) (source: [`analyses/03_holly_classification.qmd`](analyses/03_holly_classification.qmd))
    - [Purpose](https://dyerlab.github.io/Licensed_to_Ilex/analyses/03_holly_classification.html#purpose)
    - [Why NDVI and measuring the gain from NIR](https://dyerlab.github.io/Licensed_to_Ilex/analyses/03_holly_classification.html#why-ndvi)
+   - [Separation of evergreen and deciduous forest by GLI and NDVI](https://dyerlab.github.io/Licensed_to_Ilex/analyses/03_holly_classification.html#separation-in-this-imagery)
    - [Approach and example](https://dyerlab.github.io/Licensed_to_Ilex/analyses/03_holly_classification.html#approach)
    - [Candidates, map, and density along the transect](https://dyerlab.github.io/Licensed_to_Ilex/analyses/03_holly_classification.html#candidates)
+   - [GLI versus NDVI candidates](https://dyerlab.github.io/Licensed_to_Ilex/analyses/03_holly_classification.html#gli-versus-ndvi)
    - [Ground truth](https://dyerlab.github.io/Licensed_to_Ilex/analyses/03_holly_classification.html#ground-truth)
    - [Next steps](https://dyerlab.github.io/Licensed_to_Ilex/analyses/03_holly_classification.html#next-steps)
    - [Notes](https://dyerlab.github.io/Licensed_to_Ilex/analyses/03_holly_classification.html#notes)
@@ -41,7 +44,7 @@ Site home: <https://dyerlab.github.io/Licensed_to_Ilex/>
 ```
 config.yml          transect endpoints, buffer, CRS, and paths
 R/                  analysis scripts (run in order) and shared helpers (functions.R)
-python/             MrSID to GeoTIFF conversion (runs inside QGIS)
+python/             MrSID to GeoTIFF conversion (runs inside QGIS; RGB-only path)
 analyses/           Quarto documents describing and visualizing each step
 index.qmd           website home page
 docs/               rendered website (served by GitHub Pages)
@@ -56,7 +59,8 @@ No imagery is stored in this repository. To reproduce, download the following fr
 | Folder | Contents |
 |---|---|
 | `data/raw/tile_index/` | VBMP 2025 tile index shapefiles (`2025_VGIN_12in_{South,North}_Tiles.*`) |
-| `data/raw/tiles/` | 12-inch MrSID tiles (`.sid` + `.sdw`) listed on the [study area page](https://dyerlab.github.io/Licensed_to_Ilex/analyses/01_study_area.html) |
+| `data/raw/tiles/` | 12-inch MrSID tiles (`.sid` + `.sdw`) listed on the [study area page](https://dyerlab.github.io/Licensed_to_Ilex/analyses/01_study_area.html) (RGB; optional if you have the 4-band tiles) |
+| `data/raw/tiles_tif/` | 12-inch 4-band (RGB + NIR) GeoTIFF tiles (`.tif` + `.tfw`), same tile names; supplied by VGIN on request |
 | `data/raw/metadata/` | VBMP 2025 metadata XML (optional, for reference) |
 
 `R/02_select_tiles.R` reports which tiles are needed and which are missing, so you can also
@@ -64,19 +68,21 @@ run steps 1–2 with only the tile index and download tiles afterwards.
 
 ## Workflow
 
-Requirements: R (sf, terra, units, dplyr, tidyr, ggplot2, leaflet, exactextractr, httr, yaml, here, xml2), Quarto, and
-QGIS with a MrSID-enabled GDAL driver for the conversion step.
+Requirements: R (sf, terra, units, dplyr, tidyr, ggplot2, leaflet, plotly, exactextractr, httr, yaml, here, xml2) and Quarto.
+QGIS with a MrSID-enabled GDAL driver is needed only to build the mosaic from the MrSID tiles
+(`imagery_source: "rgb"` in `config.yml`); the default uses the 4-band GeoTIFFs directly.
 
 ```sh
 Rscript R/01_build_aoi.R       # transect line and 2 km buffer       -> data/derived/aoi.gpkg
 Rscript R/02_select_tiles.R    # tiles intersecting the buffer       -> data/derived/tiles_needed.csv
-# In the QGIS Python console (set PROJECT_DIR in the script first):
+# Only for imagery_source: "rgb", in the QGIS Python console (set PROJECT_DIR first):
 #   exec(open("/path/to/Licensed_to_Ilex/python/convert_mrsid.py").read())
 #                              # MrSID -> GeoTIFF                    -> data/geotiff/*.tif
-Rscript R/03_build_vrt.R       # virtual mosaic + preview            -> data/derived/ortho_12in.vrt
+Rscript R/03_build_vrt.R       # virtual mosaic (RGB + NIR) + preview -> data/derived/ortho_12in.vrt
 Rscript R/04_transect_windows.R  # 1 km windows along the transect  -> data/derived/transect_windows.gpkg
 Rscript R/05_nlcd.R            # Annual NLCD download + summaries    -> data/derived/nlcd_windows.csv
 Rscript R/06_holly_objects.R   # evergreen crowns + holly candidates -> data/derived/holly_candidates.csv
+Rscript R/07_ndvi_windows.R    # NDVI summaries per window           -> data/derived/ndvi_windows.csv
 quarto render                  # rebuild the website                 -> docs/
 ```
 

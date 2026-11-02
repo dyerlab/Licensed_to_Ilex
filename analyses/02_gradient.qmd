@@ -251,11 +251,12 @@ plot_ly(band, x = ~u_mid_km) |>
 cat(sprintf(
 "The imagery was flown leaf-off, so near-infrared greenness mostly marks evergreen foliage
 (pine, cedar, holly, magnolia, evergreen shrubs) and green winter lawns. *Evergreen* is the
-share of 1 ft pixels in a window with NDVI above %s, the same threshold used to measure
-evergreen surroundings for holly candidates; open water is excluded. The forest-only line
+share of 1 ft pixels in a window with brightness-adjusted NDVI above %s, the same threshold
+used to measure evergreen surroundings for holly candidates (plain NDVI is inflated in shadow;
+see the [holly page](03_holly_classification.qmd#shadows)); open water is excluded. The forest-only line
 uses the same measure within NLCD forest (classes 41–43) and reads as the evergreen
 share of the forest canopy. NLCD forest cover is shown for reference.",
-cfg$holly$thresholds$ndvi$context))
+cfg$holly$thresholds$ndvi_adj$context))
 ```
 
 ```{r ndvi-plot, eval=!is.null(ndvi)}
@@ -282,7 +283,19 @@ plot_ly(nd, x = ~u_mid_km) |>
   plotly_cfg()
 ```
 
-NDVI_TEXT
+Evergreen cover follows the urban-to-forest gradient only loosely. It is lowest in downtown
+Richmond (about 7–9% at km 0–2), sits between about 12% and 22% through most of the
+transect, and peaks at 43% at km 21–22, where pine stands are common. In the developed
+windows part of the signal is green winter lawn and street trees rather than evergreen canopy;
+the adjusted index is calibrated on forest, so it is least reliable on bright urban surfaces.
+
+Within forest the evergreen share does not follow the urban gradient. The small forest
+patches near km 9–11 are pine-rich (41–46% evergreen), the forests at km 12–20 are mostly
+deciduous (18–28%), km 21–22 is pine-rich again (54%), and km 23–24 is hardwood-dominated
+(about 19%). The *amount* of forest (NLCD) and its *composition* (NDVI) change at different
+places along the transect. That matters for holly: an isolated evergreen crown is easiest to
+see, and most likely to be holly, in deciduous forest. Windows 1–4 have no NLCD forest, so
+they have no forest-only value.
 
 ### Window table
 

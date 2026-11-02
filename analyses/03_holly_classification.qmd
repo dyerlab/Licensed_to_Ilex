@@ -21,15 +21,24 @@ h <- cfg$holly
 line    <- load_transect()
 windows <- load_windows()
 obj     <- holly_candidates(load_holly_objects())
-gli_path <- file.path(derived, "holly_objects_gli.gpkg")   # first pass, RGB only (GLI)
-obj_gli <- if (file.exists(gli_path)) holly_candidates(st_read(gli_path, quiet = TRUE)) else NULL
+# Earlier runs kept for comparison: RGB only (GLI) and plain NDVI (shadow-biased)
+read_run <- function(f) {
+  f <- file.path(derived, f)
+  if (file.exists(f)) holly_candidates(st_read(f, quiet = TRUE)) else NULL
+}
+obj_gli  <- read_run("holly_objects_gli.gpkg")
+obj_ndvi <- read_run("holly_objects_ndvi.gpkg")
+curve_path <- file.path(derived, "ndvi_shadow_curve.csv")
+curve   <- if (file.exists(curve_path)) read.csv(curve_path) else NULL
 cal_path <- file.path(derived, "ndvi_calibration.csv")
 cal     <- if (file.exists(cal_path)) read.csv(cal_path) else NULL
 classes <- read.csv(file.path(derived, "nlcd_window_classes.csv"))
 nlcd    <- read.csv(file.path(derived, "nlcd_windows.csv"))
 
 vi_name <- unique(obj$vi_name)
-vi_label <- c(gli = "GLI (green leaf index, RGB)", ndvi = "NDVI (near-infrared)")[vi_name]
+index_labels <- c(gli = "GLI (green leaf index, RGB)", ndvi = "NDVI (near-infrared)",
+                  ndvi_adj = "brightness-adjusted NDVI")
+vi_label <- index_labels[vi_name]
 thr <- h$thresholds[[vi_name]]
 
 reason_cols <- c(candidate = "#d95f02", `not isolated` = "#7570b3",
@@ -37,12 +46,13 @@ reason_cols <- c(candidate = "#d95f02", `not isolated` = "#7570b3",
 ```
 
 ::: {.callout-note}
-## Candidates now use NDVI
+## Candidates now use brightness-adjusted NDVI
 
 The candidates on this page come from NDVI computed from the 4-band (RGB + near-infrared)
-imagery. The first pass used the RGB-only green leaf index (GLI); its results are kept for
-comparison in [GLI versus NDVI](#gli-versus-ndvi). Candidates are still unverified: until
-field data exist, they are locations to visit, not holly.
+imagery, adjusted for brightness because plain NDVI is inflated in shadow (see
+[Shadows](#shadows)). Two earlier runs are kept for comparison in
+[GLI versus NDVI](#gli-versus-ndvi): the RGB-only green leaf index (GLI) and plain NDVI.
+Candidates are still unverified: until field data exist, they are locations to visit, not holly.
 :::
 
 ## Purpose
@@ -63,9 +73,9 @@ first step of a holly classification workflow:
 | 7. Crown extraction | `R/06_holly_objects.R` | `data/derived/holly_objects.gpkg` (all crowns with features) |
 | 8. Candidate rule | `holly_candidates()` in `R/functions.R` | `data/derived/holly_candidates.{csv,gpx}` (field list) |
 
-Greenness comes from NDVI. The mosaic is built from the 4-band tiles, and `veg_index()`
-uses NDVI whenever the imagery has a `nir` band (GLI otherwise). Every crown also records its
-mean GLI, so the two indices can be compared on the same objects.
+Greenness comes from brightness-adjusted NDVI. The mosaic is built from the 4-band tiles, and
+`veg_index()` uses it whenever the imagery has a `nir` band (GLI otherwise). Every crown also
+records its mean GLI and plain NDVI, so the indices can be compared on the same objects.
 
 ## Why NDVI
 
@@ -95,11 +105,11 @@ affected by shadows and by the imagery's slight blue cast.
 
 ### Separation in this imagery
 
-To compare the two indices and set the NDVI thresholds, both were computed (3 × 3 px
-smoothed, as in crown extraction) at `r if (!is.null(cal)) format(nrow(cal), big.mark = ",")`
-random points in the study area and grouped by NLCD class. NLCD is a 30 m product, so these
-labels are noisy at 1 ft (a "deciduous" cell can contain a pine), which blurs both indices
-equally.
+To compare the indices and set thresholds, each was computed (3 × 3 px smoothed, as in crown
+extraction) at `r if (!is.null(cal)) format(nrow(cal), big.mark = ",")` random points in the
+study area and grouped by NLCD class (`R/05b_ndvi_calibration.R`). NLCD is a 30 m product, so
+these labels are noisy at 1 ft (a "deciduous" cell can contain a pine or a holly), which blurs
+every index.
 
 ```{r calibration, eval=!is.null(cal)}
 auc <- function(neg, pos) {
@@ -107,58 +117,86 @@ auc <- function(neg, pos) {
   (sum(r[length(neg) + seq_along(pos)]) - length(pos) * (length(pos) + 1) / 2) /
     (length(neg) * length(pos))
 }
-dec <- cal[cal$nlcd == 41, ]
-evg <- cal[cal$nlcd == 42, ]
-cal_tab <- data.frame(
-  Index = c("GLI (RGB)", "NDVI (NIR)"),
-  dec = c(median(dec$gli), median(dec$ndvi)),
-  evg = c(median(evg$gli), median(evg$ndvi)),
-  crown = c(h$thresholds$gli$crown, h$thresholds$ndvi$crown),
-  dec_over = c(mean(dec$gli > h$thresholds$gli$crown), mean(dec$ndvi > h$thresholds$ndvi$crown)),
-  evg_over = c(mean(evg$gli > h$thresholds$gli$crown), mean(evg$ndvi > h$thresholds$ndvi$crown)),
-  auc = c(auc(dec$gli, evg$gli), auc(dec$ndvi, evg$ndvi))
-)
-knitr::kable(cal_tab, digits = c(0, 3, 3, 2, 3, 3, 2),
+dec <- cal[cal$nlcd %in% 41, ]
+evg <- cal[cal$nlcd %in% 42, ]
+ix <- intersect(c("gli", "ndvi", "ndvi_adj"), names(cal))
+cal_tab <- do.call(rbind, lapply(ix, function(k) data.frame(
+  Index = index_labels[[k]],
+  dec = median(dec[[k]], na.rm = TRUE), evg = median(evg[[k]], na.rm = TRUE),
+  crown = h$thresholds[[k]]$crown,
+  dec_over = mean(dec[[k]] > h$thresholds[[k]]$crown, na.rm = TRUE),
+  dark_over = mean(dec[[k]][dec$brightness < 60] > h$thresholds[[k]]$crown, na.rm = TRUE),
+  evg_over = mean(evg[[k]] > h$thresholds[[k]]$crown, na.rm = TRUE),
+  auc = auc(dec[[k]], evg[[k]]))))
+knitr::kable(cal_tab, digits = c(0, 2, 2, 2, 3, 3, 3, 2), row.names = FALSE,
              col.names = c("Index", "Median, deciduous (41)", "Median, evergreen (42)",
-                           "Crown threshold", "Deciduous above", "Evergreen above", "AUC"))
-```
-
-```{r calibration-plot, eval=!is.null(cal), fig.width=9, fig.height=3.6}
-cal |>
-  filter(nlcd %in% c(21, 41, 42)) |>
-  mutate(cover = factor(nlcd, c(41, 42, 21),
-                        c("Deciduous forest (41)", "Evergreen forest (42)", "Developed, open (21)"))) |>
-  pivot_longer(c(gli, ndvi), names_to = "index") |>
-  mutate(index = toupper(index)) |>
-  ggplot(aes(value, colour = cover, fill = cover)) +
-  geom_density(alpha = 0.15, linewidth = 0.6) +
-  geom_vline(data = data.frame(index = c("GLI", "NDVI"),
-                               v = c(h$thresholds$gli$crown, h$thresholds$ndvi$crown)),
-             aes(xintercept = v), linetype = "dashed") +
-  facet_wrap(~index, scales = "free") +
-  scale_colour_manual(values = c("#b5651d", "#1b7837", "#999999"), name = NULL) +
-  scale_fill_manual(values = c("#b5651d", "#1b7837", "#999999"), name = NULL) +
-  labs(x = "Index (dashed line: crown threshold)", y = NULL) +
-  theme_minimal() +
-  theme(legend.position = "top", axis.text.y = element_blank(), panel.grid.minor = element_blank())
+                           "Crown threshold", "Deciduous above", "Shaded deciduous above",
+                           "Evergreen above", "AUC"))
 ```
 
 AUC is the probability that a random evergreen-forest point has a higher index than a random
-deciduous-forest point (0.5 = no separation, 1 = complete). NDVI separates the two forest types
-much better than GLI. Absolute NDVI is high even in leaf-off hardwood (median about 0.33)
-because the imagery's NIR band is not radiometrically calibrated and bare branches over
-leaf litter still reflect NIR. Only relative values matter here.
+deciduous-forest point (0.5 = no separation, 1 = complete). "Shaded deciduous above" is the
+false-positive rate among deciduous-forest points darker than 60 (mean of the RGB bands,
+0–255). NDVI separates the forest types much better than GLI, but most of its apparent
+advantage in the shade is an artifact, as the next section shows.
 
-The NDVI thresholds were chosen to match the GLI rule's false-positive rate on deciduous
-forest. The crown threshold (`r h$thresholds$ndvi$crown`) is exceeded by about 2% of
-deciduous-forest pixels, as GLI's `r h$thresholds$gli$crown` is, and the context threshold
-(`r h$thresholds$ndvi$context`) by about 9–10%, as GLI's `r h$thresholds$gli$context` is.
-At the same false-positive rate, NDVI keeps far more of the evergreen canopy above threshold.
+### Shadows
+
+```{r shadow-plot, eval=!is.null(cal) && !is.null(curve), fig.width=9, fig.height=3.8}
+bins <- cal |>
+  filter(nlcd %in% c(41, 42), brightness >= 30, brightness < 160) |>
+  mutate(cover = factor(nlcd, c(41, 42), c("Deciduous forest (41)", "Evergreen forest (42)")),
+         b = 10 * floor(brightness / 10) + 5) |>
+  group_by(cover, b) |>
+  filter(n() >= 20) |>
+  summarise(ndvi = median(ndvi), ndvi_adj = median(ndvi_adj), .groups = "drop") |>
+  pivot_longer(c(ndvi, ndvi_adj), names_to = "index") |>
+  mutate(index = c(ndvi = "Plain NDVI", ndvi_adj = "Brightness-adjusted NDVI (SD units)")[index])
+thr_lines <- data.frame(index = c("Plain NDVI", "Brightness-adjusted NDVI (SD units)"),
+                        v = c(h$thresholds$ndvi$crown, h$thresholds$ndvi_adj$crown))
+ggplot(bins, aes(b, value, colour = cover)) +
+  geom_line(linewidth = 0.8) + geom_point(size = 1.5) +
+  geom_hline(data = thr_lines, aes(yintercept = v), linetype = "dashed") +
+  facet_wrap(~index, scales = "free_y") +
+  scale_colour_manual(values = c("#b5651d", "#1b7837"), name = NULL) +
+  labs(x = "Brightness (mean of RGB, 0–255; shadow at left)", y = "Median (dashed: crown threshold)") +
+  theme_minimal() +
+  theme(legend.position = "top", panel.grid.minor = element_blank())
+```
+
+Plain NDVI rises steadily as pixels get darker. In leaf-off deciduous forest the median is
+about 0.2 for bright pixels and about 0.6 in shadow, the same as evergreen foliage: in shadow
+the red band falls nearly to zero while the NIR band stays high, lit by light scattered from
+the surrounding vegetation. A fixed NDVI threshold therefore picks up tree and building
+shadows. The first NDVI run did exactly this: its candidates were much darker than GLI's, and
+many were shadows.
+
+The **brightness-adjusted NDVI** compares each pixel with leaf-off deciduous forest at the
+same brightness:
+
+$$
+\text{NDVI}_\text{adj} = \frac{\text{NDVI} - \mu(b)}{\sigma(b)}
+$$
+
+where *b* is brightness and *μ(b)* and *σ(b)* are the mean and spread of NDVI in NLCD
+deciduous forest at that brightness (loess fits, saved in `data/derived/ndvi_shadow_curve.csv`).
+It is in units of deciduous-forest standard deviations: about 0 for bare hardwood at any
+brightness, positive for foliage greener than leaf-off forest. Dividing by *σ(b)* matters
+because NDVI is also noisier in shadow; subtracting the mean alone still let about 20% of
+shaded deciduous pixels through.
+
+The crown threshold (`r h$thresholds$ndvi_adj$crown`) is exceeded by about 5% of
+deciduous-forest pixels at every brightness, and the context threshold
+(`r h$thresholds$ndvi_adj$context`) by about 15%. The price is that evergreen foliage in deep
+shadow can no longer be told from shaded hardwood. That is a real limit of this imagery, not
+of the method: a shaded holly is invisible to both indices. Overall AUC drops a little because
+part of plain NDVI's apparent separation came from evergreen canopy being darker than
+deciduous canopy, which is the shadow effect again.
 
 ### Measuring the gain from NIR
 
-Every crown carries both GLI and NDVI means (`gli_mean`, `ndvi_mean`) along with NIR
-reflectance. Once field labels exist, the comparison will use the same ground-truth set and the
+Every crown carries GLI, plain NDVI, and the adjusted index (`gli_mean`, `ndvi_mean`,
+`vi_mean`) along with mean band values, including NIR. Once field labels exist, the comparison will use the same ground-truth set and the
 same spatially blocked cross-validation for two classifiers:
 
 - **Visible only:** crown features from RGB (GLI, colour, brightness, size, shape, isolation).
@@ -185,7 +223,7 @@ Each 12-inch tile is processed at full resolution:
    the field list.
 
 Thresholds are calibrated on NLCD forest classes (see [Separation in this
-imagery](#separation-in-this-imagery)).
+imagery](#separation-in-this-imagery) and [Shadows](#shadows)).
 
 ### Example
 
@@ -312,9 +350,9 @@ for the classifier.
 obj |>
   st_drop_geometry() |>
   filter(reason %in% c("candidate", "not isolated")) |>
-  select(reason, `Diameter (ft)` = diam_ft, Compactness = compactness,
-         `NDVI mean` = ndvi_mean, `GLI mean` = gli_mean, NIR = nir,
-         Brightness = brightness, `Evergreen share` = context) |>
+  select(reason, any_of(c(`Diameter (ft)` = "diam_ft", Compactness = "compactness",
+                          `NDVI mean` = "ndvi_mean", `GLI mean` = "gli_mean", NIR = "nir",
+                          Brightness = "brightness", `Evergreen share` = "context"))) |>
   pivot_longer(-reason) |>
   ggplot(aes(value, fill = reason, colour = reason)) +
   geom_density(alpha = 0.25, linewidth = 0.6) +
@@ -328,64 +366,95 @@ obj |>
 
 ## GLI versus NDVI
 
-```{r compare-setup, eval=!is.null(obj_gli)}
-cand_gli <- obj_gli[obj_gli$candidate & !obj_gli$tile_edge, ]
-match_ft <- 10    # a candidate "matches" one from the other run if their centres are this close
+```{r compare-setup, eval=!is.null(obj_gli) && !is.null(obj_ndvi)}
+runs <- list(GLI = obj_gli, NDVI = obj_ndvi, `NDVI adjusted` = obj)
+cands <- lapply(runs, function(o) o[o$candidate & !o$tile_edge, ])
+match_ft <- 10    # candidates "match" if their centres are this close
 near <- function(a, b) lengths(st_is_within_distance(st_centroid(st_geometry(a)),
                                                      st_centroid(st_geometry(b)), match_ft)) > 0
-gli_kept  <- near(cand_gli, cand)     # GLI candidates also found with NDVI
-ndvi_seen <- near(cand, cand_gli)     # NDVI candidates also found with GLI
+fmt <- function(x) format(x, big.mark = ",")
+pct <- function(k) sprintf("%s (%.0f%%)", fmt(sum(k)), 100 * mean(k))
+in_adj <- lapply(cands, near, b = cands[["NDVI adjusted"]])
 cmp <- data.frame(
   Measure = c("Crowns extracted (6–30 ft)", "Candidates (field list)",
-              sprintf("Candidates also found by the other index (within %d ft)", match_ft),
-              "Median candidate diameter (ft)", "Median evergreen share around candidates"),
-  GLI = c(format(nrow(obj_gli), big.mark = ","), format(nrow(cand_gli), big.mark = ","),
-          sprintf("%s (%.0f%%)", format(sum(gli_kept), big.mark = ","), 100 * mean(gli_kept)),
-          sprintf("%.1f", median(cand_gli$diam_ft)), sprintf("%.2f", median(cand_gli$context))),
-  NDVI = c(format(nrow(obj), big.mark = ","), format(nrow(cand), big.mark = ","),
-           sprintf("%s (%.0f%%)", format(sum(ndvi_seen), big.mark = ","), 100 * mean(ndvi_seen)),
-           sprintf("%.1f", median(cand$diam_ft)), sprintf("%.2f", median(cand$context)))
+              sprintf("Also a candidate with adjusted NDVI (within %d ft)", match_ft),
+              "Median candidate diameter (ft)", "Median candidate brightness (0–255)",
+              "Median evergreen share around candidates"),
+  check.names = FALSE,
+  sapply(names(runs), function(k) c(
+    fmt(nrow(runs[[k]])), fmt(nrow(cands[[k]])),
+    if (k == "NDVI adjusted") "" else pct(in_adj[[k]]),
+    sprintf("%.1f", median(cands[[k]]$diam_ft)),
+    sprintf("%.0f", median(cands[[k]]$brightness)),
+    sprintf("%.2f", median(cands[[k]]$context))))
 )
 ```
 
-The same crown extraction and candidate rule, run once with GLI (RGB only) and once with NDVI
-(4-band), with thresholds matched on deciduous-forest false positives.
+The same crown extraction and candidate rule, run with each index. Thresholds for GLI and
+plain NDVI were matched on deciduous-forest false positives; the adjusted index holds that
+rate constant across brightness.
 
-```{r compare-table, eval=!is.null(obj_gli)}
-knitr::kable(cmp, align = "lrr")
+```{r compare-table, eval=!is.null(obj_gli) && !is.null(obj_ndvi)}
+knitr::kable(cmp, align = "lrrr")
 ```
 
-```{r compare-reasons, eval=!is.null(obj_gli)}
-bind_rows(GLI = st_drop_geometry(obj_gli)[, "reason", drop = FALSE],
-          NDVI = st_drop_geometry(obj)[, "reason", drop = FALSE], .id = "index") |>
-  mutate(reason = factor(reason, levels = names(reason_cols))) |>
+```{r compare-reasons, eval=!is.null(obj_gli) && !is.null(obj_ndvi)}
+bind_rows(lapply(runs, function(o) st_drop_geometry(o)[, "reason", drop = FALSE]), .id = "index") |>
+  mutate(reason = factor(reason, levels = names(reason_cols)),
+         index = factor(index, names(runs))) |>
   count(index, reason) |>
   pivot_wider(names_from = index, values_from = n) |>
-  knitr::kable(col.names = c("Rule outcome", "GLI crowns", "NDVI crowns"),
+  knitr::kable(col.names = c("Rule outcome", paste(names(runs), "crowns")),
                format.args = list(big.mark = ","))
 ```
 
-```{r compare-density, eval=!is.null(obj_gli)}
-dens_gli <- count(st_drop_geometry(cand_gli), window, name = "n_gli")
-cmp_dens <- dens |>
-  left_join(dens_gli, by = "window") |>
-  mutate(n_gli = coalesce(n_gli, 0L),
-         gli_km2 = ifelse(nondev_km2 > 0.05, n_gli / nondev_km2, NA))
+```{r compare-density, eval=!is.null(obj_gli) && !is.null(obj_ndvi)}
+run_cols <- c(GLI = "#999999", NDVI = "#7570b3", `NDVI adjusted` = "#d95f02")
+cmp_dens <- bind_rows(lapply(cands, function(cc) count(st_drop_geometry(cc), window)), .id = "index") |>
+  right_join(tidyr::expand_grid(index = names(runs), select(dens, window, u_mid_km, nondev_km2)),
+             by = c("index", "window")) |>
+  mutate(n = coalesce(n, 0L), per_km2 = ifelse(nondev_km2 > 0.05, n / nondev_km2, NA)) |>
+  arrange(index, u_mid_km)
 
-plot_ly(cmp_dens, x = ~u_mid_km) |>
-  add_trace(y = ~gli_km2, type = "scatter", mode = "lines+markers", name = "GLI (RGB)",
-            line = list(color = "#999999", width = 2), marker = list(color = "#999999", size = 7),
-            hovertemplate = "GLI: %{y:.0f} per km²<extra></extra>") |>
-  add_trace(y = ~per_km2, type = "scatter", mode = "lines+markers", name = "NDVI (4-band)",
-            line = list(color = "#d95f02", width = 2), marker = list(color = "#d95f02", size = 7),
-            hovertemplate = "NDVI: %{y:.0f} per km²<extra></extra>") |>
+p <- plot_ly()
+for (k in names(runs)) {
+  p <- add_trace(p, data = filter(cmp_dens, index == k), x = ~u_mid_km, y = ~per_km2,
+                 type = "scatter", mode = "lines+markers", name = k,
+                 line = list(color = run_cols[[k]], width = 2),
+                 marker = list(color = run_cols[[k]], size = 7),
+                 hovertemplate = paste0(k, ": %{y:.0f} per km²<extra></extra>"))
+}
+p |>
   layout(xaxis = list(title = "Distance from Richmond (km)", dtick = 5, hoverformat = ".1f"),
          yaxis = list(title = "Candidates per km² non-developed", rangemode = "tozero"),
          hovermode = "x unified", legend = list(orientation = "h", y = -0.2)) |>
   config(displaylogo = FALSE)
 ```
 
-COMPARE_TEXT
+**What changed.**
+
+- **GLI** (RGB only) found crowns that look green in RGB, including green-tinted bark, litter,
+  and moss with no near-infrared signal of live foliage.
+- **Plain NDVI** swapped that error for a worse one: its candidates are the darkest of the
+  three runs (see brightness above), and the gallery for that run was dominated by tree and
+  building shadows.
+- **Adjusted NDVI** candidates are mid-brightness crowns that are greener than leaf-off forest
+  in both RGB (median GLI `r sprintf("%.2f", median(cands[["NDVI adjusted"]]$gli_mean, na.rm = TRUE))`)
+  and NIR. It shares more candidates with GLI
+  (`r sprintf("%.0f%%", 100 * mean(in_adj$GLI))` of GLI candidates) than with plain NDVI
+  (`r sprintf("%.0f%%", 100 * mean(in_adj$NDVI))`), which is consistent with plain NDVI's
+  extra candidates being shadows. The gallery above shows sunlit green crowns in leaf-off
+  hardwood, the pattern expected for understory evergreens.
+
+The adjusted index yields the most candidates of the three, because its crown threshold
+admits 5% of deciduous-forest pixels (versus about 2% for the other two) to keep enough
+evergreen foliage above it once shadows no longer help. The rule can be tightened at render
+time (`candidate_diam_ft`, `context_max` in `config.yml`) if the field list is too long, but
+field results should guide that rather than the count alone.
+
+Across all three runs candidate density rises from Richmond toward Pocahontas State Park, so
+the gradient itself does not depend on the index. Which list actually finds holly is a
+question for the field visits.
 
 ## Ground truth
 
@@ -408,7 +477,11 @@ to crowns by location rather than id. Keep field data outside `data/derived/` (f
 ## Next steps
 
 - **Sampling design:** a stratified random sample of candidates per window (or per NLCD
-  class), so the field effort covers the full gradient.
+  class), so the field effort covers the full gradient. To learn which index works, the visit
+  list should also include a small random sample of crowns that only GLI or only plain NDVI
+  flagged (their precision), and short searches around random points in non-developed land
+  (holly the candidates missed, for recall). Recording what every visited crown actually is,
+  holly or not, is what turns the visits into training data for the classifier.
 - **Classifier:** with field labels, fit a supervised model (e.g. random forest) on crown
   features, validated with spatially blocked cross-validation (hold out whole windows).
 - **Threshold check:** once field data exist, check the NDVI thresholds against crowns of

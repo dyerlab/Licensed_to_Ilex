@@ -100,19 +100,38 @@ band_names <- function(r) {
   c("red", "green", "blue", "nir")[seq_len(nlyr(r))]
 }
 
-# Which vegetation index to use for a raster: NDVI when a nir band exists, else GLI.
+# Which vegetation index to use for a raster: brightness-adjusted NDVI when a nir band exists
+# (plain NDVI if cfg$holly$ndvi_shadow_adjust is false), else GLI.
 veg_index_name <- function(r) {
   if (cfg$holly$veg_index != "auto") return(cfg$holly$veg_index)
-  if ("nir" %in% names(r)) "ndvi" else "gli"
+  if (!"nir" %in% names(r)) return("gli")
+  if (isTRUE(cfg$holly$ndvi_shadow_adjust)) "ndvi_adj" else "ndvi"
+}
+
+# Mean ("ndvi") or spread ("sd") of NDVI in leaf-off deciduous forest at a given brightness
+# ((R + G + B) / 3), from the curve fitted by R/05b_ndvi_calibration.R. Vectors or SpatRasters.
+ndvi_expected <- function(brightness, what = "ndvi") {
+  curve <- read.csv(here(cfg$paths$derived, "ndvi_shadow_curve.csv"))
+  f <- function(x) approx(curve$brightness, curve[[what]], x, rule = 2)$y
+  if (inherits(brightness, "SpatRaster")) app(brightness, f) else f(brightness)
+}
+
+# Brightness-adjusted NDVI: deciduous-forest standard deviations above the leaf-off mean
+ndvi_adj <- function(r) {
+  b <- (r$red + r$green + r$blue) / 3
+  ((r$nir - r$red) / (r$nir + r$red) - ndvi_expected(b)) / ndvi_expected(b, "sd")
 }
 
 # Vegetation index from imagery with bands named by band_names().
 #   gli:  green leaf index (2G - R - B) / (2G + R + B), RGB only
 #   ndvi: (NIR - R) / (NIR + R)
+#   ndvi_adj: NDVI standardized against leaf-off deciduous forest at the same brightness
+#             (removes the shadow effect; ~0 for bare hardwood, > 0 for greener foliage)
 veg_index <- function(r, index = veg_index_name(r)) {
   out <- switch(index,
     gli  = (2 * r$green - r$red - r$blue) / (2 * r$green + r$red + r$blue),
     ndvi = (r$nir - r$red) / (r$nir + r$red),
+    ndvi_adj = ndvi_adj(r),
     stop("Unknown vegetation index: ", index)
   )
   names(out) <- index

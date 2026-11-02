@@ -9,19 +9,18 @@
 #
 # Per tile, NDVI is computed at full 1 ft resolution and summarised into 10 ft cells
 # (mean NDVI and share of 1 ft pixels above the holly context threshold, i.e. "evergreen").
+# Run R/05b_ndvi_calibration.R first.
 # The 10 ft summaries are then mosaicked and summarised per 1 km window, for all land and for
 # NLCD forest only (classes 41-43).
 #
-# Also draws the calibration sample behind the NDVI thresholds in config.yml: smoothed
-# (3 x 3 px mean) NDVI and GLI at random points in the AOI with their NLCD class, used to
-# compare how well each index separates evergreen (42) from leaf-off deciduous (41) forest.
+# "Evergreen" uses the configured index (brightness-adjusted NDVI by default, so shadows are
+# not counted) and its context threshold; the mean is plain NDVI.
 #
 # Inputs:  data/derived/tiles_needed.csv, 4-band tiles (ortho_tile_paths()),
 #          data/derived/transect_windows.gpkg, data/raw/nlcd/LndCov_<year>.tif
 # Outputs: data/derived/ndvi/tiles/<tile>.tif - per-tile 10 ft summaries (cache; delete to redo)
 #          data/derived/ndvi_10ft.tif          - mosaic: ndvi_mean, evg_frac (10 ft cells)
 #          data/derived/ndvi_windows.csv       - per-window summaries
-#          data/derived/ndvi_calibration.csv   - calibration sample (NDVI, GLI, NLCD class)
 
 library(sf)
 library(terra)
@@ -32,27 +31,17 @@ library(here)
 source(here("R", "functions.R"))
 
 cell_px <- 10                                   # 10 x 10 px = 10 ft cells
-evg_thr <- cfg$holly$thresholds$ndvi$context    # "evergreen" pixel threshold
+
 forest  <- c(41, 42, 43)
 
 tiles <- read.csv(here(cfg$paths$derived, "tiles_needed.csv"))
 tiles$tif_path <- ortho_tile_paths(tiles$tile_name)
 probe <- rast(here(tiles$tif_path[1]))
 if (nlyr(probe) < 4) stop("NDVI needs the 4-band imagery (imagery_source: \"4band\").")
-
-# Calibration sample ------------------------------------------------------------
-n_cal <- 60000
-set.seed(1)
-pts <- st_sample(load_aoi(), n_cal)
-ortho <- load_ortho(aoi = FALSE)
-adj <- adjacent(ortho, cellFromXY(ortho, st_coordinates(pts)), directions = "queen",
-                include = TRUE)                    # each point's 3 x 3 px neighbourhood
-vals <- ortho[as.vector(adj)]
-smooth3 <- function(index) rowMeans(matrix(unname(veg_index(vals, index)), nrow(adj)))
-lc <- rast(here(cfg$nlcd$dir, sprintf("LndCov_%d.tif", cfg$nlcd$year)))
-cal <- data.frame(nlcd = extract(lc, vect(st_transform(pts, crs(lc))))[, 2],
-                  ndvi = smooth3("ndvi"), gli = smooth3("gli"))
-write.csv(cal, here(cfg$paths$derived, "ndvi_calibration.csv"), row.names = FALSE)
+names(probe) <- band_names(probe)
+evg_index <- veg_index_name(probe)
+evg_thr <- cfg$holly$thresholds[[evg_index]]$context    # "evergreen" pixel threshold
+message("Evergreen pixels: ", evg_index, " > ", evg_thr)
 
 # Per-tile 10 ft summaries ----------------------------------------------------------
 tile_dir <- here(cfg$paths$derived, "ndvi", "tiles")
@@ -70,7 +59,7 @@ ndvi_tile <- function(tile_name, tif_path) {
   names(r) <- band_names(r)
   nd <- veg_index(r, "ndvi")
   s <- c(aggregate(nd, cell_px, "mean", na.rm = TRUE),
-         aggregate(nd > evg_thr, cell_px, "mean", na.rm = TRUE))
+         aggregate(veg_index(r, evg_index) > evg_thr, cell_px, "mean", na.rm = TRUE))
   names(s) <- c("ndvi_mean", "evg_frac")
   part <- sub("\\.tif$", ".part.tif", out)
   writeRaster(s, part, overwrite = TRUE, datatype = "FLT4S", gdal = "COMPRESS=DEFLATE")

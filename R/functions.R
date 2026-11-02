@@ -24,7 +24,7 @@ load_transect <- function() {
 #         or an sf/SpatVector polygon to crop to instead.
 #   mask: also set pixels outside the polygon to NA. This writes a full-size
 #         temporary raster, so prefer masking per analysis (e.g. extract()) when possible.
-# The VRT has no nodata value: areas outside the tiles read as 0 in all three bands.
+# The VRT has no nodata value: areas outside the tiles read as 0 in all bands.
 # All such areas lie outside the AOI, so any analysis limited to the AOI polygon is unaffected.
 load_ortho <- function(aoi = TRUE, mask = FALSE) {
   r <- rast(here(cfg$paths$derived, "ortho_12in.vrt"))

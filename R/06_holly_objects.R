@@ -11,7 +11,7 @@
 #   4. features per crown: area, equivalent diameter, compactness, mean/max index, mean RGB
 # Then all tiles are combined, limited to the AOI, and given NLCD class and transect position.
 #
-# Inputs:  data/derived/tiles_needed.csv, data/geotiff/*.tif, data/raw/nlcd/LndCov_<year>.tif
+# Inputs:  data/derived/tiles_needed.csv, <cfg$paths$geotiff>/*.tif, data/raw/nlcd/LndCov_<year>.tif
 # Outputs: data/derived/holly/tiles/<tile>.gpkg   - per-tile crowns (cache; delete to redo)
 #          data/derived/holly_objects.gpkg         - all crowns in the AOI with features
 #          data/derived/holly_candidates.csv, .gpx - crowns passing the candidate rule, for the field

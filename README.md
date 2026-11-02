@@ -41,7 +41,7 @@ Site home: <https://dyerlab.github.io/Licensed_to_Ilex/>
 ```
 config.yml          transect endpoints, buffer, CRS, and paths
 R/                  analysis scripts (run in order) and shared helpers (functions.R)
-python/             MrSID to GeoTIFF conversion (runs inside QGIS)
+python/             MrSID to GeoTIFF conversion (earlier RGB imagery only; no longer needed)
 analyses/           Quarto documents describing and visualizing each step
 index.qmd           website home page
 docs/               rendered website (served by GitHub Pages)
@@ -56,7 +56,7 @@ No imagery is stored in this repository. To reproduce, download the following fr
 | Folder | Contents |
 |---|---|
 | `data/raw/tile_index/` | VBMP 2025 tile index shapefiles (`2025_VGIN_12in_{South,North}_Tiles.*`) |
-| `data/raw/tiles/` | 12-inch MrSID tiles (`.sid` + `.sdw`) listed on the [study area page](https://dyerlab.github.io/Licensed_to_Ilex/analyses/01_study_area.html) |
+| `data/raw/tiles_tif/` | 12-inch 4-band GeoTIFF tiles (`.tif` + `.tfw`, red/green/blue/NIR) listed on the [study area page](https://dyerlab.github.io/Licensed_to_Ilex/analyses/01_study_area.html), from the VGIN Box share under `2025_TIF/south/200/` |
 | `data/raw/metadata/` | VBMP 2025 metadata XML (optional, for reference) |
 
 `R/02_select_tiles.R` reports which tiles are needed and which are missing, so you can also
@@ -64,15 +64,12 @@ run steps 1–2 with only the tile index and download tiles afterwards.
 
 ## Workflow
 
-Requirements: R (sf, terra, units, dplyr, tidyr, ggplot2, leaflet, exactextractr, httr, yaml, here, xml2), Quarto, and
-QGIS with a MrSID-enabled GDAL driver for the conversion step.
+Requirements: R (sf, terra, units, dplyr, tidyr, ggplot2, leaflet, exactextractr, httr, yaml, here, xml2) and Quarto.
 
 ```sh
 Rscript R/01_build_aoi.R       # transect line and 2 km buffer       -> data/derived/aoi.gpkg
 Rscript R/02_select_tiles.R    # tiles intersecting the buffer       -> data/derived/tiles_needed.csv
-# In the QGIS Python console (set PROJECT_DIR in the script first):
-#   exec(open("/path/to/Licensed_to_Ilex/python/convert_mrsid.py").read())
-#                              # MrSID -> GeoTIFF                    -> data/geotiff/*.tif
+# Download the listed 4-band GeoTIFFs (.tif + .tfw)              -> data/raw/tiles_tif/
 Rscript R/03_build_vrt.R       # virtual mosaic + preview            -> data/derived/ortho_12in.vrt
 Rscript R/04_transect_windows.R  # 1 km windows along the transect  -> data/derived/transect_windows.gpkg
 Rscript R/05_nlcd.R            # Annual NLCD download + summaries    -> data/derived/nlcd_windows.csv

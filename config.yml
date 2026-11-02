@@ -32,7 +32,10 @@ tile_index:
 paths:
   tiles_dir: "data/raw/tiles"        # searched recursively for .sid files
   derived: "data/derived"            # AOI, tile lists, footprints
-  geotiff: "data/geotiff"            # converted GeoTIFFs (written by convert_mrsid.py)
+  # 4-band (R, G, B, NIR) 12-inch GeoTIFFs + .tfw from the VGIN Box share
+  # (2025_TIF/south/200/S13_76 and S13_77). The old RGB GeoTIFFs converted from MrSID
+  # by python/convert_mrsid.py went to "data/geotiff".
+  geotiff: "data/raw/tiles_tif"
 
 windows:
   length_km: 1             # window length along the transect; windows tile it without overlap

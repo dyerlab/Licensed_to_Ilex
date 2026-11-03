@@ -1,0 +1,250 @@
+---
+title: "Focal Trees"
+subtitle: "100 candidate holly trees balanced across urbanization and landscape heterogeneity"
+date: today
+---
+
+```{r setup}
+library(sf)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(leaflet)
+library(plotly)
+library(terra)
+library(here)
+
+source(here("R", "functions.R"))
+derived <- here(cfg$paths$derived)
+fc <- cfg$focal
+
+line    <- load_transect()
+aoi     <- load_aoi()
+focal   <- st_read(file.path(derived, "focal_trees.gpkg"), quiet = TRUE)
+bins    <- read.csv(file.path(derived, "focal_bins.csv"))
+loads   <- read.csv(file.path(derived, "landscape_pca.csv"))
+land    <- rast(file.path(derived, "landscape_30m.tif"))
+prim    <- focal[focal$role == "primary", ]
+
+bin_pal <- colorRampPalette(c("#1b7837", "#a6dba0", "#f7f7f7", "#c2a5cf", "#762a83"))(fc$n_bins)
+bin_lab <- sprintf("%d: %.0f–%.0f%%", bins$bin, bins$imperv_from, bins$imperv_to)
+```
+
+## Purpose
+
+Field work needs a fixed set of focal trees: holly that will be mapped, sexed, and followed for
+seed set, herbivory, and pollinators. This page picks `r fc$n_trees` of them from the holly
+candidates, plus ranked alternates, so that:
+
+- they are **spread evenly across the urbanization gradient**, from forest to downtown;
+- within each part of the gradient they **span landscape heterogeneity** (mixed versus uniform
+  surroundings) and **distance along the transect**;
+- no two listed trees are closer than **`r fc$min_spacing_m` m**, to reduce the chance of
+  sampling parent–offspring pairs or sibships from the same seed shadow.
+
+| Step | Script | Output |
+|---|---|---|
+| 10. Landscape metrics, indices, selection | `R/08_focal_trees.R` | `data/derived/landscape_30m.tif`, `focal_bins.csv`, `focal_trees.{gpkg,csv,gpx}` |
+
+::: {.callout-important}
+## Candidates, not confirmed holly
+
+These are crowns that the imagery flags as small, isolated evergreens. Some will be other
+species, especially on developed land (magnolia, cedar, boxwood, other ornamentals). Each bin
+therefore has `r fc$alternates_per_bin` ranked alternates. If a primary is not holly, or cannot be
+accessed, use the next alternate in the **same bin**. All `r nrow(focal)` listed trees respect the
+spacing rule, so any substitution keeps it.
+:::
+
+## Pool
+
+The pool is every crown that passes the size (`r cfg$holly$candidate_diam_ft[1]`–`r cfg$holly$candidate_diam_ft[2]` ft)
+and isolation (evergreen share ≤ `r cfg$holly$context_max`) parts of the candidate rule, not cut
+by a tile edge. Unlike the [holly candidate list](03_holly_classification.qmd), **developed land
+is included**: without it the urban end of the transect (km 0–4) has almost no candidates. Only
+open water is excluded. Pool size: `r format(sum(bins$pool_crowns), big.mark = ",")` crowns.
+
+## Landscape context
+
+Each crown is described by its surroundings within **`r fc$buffer_m` m**, computed on the native
+30 m Annual NLCD grid (`r cfg$nlcd$year`):
+
+| Metric | Meaning |
+|---|---|
+| `imperv_mean` | mean fractional impervious surface (%) |
+| `imperv_sd` | standard deviation of impervious surface among cells: patchiness of development |
+| `forest_pct`, `developed_pct` | share of forest (41–43) and developed (21–24) cover |
+| `shdi` | Shannon diversity of grouped land cover (developed, developed open, forest, wetland, water, ...) |
+| `shei` | Shannon evenness: diversity relative to its maximum for the classes present (0 = one class, 1 = all equal) |
+| `edge_density` | metres of boundary between grouped cover types per hectare |
+
+Two indices are used:
+
+- **Urbanization index** = `imperv_mean`. A PCA of all metrics was tried first, but its first
+  axis saturated at the urban end: forest and developed shares reach 0% and 100% well before
+  the urban core, so it could not separate suburbs from downtown. Impervious surface keeps
+  rising all the way to the core.
+- **Heterogeneity index** = first principal component of
+  `r paste(loads$metric, collapse = ", ")` across all 30 m cells in the study area
+  (`r sprintf("%.0f%%", 100 * loads$var_explained[1])` of their variance). Higher values mean
+  more mixed, more evenly divided, more fragmented surroundings.
+
+```{r loadings}
+loads |>
+  transmute(Metric = metric, Loading = round(loading, 2)) |>
+  knitr::kable()
+```
+
+```{r index-maps, fig.width=10, fig.height=6}
+aoi_lc <- vect(st_transform(aoi, crs(land)))
+idx <- mask(crop(land[[c("urban_index", "heterogeneity_index")]], aoi_lc), aoi_lc)
+pts <- vect(st_transform(prim, crs(land)))
+par(mfrow = c(1, 2))
+plot(idx[["urban_index"]], main = "Urbanization index (impervious %, 500 m)", axes = FALSE,
+     col = hcl.colors(50, "Purple-Orange", rev = TRUE), mar = c(0.5, 0.5, 2, 4))
+plot(pts, add = TRUE, pch = 21, col = "black", bg = "white", cex = 1.1)
+plot(idx[["heterogeneity_index"]], main = "Heterogeneity index", axes = FALSE,
+     col = hcl.colors(50, "YlGnBu", rev = TRUE), mar = c(0.5, 0.5, 2, 4))
+plot(pts, add = TRUE, pch = 21, col = "black", bg = "white", cex = 1.1)
+```
+
+Heterogeneity is **hump-shaped** along the gradient: it is low in continuous forest and in the
+downtown core, and highest at intermediate urbanization (about 10–25% impervious), where
+houses, lawns, roads, and forest patches are interleaved. The two indices therefore describe
+different things, and a design that balanced on land-cover fractions alone would sample the
+peri-urban mix without controlling for it.
+
+## Selection
+
+The urbanization index is cut into `r fc$n_bins` bins and each bin gets
+`r fc$n_trees / fc$n_bins` primaries and `r fc$alternates_per_bin` alternates. The bins are of
+equal width on the **arcsine-square-root** scale of the impervious fraction, the standard
+transform for proportions. Equal-width bins on raw impervious % put the whole forest end
+(0–10%) into one bin and most of the sample into the city; the transform gives the forest end
+and the urban core similar resolution.
+
+```{r bins}
+bins |>
+  left_join(count(st_drop_geometry(prim), bin, name = "primaries"), by = "bin") |>
+  transmute(Bin = bin, `Impervious (%)` = sprintf("%.1f–%.1f", imperv_from, imperv_to),
+            `Pool crowns` = format(pool_crowns, big.mark = ","), Primaries = primaries) |>
+  knitr::kable(align = "lrrr")
+```
+
+Within each bin, trees are added one at a time. Each new tree is the eligible crown farthest
+(in standardized heterogeneity index and distance along the transect) from the trees already
+chosen in that bin, so a bin's trees span both. A crown is eligible only if it is at least
+`r fc$min_spacing_m` m from every tree already listed in any bin. Bins with the fewest crowns are
+filled first so that the spacing rule does not crowd them out. The first tree in each bin is
+random (seed `r fc$seed` in `config.yml`), so a rerun gives the same list.
+
+### Coverage
+
+```{r coverage, fig.width=9, fig.height=5}
+pool_s <- as.data.frame(mask(land[[c("urban_index", "heterogeneity_index")]], aoi_lc), na.rm = TRUE)
+pool_s <- pool_s[sample(nrow(pool_s), min(20000, nrow(pool_s))), ]
+ggplot() +
+  geom_point(data = pool_s, aes(urban_index, heterogeneity_index), colour = "grey80", size = 0.3) +
+  geom_vline(xintercept = bins$imperv_from[-1], colour = "grey60", linetype = "dotted") +
+  geom_point(data = st_drop_geometry(focal), aes(urban_index, heterogeneity_index, shape = role,
+                                                  fill = factor(bin)), size = 2.2) +
+  scale_fill_manual(values = bin_pal, labels = bin_lab, name = "Bin (impervious)") +
+  scale_shape_manual(values = c(primary = 21, alternate = 24), name = NULL) +
+  guides(fill = guide_legend(override.aes = list(shape = 21))) +
+  labs(x = "Urbanization index (impervious %, 500 m)", y = "Heterogeneity index",
+       caption = "Grey: 30 m cells in the study area. Dotted lines: bin edges.") +
+  theme_minimal() + theme(panel.grid.minor = element_blank())
+```
+
+```{r along, fig.width=9, fig.height=3}
+ggplot(st_drop_geometry(prim), aes(u_km, urban_index, fill = factor(bin))) +
+  geom_point(shape = 21, size = 2.5) +
+  scale_fill_manual(values = bin_pal, labels = bin_lab, name = "Bin") +
+  labs(x = "Distance from Richmond (km)", y = "Impervious %") +
+  theme_minimal() + theme(legend.position = "none", panel.grid.minor = element_blank())
+```
+
+Primaries are spread along the whole transect, but not evenly by kilometre. The most urban bins
+(8–10) lie within the first ~14 km and the least urban bin entirely beyond km 22, while the
+intermediate bins are spread along most of the route, because suburban and peri-urban land recurs
+all along it (including the corridor of higher development near km 9–11). That is the intended
+trade-off of balancing on the gradient rather than on distance.
+
+### Spacing
+
+```{r spacing}
+# Centre-to-centre distances, as used by the spacing rule
+d <- st_distance(st_centroid(st_geometry(focal)))
+units(d) <- "m"
+d <- matrix(as.numeric(d), nrow(focal))
+diag(d) <- Inf
+nn <- apply(d, 1, min)
+nn_p <- apply(d[focal$role == "primary", focal$role == "primary"], 1, min)
+```
+
+The closest pair of listed trees is `r sprintf("%.0f", min(nn))` m apart (crown centre to
+centre). Among primaries only,
+the median distance to the nearest other primary is `r sprintf("%.0f", median(nn_p))` m
+(range `r sprintf("%.0f", min(nn_p))`–`r sprintf("%.0f", max(nn_p))` m).
+
+## Map
+
+Primaries are circles and alternates are triangles (smaller), coloured by bin. Click a tree for
+its id and context.
+
+```{r map}
+ll <- st_transform(st_centroid(focal), 4326)
+ll$col <- bin_pal[ll$bin]
+ll$popup <- sprintf(
+  "<b>%s</b> (%s, bin %d)<br>Crown %s, %.0f ft<br>Impervious %.1f%% | forest %.0f%%<br>
+   Heterogeneity %.2f | evenness %.2f | edge %.0f m/ha<br>%.1f km along transect<br>%.6f, %.6f",
+  ll$focal_id, ll$role, ll$bin, ll$obj_id, ll$diam_ft, ll$imperv_mean, ll$forest_pct,
+  ll$heterogeneity_index, ll$shei, ll$edge_density, ll$u_km, ll$lat, ll$lon)
+pal <- colorFactor(bin_pal, levels = seq_len(fc$n_bins))
+leaflet() |>
+  addProviderTiles(providers$Esri.WorldImagery, group = "Imagery",
+                   options = providerTileOptions(maxNativeZoom = 19, maxZoom = 21)) |>
+  addProviderTiles(providers$Esri.WorldGrayCanvas, group = "Light") |>
+  addPolygons(data = st_transform(aoi, 4326), color = "white", weight = 1, fill = FALSE) |>
+  addPolylines(data = st_transform(line, 4326), color = "white", dashArray = "6", weight = 2) |>
+  addCircleMarkers(data = ll[ll$role == "alternate", ], radius = 3, color = ~col, weight = 1,
+                   fillOpacity = 0.6, popup = ~popup, group = "Alternates") |>
+  addCircleMarkers(data = ll[ll$role == "primary", ], radius = 6, color = "black", weight = 1,
+                   fillColor = ~col, fillOpacity = 0.9, popup = ~popup, group = "Primaries") |>
+  addLegend(colors = bin_pal, labels = bin_lab, title = "Bin (impervious)", opacity = 0.9) |>
+  addLayersControl(baseGroups = c("Imagery", "Light"), overlayGroups = c("Primaries", "Alternates")) |>
+  hideGroup("Alternates")
+```
+
+## Primary trees
+
+```{r table}
+prim |>
+  st_drop_geometry() |>
+  arrange(bin, u_km) |>
+  transmute(ID = focal_id, Bin = bin, `km` = round(u_km, 1), `Impervious %` = round(imperv_mean, 1),
+            `Forest %` = round(forest_pct), Heterogeneity = round(heterogeneity_index, 2),
+            `Crown (ft)` = round(diam_ft), Lat = round(lat, 6), Lon = round(lon, 6)) |>
+  knitr::kable()
+```
+
+The full list with alternates is `data/derived/focal_trees.csv` (and `.gpx` for GPS units and
+phone apps). Each row carries the crown id from the candidate run, so field records can be
+joined back to imagery features.
+
+## Notes
+
+- **Spacing.** `r fc$min_spacing_m` m is a working choice. Holly fruit is bird-dispersed, and
+  most seeds of bird-dispersed trees fall within a few hundred metres of the parent, so trees
+  100 m apart can still be related. A genetic check (e.g. a kinship estimate from markers) on
+  the final set would show how much residual relatedness remains. Increase `min_spacing_m` in
+  `config.yml` and rerun `R/08_focal_trees.R` (about 30 s) to tighten it.
+- **Scale.** Landscape context uses a `r fc$buffer_m` m radius, a common scale for urban
+  landscape effects on plants and their insects. Pollinator and leaf-miner responses may work at
+  other scales; the metrics can be recomputed at several radii for analysis without changing the
+  tree list.
+- **Access.** Urban bins fall largely on private land (yards, institutional grounds). Expect
+  more substitutions there, from both access and ornamental look-alikes.
+- **NLCD limits.** Context comes from 30 m NLCD, so small features (a single street tree's
+  yard, a narrow riparian strip) are blurred. Neighbourhoods near the edge of the NLCD extract
+  are truncated.

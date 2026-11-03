@@ -36,6 +36,15 @@ Site home: <https://dyerlab.github.io/Licensed_to_Ilex/>
    - [Next steps](https://dyerlab.github.io/Licensed_to_Ilex/analyses/03_holly_classification.html#next-steps)
    - [Notes](https://dyerlab.github.io/Licensed_to_Ilex/analyses/03_holly_classification.html#notes)
 
+4. [Focal trees](https://dyerlab.github.io/Licensed_to_Ilex/analyses/04_focal_trees.html) (source: [`analyses/04_focal_trees.qmd`](analyses/04_focal_trees.qmd))
+   - [Purpose](https://dyerlab.github.io/Licensed_to_Ilex/analyses/04_focal_trees.html#purpose)
+   - [Pool](https://dyerlab.github.io/Licensed_to_Ilex/analyses/04_focal_trees.html#pool)
+   - [Landscape context and indices](https://dyerlab.github.io/Licensed_to_Ilex/analyses/04_focal_trees.html#landscape-context)
+   - [Selection, coverage, and spacing](https://dyerlab.github.io/Licensed_to_Ilex/analyses/04_focal_trees.html#selection)
+   - [Map](https://dyerlab.github.io/Licensed_to_Ilex/analyses/04_focal_trees.html#map)
+   - [Primary trees](https://dyerlab.github.io/Licensed_to_Ilex/analyses/04_focal_trees.html#primary-trees)
+   - [Notes](https://dyerlab.github.io/Licensed_to_Ilex/analyses/04_focal_trees.html#notes)
+
 <!-- When adding an analysis: add analyses/NN_name.qmd, list it in _quarto.yml and index.qmd,
      then add an entry here (section anchors are the lowercased, hyphenated headings). -->
 
@@ -81,8 +90,10 @@ Rscript R/02_select_tiles.R    # tiles intersecting the buffer       -> data/der
 Rscript R/03_build_vrt.R       # virtual mosaic (RGB + NIR) + preview -> data/derived/ortho_12in.vrt
 Rscript R/04_transect_windows.R  # 1 km windows along the transect  -> data/derived/transect_windows.gpkg
 Rscript R/05_nlcd.R            # Annual NLCD download + summaries    -> data/derived/nlcd_windows.csv
+Rscript R/05b_ndvi_calibration.R  # NDVI shadow curve (before 06)  -> data/derived/ndvi_shadow_curve.csv
 Rscript R/06_holly_objects.R   # evergreen crowns + holly candidates -> data/derived/holly_candidates.csv
 Rscript R/07_ndvi_windows.R    # NDVI summaries per window           -> data/derived/ndvi_windows.csv
+Rscript R/08_focal_trees.R     # 100 focal trees + alternates        -> data/derived/focal_trees.csv
 quarto render                  # rebuild the website                 -> docs/
 ```
 

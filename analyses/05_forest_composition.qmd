@@ -165,7 +165,8 @@ share is highest at km `r hi_w$km[1]` (`r pct(hi_w$evg_share[1])`) and km `r hi_
 the ground. Elsewhere south of km 14 the forest is `r pct(min(south$evg_share))`–`r pct(max(south$evg_share))`
 evergreen. The windows nearest the city (km 4–9) have little forest, and it is mostly deciduous
 (`r pct(min(near$evg_share))`–`r pct(max(near$evg_share))` evergreen). The imagery
-estimate follows the NLCD-label proxy in shape, but the proxy treats every mixed-forest cell as half
+estimate follows the NLCD-label proxy closely (r = `r sprintf("%.2f", cor(g$evg_share, g$proxy))`
+across windows), but the proxy treats every mixed-forest cell as half
 evergreen and every deciduous cell as none.
 
 ```{r window-table}

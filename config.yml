@@ -99,3 +99,11 @@ focal:
   heterogeneity_metrics: [shdi, shei, edge_density, imperv_sd]
   urban_transform: asinsqrt    # bins equal-width on asin(sqrt(impervious fraction)); or "none"
   seed: 2025
+
+forest_composition:
+  # Evergreen vs deciduous share of NLCD forest (41-43) from leaf-off ndvi_adj (R/09_forest_composition.R)
+  points_per_window: 6000      # forest points in the most-forested 1 km window; same density elsewhere
+  candidate_points: 800000     # random AOI points drawn before keeping forest ones
+  components: 2                # Gaussian mixture components (deciduous, evergreen) on 3 x 3 ndvi_adj
+  n_boot: 200                  # bootstrap replicates (refits the mixture each time)
+  seed: 9

@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-11-03">
+
+<title>Forest Composition – Licensed to Ilex</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link href="../site_libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
+<script src="../site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="../site_libs/plotly-binding-4.12.1/plotly.js"></script>
+<script src="../site_libs/typedarray-0.1/typedarray.min.js"></script>
+<script src="../site_libs/jquery-3.5.1/jquery.min.js"></script>
+<link href="../site_libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet">
+<script src="../site_libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+<link href="../site_libs/plotly-htmlwidgets-css-2.25.2/plotly-htmlwidgets.css" rel="stylesheet">
+<script src="../site_libs/plotly-main-2.25.2/plotly-latest.min.js"></script>
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Licensed to Ilex</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-analyses" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Analyses</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-analyses">    
+        <li>
+    <a class="dropdown-item" href="../analyses/01_study_area.html">
+ <span class="dropdown-text">Study Area and Orthoimagery</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../analyses/02_gradient.html">
+ <span class="dropdown-text">Urban to Forest Gradient</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../analyses/03_holly_classification.html">
+ <span class="dropdown-text">Holly Candidates</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../analyses/04_focal_trees.html">
+ <span class="dropdown-text">Focal Trees</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../analyses/05_forest_composition.html">
+ <span class="dropdown-text">Forest Composition</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/dyerlab/Licensed_to_Ilex"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#purpose" id="toc-purpose" class="nav-link active" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#method" id="toc-method" class="nav-link" data-scroll-target="#method">Method</a></li>
+  <li><a href="#check-against-nlcd" id="toc-check-against-nlcd" class="nav-link" data-scroll-target="#check-against-nlcd">Check against NLCD</a></li>
+  <li><a href="#along-the-gradient" id="toc-along-the-gradient" class="nav-link" data-scroll-target="#along-the-gradient">Along the gradient</a></li>
+  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes">Notes</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Forest Composition</h1>
+<p class="subtitle lead">Evergreen and deciduous shares of NLCD forest from leaf-off imagery</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 3, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">here</span>(<span class="st">"R"</span>, <span class="st">"functions.R"</span>))</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>derived <span class="ot">&lt;-</span> <span class="fu">here</span>(cfg<span class="sc">$</span>paths<span class="sc">$</span>derived)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>fcfg <span class="ot">&lt;-</span> cfg<span class="sc">$</span>forest_composition</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>pts  <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(derived, <span class="st">"forest_points.csv"</span>))</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>mix  <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(derived, <span class="st">"forest_mixture.csv"</span>))</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>comp <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(derived, <span class="st">"forest_composition.csv"</span>))</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>cls  <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(derived, <span class="st">"nlcd_window_classes.csv"</span>))</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>cls_est <span class="ot">&lt;-</span> comp[<span class="fu">grepl</span>(<span class="st">"^nlcd_"</span>, comp<span class="sc">$</span>group), ]</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>cls_est<span class="sc">$</span>nlcd <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">sub</span>(<span class="st">"nlcd_"</span>, <span class="st">""</span>, cls_est<span class="sc">$</span>group))</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>win_est <span class="ot">&lt;-</span> comp[<span class="sc">!</span><span class="fu">is.na</span>(comp<span class="sc">$</span>window) <span class="sc">&amp;</span> comp<span class="sc">$</span>n <span class="sc">&gt;=</span> <span class="dv">30</span>, ]</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>tot <span class="ot">&lt;-</span> comp[comp<span class="sc">$</span>group <span class="sc">==</span> <span class="st">"windows_total"</span>, ]</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>pct <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">d =</span> <span class="dv">0</span>) <span class="fu">sprintf</span>(<span class="fu">paste0</span>(<span class="st">"%."</span>, d, <span class="st">"f%%"</span>), <span class="dv">100</span> <span class="sc">*</span> x)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>crown_thr <span class="ot">&lt;-</span> cfg<span class="sc">$</span>holly<span class="sc">$</span>thresholds<span class="sc">$</span>ndvi_adj<span class="sc">$</span>crown</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<section id="purpose" class="level2">
+<h2 class="anchored" data-anchor-id="purpose">Purpose</h2>
+<p>NLCD splits forest into deciduous (41), evergreen (42), and mixed (43), but only at 30 m and from classified Landsat. The leaf-off orthoimagery shows evergreen foliage directly, at 1 ft. This page uses it to estimate <strong>what share of NLCD forest is evergreen and what share is deciduous</strong>, for each forest class and for each 1 km window along the transect.</p>
+<p>Across the windows, NLCD maps 24.8 km² of forest. Of that, an estimated <strong>29% is evergreen</strong> (95% interval 27%–31%), about 7.2 km², and 17.6 km² is deciduous.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Step</th>
+<th>Script</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>11. Forest sample, mixture, shares</td>
+<td><code>R/09_forest_composition.R</code></td>
+<td><code>data/derived/forest_points.csv</code>, <code>forest_mixture.csv</code>, <code>forest_composition.csv</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="method" class="level2">
+<h2 class="anchored" data-anchor-id="method">Method</h2>
+<p><strong>Sample.</strong> 48,517 random points in NLCD forest, at the same density everywhere (about 6000 in the most forested window). Each point gets its brightness-adjusted NDVI (<code>ndvi_adj</code>, see <a href="../analyses/03_holly_classification.html#shadows">Holly candidates</a>), averaged over its 3 × 3 ft neighbourhood. On this scale bare hardwood is near 0 at any brightness and evergreen foliage is higher.</p>
+<p><strong>Why not a threshold.</strong> The two kinds of pixel overlap. A cutoff that keeps false positives low misses most evergreen, and one that catches most evergreen also passes many deciduous pixels. In both cases the error depends on the true mix. For example, only 31% of points in NLCD evergreen forest exceed the crown threshold (1.7).</p>
+<p><strong>Mixture model.</strong> Instead, a two-component Gaussian mixture is fitted to all forest points pooled: one deciduous component and one evergreen component. The two components are then held fixed, and only the evergreen weight is re-estimated for each NLCD class and each window. That weight is the estimated share of forest area whose <strong>visible winter foliage is evergreen</strong>. The intervals come from 200 bootstrap replicates, each resampling points within windows and refitting the mixture, so they include uncertainty in the components themselves.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>mix <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(<span class="at">Component =</span> component, <span class="st">`</span><span class="at">Mean ndvi_adj</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">round</span>(mean, <span class="dv">2</span>),</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>            <span class="st">`</span><span class="at">95% interval of mean</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sprintf</span>(<span class="st">"%.2f to %.2f"</span>, mean_lo, mean_hi),</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">SD =</span> <span class="fu">round</span>(sd, <span class="dv">2</span>), <span class="st">`</span><span class="at">Weight (all forest)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">pct</span>(weight, <span class="dv">1</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 20%">
+<col style="width: 30%">
+<col style="width: 7%">
+<col style="width: 28%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Component</th>
+<th style="text-align: right;">Mean ndvi_adj</th>
+<th style="text-align: left;">95% interval of mean</th>
+<th style="text-align: right;">SD</th>
+<th style="text-align: left;">Weight (all forest)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">deciduous</td>
+<td style="text-align: right;">-0.04</td>
+<td style="text-align: left;">-0.07 to -0.01</td>
+<td style="text-align: right;">0.73</td>
+<td style="text-align: left;">69.4%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">evergreen</td>
+<td style="text-align: right;">1.54</td>
+<td style="text-align: left;">1.51 to 1.57</td>
+<td style="text-align: right;">0.55</td>
+<td style="text-align: left;">30.6%</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>lab <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">`</span><span class="at">41</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"41 Deciduous forest"</span>, <span class="st">`</span><span class="at">42</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"42 Evergreen forest"</span>, <span class="st">`</span><span class="at">43</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"43 Mixed forest"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> pts <span class="sc">|&gt;</span> <span class="fu">filter</span>(ndvi_adj <span class="sc">&gt;</span> <span class="sc">-</span><span class="dv">4</span>, ndvi_adj <span class="sc">&lt;</span> <span class="dv">6</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>xs <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">4</span>, <span class="dv">6</span>, <span class="at">by =</span> <span class="fl">0.02</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>dens <span class="ot">&lt;-</span> cls_est <span class="sc">|&gt;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">|&gt;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reframe</span>(<span class="at">nlcd =</span> nlcd, <span class="at">x =</span> xs,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">deciduous =</span> (<span class="dv">1</span> <span class="sc">-</span> evg_share) <span class="sc">*</span> <span class="fu">dnorm</span>(xs, mix<span class="sc">$</span>mean[<span class="dv">1</span>], mix<span class="sc">$</span>sd[<span class="dv">1</span>]),</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>          <span class="at">evergreen =</span> evg_share <span class="sc">*</span> <span class="fu">dnorm</span>(xs, mix<span class="sc">$</span>mean[<span class="dv">2</span>], mix<span class="sc">$</span>sd[<span class="dv">2</span>])) <span class="sc">|&gt;</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">total =</span> deciduous <span class="sc">+</span> evergreen)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(p, <span class="fu">aes</span>(ndvi_adj)) <span class="sc">+</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">after_stat</span>(density)), <span class="at">binwidth =</span> <span class="fl">0.1</span>, <span class="at">fill =</span> <span class="st">"grey80"</span>) <span class="sc">+</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> dens, <span class="fu">aes</span>(x, deciduous), <span class="at">colour =</span> <span class="st">"#8c510a"</span>, <span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> dens, <span class="fu">aes</span>(x, evergreen), <span class="at">colour =</span> <span class="st">"#1b7837"</span>, <span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> dens, <span class="fu">aes</span>(x, total), <span class="at">linewidth =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>nlcd, <span class="at">ncol =</span> <span class="dv">1</span>, <span class="at">labeller =</span> <span class="fu">as_labeller</span>(lab)) <span class="sc">+</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Brightness-adjusted NDVI (3 × 3 ft mean)"</span>, <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="05_forest_composition_files/figure-html/mixture-plot-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>ndvi_adj of forest points by NLCD class (histograms), with the fitted deciduous (brown) and evergreen (green) components scaled by each class’s estimated weights. The black line is their sum.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="check-against-nlcd" class="level2">
+<h2 class="anchored" data-anchor-id="check-against-nlcd">Check against NLCD</h2>
+<p>NLCD defines its forest classes by the share of trees that keep their leaves all year: deciduous forest under 25% evergreen, evergreen forest over 75%, and mixed forest in between. The image-based estimates, made without using those labels, fall in the same ranges:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>cls_est <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Class =</span> lab[<span class="fu">as.character</span>(nlcd)],</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">NLCD definition</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"&lt; 25% evergreen"</span>, <span class="st">"&gt; 75% evergreen"</span>, <span class="st">"25–75% evergreen"</span>),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">Estimated evergreen</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sprintf</span>(<span class="st">"%s (%s–%s)"</span>, <span class="fu">pct</span>(evg_share, <span class="dv">1</span>), <span class="fu">pct</span>(lo, <span class="dv">1</span>), <span class="fu">pct</span>(hi, <span class="dv">1</span>)),</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">Points above crown threshold</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">pct</span>(share_gt_crown, <span class="dv">1</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Class, <span class="at">Points =</span> n, <span class="st">`</span><span class="at">NLCD definition</span><span class="st">`</span>, <span class="st">`</span><span class="at">Estimated evergreen</span><span class="st">`</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">Points above crown threshold</span><span class="st">`</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">format.args =</span> <span class="fu">list</span>(<span class="at">big.mark =</span> <span class="st">","</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 3%">
+<col style="width: 20%">
+<col style="width: 7%">
+<col style="width: 17%">
+<col style="width: 20%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">Class</th>
+<th style="text-align: right;">Points</th>
+<th style="text-align: left;">NLCD definition</th>
+<th style="text-align: left;">Estimated evergreen</th>
+<th style="text-align: left;">Points above crown threshold</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">41 Deciduous forest</td>
+<td style="text-align: right;">22,265</td>
+<td style="text-align: left;">&lt; 25% evergreen</td>
+<td style="text-align: left;">10.7% (9.3%–12.2%)</td>
+<td style="text-align: left;">5.5%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">42 Evergreen forest</td>
+<td style="text-align: right;">6,307</td>
+<td style="text-align: left;">&gt; 75% evergreen</td>
+<td style="text-align: left;">83.2% (81.3%–85.2%)</td>
+<td style="text-align: left;">30.6%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">43 Mixed forest</td>
+<td style="text-align: right;">19,945</td>
+<td style="text-align: left;">25–75% evergreen</td>
+<td style="text-align: left;">38.1% (36.0%–40.7%)</td>
+<td style="text-align: left;">13.6%</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The last column shows how far a simple threshold would be off.</p>
+</section>
+<section id="along-the-gradient" class="level2">
+<h2 class="anchored" data-anchor-id="along-the-gradient">Along the gradient</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>nlcd_proxy <span class="ot">&lt;-</span> cls <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(class <span class="sc">%in%</span> <span class="dv">41</span><span class="sc">:</span><span class="dv">43</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(window) <span class="sc">|&gt;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">proxy =</span> <span class="fu">sum</span>(frac <span class="sc">*</span> <span class="fu">c</span>(<span class="st">`</span><span class="at">41</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">0</span>, <span class="st">`</span><span class="at">42</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">`</span><span class="at">43</span><span class="st">`</span> <span class="ot">=</span> <span class="fl">0.5</span>)[<span class="fu">as.character</span>(class)]) <span class="sc">/</span> <span class="fu">sum</span>(frac),</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> win_est <span class="sc">|&gt;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(nlcd_proxy, <span class="at">by =</span> <span class="st">"window"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">km =</span> <span class="fu">sprintf</span>(<span class="st">"%g–%g"</span>, u_mid_km <span class="sc">-</span> <span class="fl">0.5</span>, u_mid_km <span class="sc">+</span> <span class="fl">0.5</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_ly</span>(g, <span class="at">x =</span> <span class="sc">~</span>u_mid_km) <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_bars</span>(<span class="at">y =</span> <span class="sc">~</span>evg_km2, <span class="at">name =</span> <span class="st">"Evergreen"</span>, <span class="at">marker =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">"#1b7837"</span>),</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">text =</span> <span class="sc">~</span><span class="fu">sprintf</span>(<span class="st">"km %s&lt;br&gt;Evergreen %.2f km² (%s)"</span>, km, evg_km2, <span class="fu">pct</span>(evg_share)),</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">hoverinfo =</span> <span class="st">"text"</span>, <span class="at">textposition =</span> <span class="st">"none"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_bars</span>(<span class="at">y =</span> <span class="sc">~</span>dec_km2, <span class="at">name =</span> <span class="st">"Deciduous"</span>, <span class="at">marker =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">"#bf812d"</span>),</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">text =</span> <span class="sc">~</span><span class="fu">sprintf</span>(<span class="st">"km %s&lt;br&gt;Deciduous %.2f km²"</span>, km, dec_km2),</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">hoverinfo =</span> <span class="st">"text"</span>, <span class="at">textposition =</span> <span class="st">"none"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layout</span>(<span class="at">barmode =</span> <span class="st">"stack"</span>, <span class="at">bargap =</span> <span class="fl">0.1</span>,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">xaxis =</span> <span class="fu">list</span>(<span class="at">title =</span> <span class="st">"Distance from Richmond (km)"</span>),</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">yaxis =</span> <span class="fu">list</span>(<span class="at">title =</span> <span class="st">"NLCD forest area in window (km²)"</span>),</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">legend =</span> <span class="fu">list</span>(<span class="at">orientation =</span> <span class="st">"h"</span>, <span class="at">y =</span> <span class="fl">1.1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-96e1331c759665713c8c" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-96e1331c759665713c8c">{"x":{"visdat":{"2e58601a1ef9":["function () ","plotlyVisDat"]},"cur_data":"2e58601a1ef9","attrs":{"2e58601a1ef9":{"x":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"y":{},"type":"bar","name":"Evergreen","marker":{"color":"#1b7837"},"text":{},"hoverinfo":"text","textposition":"none","inherit":true},"2e58601a1ef9.1":{"x":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"y":{},"type":"bar","name":"Deciduous","marker":{"color":"#bf812d"},"text":{},"hoverinfo":"text","textposition":"none","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"barmode":"stack","bargap":0.10000000000000001,"xaxis":{"domain":[0,1],"automargin":true,"title":"Distance from Richmond (km)"},"yaxis":{"domain":[0,1],"automargin":true,"title":"NLCD forest area in window (km²)"},"legend":{"orientation":"h","y":1.1000000000000001},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5,13.5,14.5,15.5,16.5,17.5,18.5,19.5,20.5,21.5,22.5,23.5,24.493197469085899],"y":[0.040812454651396497,0.012610781041957,0.023756095933658301,0.016845153663164199,0.038055293731870797,0.044578577520889402,0.29196138443666397,0.25013906846089301,0.086672084278084302,0.040204166584556097,0.17470930324165099,0.21931966576077899,0.15890899118556701,0.21020773252416899,0.190800653158475,0.44052751610248397,0.70184487761905101,1.56623671665441,1.46233852345354,0.43778435410579603,0.801147327119901],"type":"bar","name":"Evergreen","marker":{"color":"#1b7837","line":{"color":"rgba(31,119,180,1)"}},"text":["km 4–5<br>Evergreen 0.04 km² (16%)","km 5–6<br>Evergreen 0.01 km² (6%)","km 6–7<br>Evergreen 0.02 km² (11%)","km 7–8<br>Evergreen 0.02 km² (11%)","km 8–9<br>Evergreen 0.04 km² (22%)","km 9–10<br>Evergreen 0.04 km² (43%)","km 10–11<br>Evergreen 0.29 km² (58%)","km 11–12<br>Evergreen 0.25 km² (27%)","km 12–13<br>Evergreen 0.09 km² (19%)","km 13–14<br>Evergreen 0.04 km² (24%)","km 14–15<br>Evergreen 0.17 km² (28%)","km 15–16<br>Evergreen 0.22 km² (24%)","km 16–17<br>Evergreen 0.16 km² (19%)","km 17–18<br>Evergreen 0.21 km² (21%)","km 18–19<br>Evergreen 0.19 km² (13%)","km 19–20<br>Evergreen 0.44 km² (25%)","km 20–21<br>Evergreen 0.70 km² (34%)","km 21–22<br>Evergreen 1.57 km² (62%)","km 22–23<br>Evergreen 1.46 km² (39%)","km 23–24<br>Evergreen 0.44 km² (13%)","km 23.9932–24.9932<br>Evergreen 0.80 km² (23%)"],"hoverinfo":["text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text"],"textposition":["none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none"],"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5,13.5,14.5,15.5,16.5,17.5,18.5,19.5,20.5,21.5,22.5,23.5,24.493197469085899],"y":[0.21892366604944799,0.206507343763455,0.201587055550041,0.14163283070565699,0.13232549232941801,0.058210764882521297,0.21309402821347001,0.66483504360278001,0.36831226189379701,0.12869283076291399,0.45455213083659002,0.70048756715550997,0.67724026921637304,0.77355033705070897,1.30655668178318,1.32150584956453,1.3601355337914001,0.94868924007152999,2.3215097622215599,2.8107044446319698,2.62541906767839],"type":"bar","name":"Deciduous","marker":{"color":"#bf812d","line":{"color":"rgba(255,127,14,1)"}},"text":["km 4–5<br>Deciduous 0.22 km²","km 5–6<br>Deciduous 0.21 km²","km 6–7<br>Deciduous 0.20 km²","km 7–8<br>Deciduous 0.14 km²","km 8–9<br>Deciduous 0.13 km²","km 9–10<br>Deciduous 0.06 km²","km 10–11<br>Deciduous 0.21 km²","km 11–12<br>Deciduous 0.66 km²","km 12–13<br>Deciduous 0.37 km²","km 13–14<br>Deciduous 0.13 km²","km 14–15<br>Deciduous 0.45 km²","km 15–16<br>Deciduous 0.70 km²","km 16–17<br>Deciduous 0.68 km²","km 17–18<br>Deciduous 0.77 km²","km 18–19<br>Deciduous 1.31 km²","km 19–20<br>Deciduous 1.32 km²","km 20–21<br>Deciduous 1.36 km²","km 21–22<br>Deciduous 0.95 km²","km 22–23<br>Deciduous 2.32 km²","km 23–24<br>Deciduous 2.81 km²","km 23.9932–24.9932<br>Deciduous 2.63 km²"],"hoverinfo":["text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text"],"textposition":["none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none"],"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_ly</span>(g, <span class="at">x =</span> <span class="sc">~</span>u_mid_km) <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_ribbons</span>(<span class="at">ymin =</span> <span class="sc">~</span><span class="dv">100</span> <span class="sc">*</span> lo, <span class="at">ymax =</span> <span class="sc">~</span><span class="dv">100</span> <span class="sc">*</span> hi, <span class="at">name =</span> <span class="st">"95% interval"</span>,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">fillcolor =</span> <span class="st">"rgba(27,120,55,0.2)"</span>, <span class="at">line =</span> <span class="fu">list</span>(<span class="at">width =</span> <span class="dv">0</span>), <span class="at">hoverinfo =</span> <span class="st">"none"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_lines</span>(<span class="at">y =</span> <span class="sc">~</span><span class="dv">100</span> <span class="sc">*</span> evg_share, <span class="at">name =</span> <span class="st">"Evergreen share (imagery)"</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">line =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">"#1b7837"</span>, <span class="at">width =</span> <span class="dv">2</span>),</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">text =</span> <span class="sc">~</span><span class="fu">sprintf</span>(<span class="st">"km %s&lt;br&gt;%s (%s–%s), %d points"</span>, km, <span class="fu">pct</span>(evg_share), <span class="fu">pct</span>(lo),</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">pct</span>(hi), n), <span class="at">hoverinfo =</span> <span class="st">"text"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_lines</span>(<span class="at">y =</span> <span class="sc">~</span><span class="dv">100</span> <span class="sc">*</span> proxy, <span class="at">name =</span> <span class="st">"NLCD labels (42 = 100%, 43 = 50%)"</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">line =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">"grey40"</span>, <span class="at">dash =</span> <span class="st">"dot"</span>),</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">text =</span> <span class="sc">~</span><span class="fu">sprintf</span>(<span class="st">"km %s&lt;br&gt;NLCD-label proxy %s"</span>, km, <span class="fu">pct</span>(proxy)), <span class="at">hoverinfo =</span> <span class="st">"text"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layout</span>(<span class="at">xaxis =</span> <span class="fu">list</span>(<span class="at">title =</span> <span class="st">"Distance from Richmond (km)"</span>),</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">yaxis =</span> <span class="fu">list</span>(<span class="at">title =</span> <span class="st">"Evergreen share of forest (%)"</span>, <span class="at">rangemode =</span> <span class="st">"tozero"</span>),</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">hovermode =</span> <span class="st">"x unified"</span>, <span class="at">legend =</span> <span class="fu">list</span>(<span class="at">orientation =</span> <span class="st">"h"</span>, <span class="at">y =</span> <span class="fl">1.1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-0d3a3e7caeed035cd950" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-0d3a3e7caeed035cd950">{"x":{"visdat":{"2e584f900b6a":["function () ","plotlyVisDat"]},"cur_data":"2e584f900b6a","attrs":{"2e584f900b6a":{"x":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"ymin":{},"ymax":{},"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","name":"95% interval","fillcolor":"rgba(27,120,55,0.2)","line":{"width":0},"hoverinfo":"none","inherit":true},"2e584f900b6a.1":{"x":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"y":{},"type":"scatter","mode":"lines","name":"Evergreen share (imagery)","line":{"color":"#1b7837","width":2},"text":{},"hoverinfo":"text","inherit":true},"2e584f900b6a.2":{"x":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"y":{},"type":"scatter","mode":"lines","name":"NLCD labels (42 = 100%, 43 = 50%)","line":{"color":"grey40","dash":"dot"},"text":{},"hoverinfo":"text","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"Distance from Richmond (km)"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Evergreen share of forest (%)","rangemode":"tozero"},"hovermode":"x unified","legend":{"orientation":"h","y":1.1000000000000001},"showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"fillcolor":"rgba(27,120,55,0.2)","x":[4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5,13.5,14.5,15.5,16.5,17.5,18.5,19.5,20.5,21.5,22.5,23.5,24.493197469085899,24.493197469085899,24.493197469085899,23.5,22.5,21.5,20.5,19.5,18.5,17.5,16.5,15.5,14.5,13.5,12.5,11.5,10.5,9.5,8.5,7.5,6.5,5.5,4.5],"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","name":"95% interval","line":{"color":"rgba(31,119,180,1)","width":0},"hoverinfo":["none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none","none"],"y":[11.207176255979299,1.7523658089983001,5.3149024115537697,5.3985890501707896,14.948785445620299,33.595792510446095,53.034180100905104,23.866018060399298,14.9930362934288,17.4610820867115,24.4396280456528,20.573506094168,16.2009984619616,18.3435175173225,10.9890019630484,22.4722090209819,30.996723930589898,60.139381843060001,36.305788685347402,11.468714388658901,21.2315656656763,21.2315656656763,25.2537225914079,15.504161191877699,41.047521569102102,64.333172436339609,36.7701809388873,27.564005966386201,14.967604605236801,24.5807987325651,21.775527122829999,27.277755849895001,31.968576788562096,30.4408284301023,23.244675256684499,31.801696165535098,62.7685936566007,52.907567774909005,29.542339473740299,16.7678195119782,14.9593408843271,9.0611301065172505,20.148035696243298],"marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5,13.5,14.5,15.5,16.5,17.5,18.5,19.5,20.5,21.5,22.5,23.5,24.493197469085899],"y":[15.713045432907998,5.7552432292655,10.542186783687001,10.629333613911299,22.3354373527668,43.368871206447402,57.807792397408399,27.338376590428197,19.049465109584702,23.8039557931539,27.7641841339872,23.844090143259301,19.004859384696299,21.367828028593301,12.742492971185801,25.001088213543699,34.037417316635299,62.277647278865402,38.6468593095993,13.476554214251902,23.380469975310699],"type":"scatter","mode":"lines","name":"Evergreen share (imagery)","line":{"color":"#1b7837","width":2},"text":["km 4–5<br>16% (11%–20%), 413 points","km 5–6<br>6% (2%–9%), 362 points","km 6–7<br>11% (5%–15%), 333 points","km 7–8<br>11% (5%–17%), 261 points","km 8–9<br>22% (15%–30%), 265 points","km 9–10<br>43% (34%–53%), 149 points","km 10–11<br>58% (53%–63%), 731 points","km 11–12<br>27% (24%–32%), 1381 points","km 12–13<br>19% (15%–23%), 707 points","km 13–14<br>24% (17%–30%), 269 points","km 14–15<br>28% (24%–32%), 1087 points","km 15–16<br>24% (21%–27%), 1418 points","km 16–17<br>19% (16%–22%), 1287 points","km 17–18<br>21% (18%–25%), 1550 points","km 18–19<br>13% (11%–15%), 2386 points","km 19–20<br>25% (22%–28%), 2823 points","km 20–21<br>34% (31%–37%), 3298 points","km 21–22<br>62% (60%–64%), 3931 points","km 22–23<br>39% (36%–41%), 6041 points","km 23–24<br>13% (11%–16%), 5206 points","km 23.9932–24.9932<br>23% (21%–25%), 5474 points"],"hoverinfo":["text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text"],"marker":{"color":"rgba(255,127,14,1)","line":{"color":"rgba(255,127,14,1)"}},"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5,13.5,14.5,15.5,16.5,17.5,18.5,19.5,20.5,21.5,22.5,23.5,24.493197469085899],"y":[15.07595322615472,21.346981428792038,30.593799956076715,10.523225651610879,8.4507857706898761,64.785978003141736,46.581626759785273,35.085132192897831,7.0859931441646067,7.4593752241844742,26.770668606564868,29.473412122077118,23.420014393449158,28.317432315372336,17.855283046672909,29.816171398840929,38.082907509817943,62.820023560051567,45.45191079611935,17.20832899297579,20.898638032720974],"type":"scatter","mode":"lines","name":"NLCD labels (42 = 100%, 43 = 50%)","line":{"color":"grey40","dash":"dot"},"text":["km 4–5<br>NLCD-label proxy 15%","km 5–6<br>NLCD-label proxy 21%","km 6–7<br>NLCD-label proxy 31%","km 7–8<br>NLCD-label proxy 11%","km 8–9<br>NLCD-label proxy 8%","km 9–10<br>NLCD-label proxy 65%","km 10–11<br>NLCD-label proxy 47%","km 11–12<br>NLCD-label proxy 35%","km 12–13<br>NLCD-label proxy 7%","km 13–14<br>NLCD-label proxy 7%","km 14–15<br>NLCD-label proxy 27%","km 15–16<br>NLCD-label proxy 29%","km 16–17<br>NLCD-label proxy 23%","km 17–18<br>NLCD-label proxy 28%","km 18–19<br>NLCD-label proxy 18%","km 19–20<br>NLCD-label proxy 30%","km 20–21<br>NLCD-label proxy 38%","km 21–22<br>NLCD-label proxy 63%","km 22–23<br>NLCD-label proxy 45%","km 23–24<br>NLCD-label proxy 17%","km 23.9932–24.9932<br>NLCD-label proxy 21%"],"hoverinfo":["text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text"],"marker":{"color":"rgba(44,160,44,1)","line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>Windows with no NLCD forest (km 0–4, downtown and the James River) have no estimate. Evergreen share is highest at km 21–22 (62%) and km 10–11 (58%); pine stands are the likely cause, but this has not been checked on the ground. Elsewhere south of km 14 the forest is 13%–39% evergreen. The windows nearest the city (km 4–9) have little forest, and it is mostly deciduous (6%–22% evergreen). The imagery estimate follows the NLCD-label proxy in shape, but the proxy treats every mixed-forest cell as half evergreen and every deciduous cell as none.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>g <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(<span class="at">Window =</span> window, km, <span class="at">Points =</span> n,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>            <span class="st">`</span><span class="at">Forest (km²)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">round</span>(forest_km2, <span class="dv">2</span>),</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>            <span class="st">`</span><span class="at">Evergreen</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sprintf</span>(<span class="st">"%s (%s–%s)"</span>, <span class="fu">pct</span>(evg_share), <span class="fu">pct</span>(lo), <span class="fu">pct</span>(hi)),</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>            <span class="st">`</span><span class="at">Evergreen (km²)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">round</span>(evg_km2, <span class="dv">2</span>), <span class="st">`</span><span class="at">Deciduous (km²)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">round</span>(dec_km2, <span class="dv">2</span>),</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">`</span><span class="at">NLCD-label proxy</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">pct</span>(proxy)) <span class="sc">|&gt;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 15%">
+<col style="width: 6%">
+<col style="width: 12%">
+<col style="width: 13%">
+<col style="width: 15%">
+<col style="width: 15%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Window</th>
+<th style="text-align: left;">km</th>
+<th style="text-align: right;">Points</th>
+<th style="text-align: right;">Forest (km²)</th>
+<th style="text-align: left;">Evergreen</th>
+<th style="text-align: right;">Evergreen (km²)</th>
+<th style="text-align: right;">Deciduous (km²)</th>
+<th style="text-align: left;">NLCD-label proxy</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">4–5</td>
+<td style="text-align: right;">413</td>
+<td style="text-align: right;">0.26</td>
+<td style="text-align: left;">16% (11%–20%)</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.22</td>
+<td style="text-align: left;">15%</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">5–6</td>
+<td style="text-align: right;">362</td>
+<td style="text-align: right;">0.22</td>
+<td style="text-align: left;">6% (2%–9%)</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">0.21</td>
+<td style="text-align: left;">21%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">7</td>
+<td style="text-align: left;">6–7</td>
+<td style="text-align: right;">333</td>
+<td style="text-align: right;">0.23</td>
+<td style="text-align: left;">11% (5%–15%)</td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: left;">31%</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">8</td>
+<td style="text-align: left;">7–8</td>
+<td style="text-align: right;">261</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: left;">11% (5%–17%)</td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: right;">0.14</td>
+<td style="text-align: left;">11%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">9</td>
+<td style="text-align: left;">8–9</td>
+<td style="text-align: right;">265</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: left;">22% (15%–30%)</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: left;">8%</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">10</td>
+<td style="text-align: left;">9–10</td>
+<td style="text-align: right;">149</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: left;">43% (34%–53%)</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: left;">65%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">11</td>
+<td style="text-align: left;">10–11</td>
+<td style="text-align: right;">731</td>
+<td style="text-align: right;">0.51</td>
+<td style="text-align: left;">58% (53%–63%)</td>
+<td style="text-align: right;">0.29</td>
+<td style="text-align: right;">0.21</td>
+<td style="text-align: left;">47%</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">11–12</td>
+<td style="text-align: right;">1381</td>
+<td style="text-align: right;">0.91</td>
+<td style="text-align: left;">27% (24%–32%)</td>
+<td style="text-align: right;">0.25</td>
+<td style="text-align: right;">0.66</td>
+<td style="text-align: left;">35%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">13</td>
+<td style="text-align: left;">12–13</td>
+<td style="text-align: right;">707</td>
+<td style="text-align: right;">0.45</td>
+<td style="text-align: left;">19% (15%–23%)</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">0.37</td>
+<td style="text-align: left;">7%</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">14</td>
+<td style="text-align: left;">13–14</td>
+<td style="text-align: right;">269</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: left;">24% (17%–30%)</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: left;">7%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">15</td>
+<td style="text-align: left;">14–15</td>
+<td style="text-align: right;">1087</td>
+<td style="text-align: right;">0.63</td>
+<td style="text-align: left;">28% (24%–32%)</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">0.45</td>
+<td style="text-align: left;">27%</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">16</td>
+<td style="text-align: left;">15–16</td>
+<td style="text-align: right;">1418</td>
+<td style="text-align: right;">0.92</td>
+<td style="text-align: left;">24% (21%–27%)</td>
+<td style="text-align: right;">0.22</td>
+<td style="text-align: right;">0.70</td>
+<td style="text-align: left;">29%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">17</td>
+<td style="text-align: left;">16–17</td>
+<td style="text-align: right;">1287</td>
+<td style="text-align: right;">0.84</td>
+<td style="text-align: left;">19% (16%–22%)</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: right;">0.68</td>
+<td style="text-align: left;">23%</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">18</td>
+<td style="text-align: left;">17–18</td>
+<td style="text-align: right;">1550</td>
+<td style="text-align: right;">0.98</td>
+<td style="text-align: left;">21% (18%–25%)</td>
+<td style="text-align: right;">0.21</td>
+<td style="text-align: right;">0.77</td>
+<td style="text-align: left;">28%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">19</td>
+<td style="text-align: left;">18–19</td>
+<td style="text-align: right;">2386</td>
+<td style="text-align: right;">1.50</td>
+<td style="text-align: left;">13% (11%–15%)</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">1.31</td>
+<td style="text-align: left;">18%</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">20</td>
+<td style="text-align: left;">19–20</td>
+<td style="text-align: right;">2823</td>
+<td style="text-align: right;">1.76</td>
+<td style="text-align: left;">25% (22%–28%)</td>
+<td style="text-align: right;">0.44</td>
+<td style="text-align: right;">1.32</td>
+<td style="text-align: left;">30%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">21</td>
+<td style="text-align: left;">20–21</td>
+<td style="text-align: right;">3298</td>
+<td style="text-align: right;">2.06</td>
+<td style="text-align: left;">34% (31%–37%)</td>
+<td style="text-align: right;">0.70</td>
+<td style="text-align: right;">1.36</td>
+<td style="text-align: left;">38%</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">22</td>
+<td style="text-align: left;">21–22</td>
+<td style="text-align: right;">3931</td>
+<td style="text-align: right;">2.51</td>
+<td style="text-align: left;">62% (60%–64%)</td>
+<td style="text-align: right;">1.57</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: left;">63%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">23</td>
+<td style="text-align: left;">22–23</td>
+<td style="text-align: right;">6041</td>
+<td style="text-align: right;">3.78</td>
+<td style="text-align: left;">39% (36%–41%)</td>
+<td style="text-align: right;">1.46</td>
+<td style="text-align: right;">2.32</td>
+<td style="text-align: left;">45%</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">23–24</td>
+<td style="text-align: right;">5206</td>
+<td style="text-align: right;">3.25</td>
+<td style="text-align: left;">13% (11%–16%)</td>
+<td style="text-align: right;">0.44</td>
+<td style="text-align: right;">2.81</td>
+<td style="text-align: left;">17%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">25</td>
+<td style="text-align: left;">23.9932–24.9932</td>
+<td style="text-align: right;">5474</td>
+<td style="text-align: right;">3.43</td>
+<td style="text-align: left;">23% (21%–25%)</td>
+<td style="text-align: right;">0.80</td>
+<td style="text-align: right;">2.63</td>
+<td style="text-align: left;">21%</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="notes" class="level2">
+<h2 class="anchored" data-anchor-id="notes">Notes</h2>
+<ul>
+<li><strong>Leaf-off means “visible evergreen”.</strong> In winter, evergreen understory (holly, cedar, mountain laurel, evergreen shrubs) shows through bare hardwood canopy and counts as evergreen. These shares are therefore the evergreen part of what is seen from above in winter, and can be higher than the evergreen share of the leaf-on canopy. For holly this is useful: understory evergreens are part of what holly lives among.</li>
+<li><strong>Fixed components.</strong> The method assumes deciduous and evergreen pixels have the same <code>ndvi_adj</code> distribution everywhere. Differences in flight date, sun angle, or species mix along the transect would shift the components and bias some windows. The class check above suggests this is not a large effect overall, but it is not tested window by window.</li>
+<li><strong>NLCD forest boundaries.</strong> Forest is defined by the 30 m NLCD map, so the sample includes some gaps, edges, and roads inside forest cells, and leaves out trees outside mapped forest (street trees, yards). Those count toward neither share.</li>
+<li><strong>Small samples near the city.</strong> Windows with little forest have few points and wide intervals.</li>
+<li><strong>Not species.</strong> “Evergreen” lumps pine, cedar, holly, and evergreen shrubs; separating them would need texture or crown shape, or a leaf-on image to compare against.</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -44,6 +44,7 @@ This site documents spatial analyses components of this project using the 2025 V
 | 02 | [Urban to forest gradient](analyses/02_gradient.qmd) | Annual NLCD land cover, impervious surface, and leaf-off NDVI in 1 km windows along the transect |
 | 03 | [Holly candidates](analyses/03_holly_classification.qmd) | Small, isolated evergreen crowns in leaf-off NDVI as candidate holly locations for ground truth |
 | 04 | [Focal trees](analyses/04_focal_trees.qmd) | 100 candidate trees (plus alternates) balanced across urbanization and landscape heterogeneity, at least 100 m apart |
+| 05 | [Forest composition](analyses/05_forest_composition.qmd) | Evergreen versus deciduous shares of NLCD forest, by class and along the transect, from leaf-off NDVI |
 
 
 

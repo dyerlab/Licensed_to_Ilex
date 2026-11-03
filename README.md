@@ -44,6 +44,12 @@ Site home: <https://dyerlab.github.io/Licensed_to_Ilex/>
    - [Map](https://dyerlab.github.io/Licensed_to_Ilex/analyses/04_focal_trees.html#map)
    - [Primary trees](https://dyerlab.github.io/Licensed_to_Ilex/analyses/04_focal_trees.html#primary-trees)
    - [Notes](https://dyerlab.github.io/Licensed_to_Ilex/analyses/04_focal_trees.html#notes)
+5. [Forest composition](https://dyerlab.github.io/Licensed_to_Ilex/analyses/05_forest_composition.html) (source: [`analyses/05_forest_composition.qmd`](analyses/05_forest_composition.qmd))
+   - [Purpose](https://dyerlab.github.io/Licensed_to_Ilex/analyses/05_forest_composition.html#purpose)
+   - [Method](https://dyerlab.github.io/Licensed_to_Ilex/analyses/05_forest_composition.html#method)
+   - [Check against NLCD](https://dyerlab.github.io/Licensed_to_Ilex/analyses/05_forest_composition.html#check-against-nlcd)
+   - [Along the gradient](https://dyerlab.github.io/Licensed_to_Ilex/analyses/05_forest_composition.html#along-the-gradient)
+   - [Notes](https://dyerlab.github.io/Licensed_to_Ilex/analyses/05_forest_composition.html#notes)
 
 <!-- When adding an analysis: add analyses/NN_name.qmd, list it in _quarto.yml and index.qmd,
      then add an entry here (section anchors are the lowercased, hyphenated headings). -->
@@ -77,7 +83,7 @@ run steps 1–2 with only the tile index and download tiles afterwards.
 
 ## Workflow
 
-Requirements: R (sf, terra, units, dplyr, tidyr, ggplot2, leaflet, plotly, exactextractr, httr, yaml, here, xml2) and Quarto.
+Requirements: R (sf, terra, units, dplyr, tidyr, ggplot2, leaflet, plotly, exactextractr, httr, yaml, here, xml2, mclust) and Quarto.
 QGIS with a MrSID-enabled GDAL driver is needed only to build the mosaic from the MrSID tiles
 (`imagery_source: "rgb"` in `config.yml`); the default uses the 4-band GeoTIFFs directly.
 
@@ -94,6 +100,7 @@ Rscript R/05b_ndvi_calibration.R  # NDVI shadow curve (before 06)  -> data/deriv
 Rscript R/06_holly_objects.R   # evergreen crowns + holly candidates -> data/derived/holly_candidates.csv
 Rscript R/07_ndvi_windows.R    # NDVI summaries per window           -> data/derived/ndvi_windows.csv
 Rscript R/08_focal_trees.R     # 100 focal trees + alternates        -> data/derived/focal_trees.csv
+Rscript R/09_forest_composition.R  # evergreen vs deciduous share of forest -> data/derived/forest_composition.csv
 quarto render                  # rebuild the website                 -> docs/
 ```
 

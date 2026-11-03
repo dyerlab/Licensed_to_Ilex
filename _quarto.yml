@@ -18,6 +18,7 @@ website:
           - analyses/02_gradient.qmd
           - analyses/03_holly_classification.qmd
           - analyses/04_focal_trees.qmd
+          - analyses/05_forest_composition.qmd
     right:
       - icon: github
         href: https://github.com/dyerlab/Licensed_to_Ilex

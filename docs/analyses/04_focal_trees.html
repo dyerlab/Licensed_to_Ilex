@@ -1,0 +1,2165 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-11-04">
+
+<title>Focal Trees – Licensed to Ilex</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link href="../site_libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
+<script src="../site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="../site_libs/leaflet-1.3.1/leaflet.css" rel="stylesheet">
+<script src="../site_libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="../site_libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet">
+<script src="../site_libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="../site_libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="../site_libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet">
+<script src="../site_libs/leaflet-binding-2.2.3/leaflet.js"></script>
+<script src="../site_libs/leaflet-providers-3.0.0/leaflet-providers.js"></script>
+<script src="../site_libs/leaflet-providers-plugin-2.2.3/leaflet-providers-plugin.js"></script>
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Licensed to Ilex</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-analyses" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Analyses</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-analyses">    
+        <li>
+    <a class="dropdown-item" href="../analyses/01_study_area.html">
+ <span class="dropdown-text">Study Area and Orthoimagery</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../analyses/02_gradient.html">
+ <span class="dropdown-text">Urban to Forest Gradient</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../analyses/03_holly_classification.html">
+ <span class="dropdown-text">Holly Candidates</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../analyses/04_focal_trees.html">
+ <span class="dropdown-text">Focal Trees</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../analyses/05_forest_composition.html">
+ <span class="dropdown-text">Forest Composition</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/dyerlab/Licensed_to_Ilex"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#purpose" id="toc-purpose" class="nav-link active" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#pool" id="toc-pool" class="nav-link" data-scroll-target="#pool">Pool</a></li>
+  <li><a href="#landscape-context" id="toc-landscape-context" class="nav-link" data-scroll-target="#landscape-context">Landscape context</a></li>
+  <li><a href="#selection" id="toc-selection" class="nav-link" data-scroll-target="#selection">Selection</a>
+  <ul class="collapse">
+  <li><a href="#coverage" id="toc-coverage" class="nav-link" data-scroll-target="#coverage">Coverage</a></li>
+  <li><a href="#spacing" id="toc-spacing" class="nav-link" data-scroll-target="#spacing">Spacing</a></li>
+  </ul></li>
+  <li><a href="#map" id="toc-map" class="nav-link" data-scroll-target="#map">Map</a></li>
+  <li><a href="#primary-trees" id="toc-primary-trees" class="nav-link" data-scroll-target="#primary-trees">Primary trees</a></li>
+  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes">Notes</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Focal Trees</h1>
+<p class="subtitle lead">100 candidate holly trees balanced across urbanization and landscape heterogeneity</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 4, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(leaflet)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">here</span>(<span class="st">"R"</span>, <span class="st">"functions.R"</span>))</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>derived <span class="ot">&lt;-</span> <span class="fu">here</span>(cfg<span class="sc">$</span>paths<span class="sc">$</span>derived)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>fc <span class="ot">&lt;-</span> cfg<span class="sc">$</span>focal</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>line    <span class="ot">&lt;-</span> <span class="fu">load_transect</span>()</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>aoi     <span class="ot">&lt;-</span> <span class="fu">load_aoi</span>()</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>focal   <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="fu">file.path</span>(derived, <span class="st">"focal_trees.gpkg"</span>), <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>bins    <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(derived, <span class="st">"focal_bins.csv"</span>))</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>loads   <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(derived, <span class="st">"landscape_pca.csv"</span>))</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>land    <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="fu">file.path</span>(derived, <span class="st">"landscape_30m.tif"</span>))</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>prim    <span class="ot">&lt;-</span> focal[focal<span class="sc">$</span>role <span class="sc">==</span> <span class="st">"primary"</span>, ]</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>bin_pal <span class="ot">&lt;-</span> <span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">"#1b7837"</span>, <span class="st">"#a6dba0"</span>, <span class="st">"#f7f7f7"</span>, <span class="st">"#c2a5cf"</span>, <span class="st">"#762a83"</span>))(fc<span class="sc">$</span>n_bins)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>bin_lab <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">"%d: %.0f–%.0f%%"</span>, bins<span class="sc">$</span>bin, bins<span class="sc">$</span>imperv_from, bins<span class="sc">$</span>imperv_to)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<section id="purpose" class="level2">
+<h2 class="anchored" data-anchor-id="purpose">Purpose</h2>
+<p>Field work needs a fixed set of focal trees: holly that will be mapped, sexed, and followed for seed set, herbivory, and pollinators. This page picks 100 of them from the holly candidates, plus ranked alternates, so that:</p>
+<ul>
+<li>they are <strong>spread evenly across the urbanization gradient</strong>, from forest to downtown;</li>
+<li>within each part of the gradient they <strong>span landscape heterogeneity</strong> (mixed versus uniform surroundings) and <strong>distance along the transect</strong>;</li>
+<li>no two listed trees are closer than <strong>100 m</strong>, to reduce the chance of sampling parent–offspring pairs or sibships from the same seed shadow.</li>
+</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Step</th>
+<th>Script</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>10. Landscape metrics, indices, selection</td>
+<td><code>R/08_focal_trees.R</code></td>
+<td><code>data/derived/landscape_30m.tif</code>, <code>focal_bins.csv</code>, <code>focal_trees.{gpkg,csv,gpx}</code></td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Candidates, not confirmed holly
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>These are crowns that the imagery flags as small, isolated evergreens. Some will be other species, especially on developed land (magnolia, cedar, boxwood, other ornamentals). Each bin therefore has 10 ranked alternates. If a primary is not holly, or cannot be accessed, use the next alternate in the <strong>same bin</strong>. All 200 listed trees respect the spacing rule, so any substitution keeps it.</p>
+</div>
+</div>
+</section>
+<section id="pool" class="level2">
+<h2 class="anchored" data-anchor-id="pool">Pool</h2>
+<p>The pool is every crown that passes the size (10–20 ft) and isolation (evergreen share ≤ 0.25) parts of the candidate rule, not cut by a tile edge. Unlike the <a href="../analyses/03_holly_classification.html">holly candidate list</a>, <strong>developed land is included</strong>: without it the urban end of the transect (km 0–4) has almost no candidates. Only open water is excluded. Pool size: 30,508 crowns.</p>
+</section>
+<section id="landscape-context" class="level2">
+<h2 class="anchored" data-anchor-id="landscape-context">Landscape context</h2>
+<p>Each crown is described by its surroundings within <strong>500 m</strong>, computed on the native 30 m Annual NLCD grid (2025):</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Metric</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>imperv_mean</code></td>
+<td>mean fractional impervious surface (%)</td>
+</tr>
+<tr class="even">
+<td><code>imperv_sd</code></td>
+<td>standard deviation of impervious surface among cells: patchiness of development</td>
+</tr>
+<tr class="odd">
+<td><code>forest_pct</code>, <code>developed_pct</code></td>
+<td>share of forest (41–43) and developed (21–24) cover</td>
+</tr>
+<tr class="even">
+<td><code>shdi</code></td>
+<td>Shannon diversity of grouped land cover (developed, developed open, forest, wetland, water, …)</td>
+</tr>
+<tr class="odd">
+<td><code>shei</code></td>
+<td>Shannon evenness: diversity relative to its maximum for the classes present (0 = one class, 1 = all equal)</td>
+</tr>
+<tr class="even">
+<td><code>edge_density</code></td>
+<td>metres of boundary between grouped cover types per hectare</td>
+</tr>
+</tbody>
+</table>
+<p>Two indices are used:</p>
+<ul>
+<li><strong>Urbanization index</strong> = <code>imperv_mean</code>. A PCA of all metrics was tried first, but its first axis saturated at the urban end: forest and developed shares reach 0% and 100% well before the urban core, so it could not separate suburbs from downtown. Impervious surface keeps rising all the way to the core.</li>
+<li><strong>Heterogeneity index</strong> = first principal component of shdi, shei, edge_density, imperv_sd across all 30 m cells in the study area (70% of their variance). Higher values mean more mixed, more evenly divided, more fragmented surroundings.</li>
+</ul>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>loads <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(<span class="at">Metric =</span> metric, <span class="at">Loading =</span> <span class="fu">round</span>(loading, <span class="dv">2</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Metric</th>
+<th style="text-align: right;">Loading</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">shdi</td>
+<td style="text-align: right;">0.55</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">shei</td>
+<td style="text-align: right;">0.57</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">edge_density</td>
+<td style="text-align: right;">0.56</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">imperv_sd</td>
+<td style="text-align: right;">0.25</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>aoi_lc <span class="ot">&lt;-</span> <span class="fu">vect</span>(<span class="fu">st_transform</span>(aoi, <span class="fu">crs</span>(land)))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="fu">mask</span>(<span class="fu">crop</span>(land[[<span class="fu">c</span>(<span class="st">"urban_index"</span>, <span class="st">"heterogeneity_index"</span>)]], aoi_lc), aoi_lc)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>pts <span class="ot">&lt;-</span> <span class="fu">vect</span>(<span class="fu">st_transform</span>(prim, <span class="fu">crs</span>(land)))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(idx[[<span class="st">"urban_index"</span>]], <span class="at">main =</span> <span class="st">"Urbanization index (impervious %, 500 m)"</span>, <span class="at">axes =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">50</span>, <span class="st">"Purple-Orange"</span>, <span class="at">rev =</span> <span class="cn">TRUE</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="dv">2</span>, <span class="dv">4</span>))</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pts, <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">pch =</span> <span class="dv">21</span>, <span class="at">col =</span> <span class="st">"black"</span>, <span class="at">bg =</span> <span class="st">"white"</span>, <span class="at">cex =</span> <span class="fl">1.1</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(idx[[<span class="st">"heterogeneity_index"</span>]], <span class="at">main =</span> <span class="st">"Heterogeneity index"</span>, <span class="at">axes =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">50</span>, <span class="st">"YlGnBu"</span>, <span class="at">rev =</span> <span class="cn">TRUE</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="dv">2</span>, <span class="dv">4</span>))</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pts, <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">pch =</span> <span class="dv">21</span>, <span class="at">col =</span> <span class="st">"black"</span>, <span class="at">bg =</span> <span class="st">"white"</span>, <span class="at">cex =</span> <span class="fl">1.1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="04_focal_trees_files/figure-html/index-maps-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Heterogeneity is <strong>hump-shaped</strong> along the gradient: it is low in continuous forest and in the downtown core, and highest at intermediate urbanization (about 10–25% impervious), where houses, lawns, roads, and forest patches are interleaved. The two indices therefore describe different things, and a design that balanced on land-cover fractions alone would sample the peri-urban mix without controlling for it.</p>
+</section>
+<section id="selection" class="level2">
+<h2 class="anchored" data-anchor-id="selection">Selection</h2>
+<p>The urbanization index is cut into 10 bins and each bin gets 10 primaries and 10 alternates. The bins are of equal width on the <strong>arcsine-square-root</strong> scale of the impervious fraction, the standard transform for proportions. Equal-width bins on raw impervious % put the whole forest end (0–10%) into one bin and most of the sample into the city; the transform gives the forest end and the urban core similar resolution.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>bins <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">count</span>(<span class="fu">st_drop_geometry</span>(prim), bin, <span class="at">name =</span> <span class="st">"primaries"</span>), <span class="at">by =</span> <span class="st">"bin"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(<span class="at">Bin =</span> bin, <span class="st">`</span><span class="at">Impervious (%)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sprintf</span>(<span class="st">"%.1f–%.1f"</span>, imperv_from, imperv_to),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>            <span class="st">`</span><span class="at">Pool crowns</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">format</span>(pool_crowns, <span class="at">big.mark =</span> <span class="st">","</span>), <span class="at">Primaries =</span> primaries) <span class="sc">|&gt;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">align =</span> <span class="st">"lrrr"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Bin</th>
+<th style="text-align: right;">Impervious (%)</th>
+<th style="text-align: right;">Pool crowns</th>
+<th style="text-align: right;">Primaries</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">0.0–1.1</td>
+<td style="text-align: right;">4,462</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2</td>
+<td style="text-align: right;">1.1–4.4</td>
+<td style="text-align: right;">3,679</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">3</td>
+<td style="text-align: right;">4.4–9.7</td>
+<td style="text-align: right;">2,762</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">4</td>
+<td style="text-align: right;">9.7–16.8</td>
+<td style="text-align: right;">5,450</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">5</td>
+<td style="text-align: right;">16.8–25.3</td>
+<td style="text-align: right;">4,545</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">6</td>
+<td style="text-align: right;">25.3–35.0</td>
+<td style="text-align: right;">4,116</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">7</td>
+<td style="text-align: right;">35.0–45.3</td>
+<td style="text-align: right;">2,375</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">8</td>
+<td style="text-align: right;">45.3–55.9</td>
+<td style="text-align: right;">1,250</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">9</td>
+<td style="text-align: right;">55.9–66.1</td>
+<td style="text-align: right;">1,106</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">10</td>
+<td style="text-align: right;">66.1–75.7</td>
+<td style="text-align: right;">763</td>
+<td style="text-align: right;">10</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Within each bin, trees are added one at a time. Each new tree is the eligible crown farthest (in standardized heterogeneity index and distance along the transect) from the trees already chosen in that bin, so a bin’s trees span both. A crown is eligible only if it is at least 100 m from every tree already listed in any bin. Bins with the fewest crowns are filled first so that the spacing rule does not crowd them out. The first tree in each bin is random (seed 2025 in <code>config.yml</code>), so a rerun gives the same list.</p>
+<section id="coverage" class="level3">
+<h3 class="anchored" data-anchor-id="coverage">Coverage</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>pool_s <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">mask</span>(land[[<span class="fu">c</span>(<span class="st">"urban_index"</span>, <span class="st">"heterogeneity_index"</span>)]], aoi_lc), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>pool_s <span class="ot">&lt;-</span> pool_s[<span class="fu">sample</span>(<span class="fu">nrow</span>(pool_s), <span class="fu">min</span>(<span class="dv">20000</span>, <span class="fu">nrow</span>(pool_s))), ]</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> pool_s, <span class="fu">aes</span>(urban_index, heterogeneity_index), <span class="at">colour =</span> <span class="st">"grey80"</span>, <span class="at">size =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> bins<span class="sc">$</span>imperv_from[<span class="sc">-</span><span class="dv">1</span>], <span class="at">colour =</span> <span class="st">"grey60"</span>, <span class="at">linetype =</span> <span class="st">"dotted"</span>) <span class="sc">+</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> <span class="fu">st_drop_geometry</span>(focal), <span class="fu">aes</span>(urban_index, heterogeneity_index, <span class="at">shape =</span> role,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                                                  <span class="at">fill =</span> <span class="fu">factor</span>(bin)), <span class="at">size =</span> <span class="fl">2.2</span>) <span class="sc">+</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> bin_pal, <span class="at">labels =</span> bin_lab, <span class="at">name =</span> <span class="st">"Bin (impervious)"</span>) <span class="sc">+</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_shape_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="at">primary =</span> <span class="dv">21</span>, <span class="at">alternate =</span> <span class="dv">24</span>), <span class="at">name =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">fill =</span> <span class="fu">guide_legend</span>(<span class="at">override.aes =</span> <span class="fu">list</span>(<span class="at">shape =</span> <span class="dv">21</span>))) <span class="sc">+</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Urbanization index (impervious %, 500 m)"</span>, <span class="at">y =</span> <span class="st">"Heterogeneity index"</span>,</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Grey: 30 m cells in the study area. Dotted lines: bin edges."</span>) <span class="sc">+</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="04_focal_trees_files/figure-html/coverage-1.png" class="img-fluid figure-img" width="864"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">st_drop_geometry</span>(prim), <span class="fu">aes</span>(u_km, urban_index, <span class="at">fill =</span> <span class="fu">factor</span>(bin))) <span class="sc">+</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">shape =</span> <span class="dv">21</span>, <span class="at">size =</span> <span class="fl">2.5</span>) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> bin_pal, <span class="at">labels =</span> bin_lab, <span class="at">name =</span> <span class="st">"Bin"</span>) <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Distance from Richmond (km)"</span>, <span class="at">y =</span> <span class="st">"Impervious %"</span>) <span class="sc">+</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>, <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="04_focal_trees_files/figure-html/along-1.png" class="img-fluid figure-img" width="864"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Primaries are spread along the whole transect, but not evenly by kilometre. The most urban bins (8–10) lie within the first ~14 km and the least urban bin entirely beyond km 22, while the intermediate bins are spread along most of the route, because suburban and peri-urban land recurs all along it (including the corridor of higher development near km 9–11). That is the intended trade-off of balancing on the gradient rather than on distance.</p>
+</section>
+<section id="spacing" class="level3">
+<h3 class="anchored" data-anchor-id="spacing">Spacing</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Centre-to-centre distances, as used by the spacing rule</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">st_distance</span>(<span class="fu">st_centroid</span>(<span class="fu">st_geometry</span>(focal)))</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">units</span>(d) <span class="ot">&lt;-</span> <span class="st">"m"</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">as.numeric</span>(d), <span class="fu">nrow</span>(focal))</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">diag</span>(d) <span class="ot">&lt;-</span> <span class="cn">Inf</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>nn <span class="ot">&lt;-</span> <span class="fu">apply</span>(d, <span class="dv">1</span>, min)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>nn_p <span class="ot">&lt;-</span> <span class="fu">apply</span>(d[focal<span class="sc">$</span>role <span class="sc">==</span> <span class="st">"primary"</span>, focal<span class="sc">$</span>role <span class="sc">==</span> <span class="st">"primary"</span>], <span class="dv">1</span>, min)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>The closest pair of listed trees is 101 m apart (crown centre to centre). Among primaries only, the median distance to the nearest other primary is 470 m (range 107–1381 m).</p>
+</section>
+</section>
+<section id="map" class="level2">
+<h2 class="anchored" data-anchor-id="map">Map</h2>
+<p>Primaries are circles and alternates are triangles (smaller), coloured by bin. Click a tree for its id and context.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ll <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(<span class="fu">st_centroid</span>(focal), <span class="dv">4326</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>ll<span class="sc">$</span>col <span class="ot">&lt;-</span> bin_pal[ll<span class="sc">$</span>bin]</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>ll<span class="sc">$</span>popup <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"&lt;b&gt;%s&lt;/b&gt; (%s, bin %d)&lt;br&gt;Crown %s, %.0f ft&lt;br&gt;Impervious %.1f%% | forest %.0f%%&lt;br&gt;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="st">   Heterogeneity %.2f | evenness %.2f | edge %.0f m/ha&lt;br&gt;%.1f km along transect&lt;br&gt;%.6f, %.6f"</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  ll<span class="sc">$</span>focal_id, ll<span class="sc">$</span>role, ll<span class="sc">$</span>bin, ll<span class="sc">$</span>obj_id, ll<span class="sc">$</span>diam_ft, ll<span class="sc">$</span>imperv_mean, ll<span class="sc">$</span>forest_pct,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  ll<span class="sc">$</span>heterogeneity_index, ll<span class="sc">$</span>shei, ll<span class="sc">$</span>edge_density, ll<span class="sc">$</span>u_km, ll<span class="sc">$</span>lat, ll<span class="sc">$</span>lon)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>pal <span class="ot">&lt;-</span> <span class="fu">colorFactor</span>(bin_pal, <span class="at">levels =</span> <span class="fu">seq_len</span>(fc<span class="sc">$</span>n_bins))</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="fu">leaflet</span>() <span class="sc">|&gt;</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addProviderTiles</span>(providers<span class="sc">$</span>Esri.WorldImagery, <span class="at">group =</span> <span class="st">"Imagery"</span>,</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>                   <span class="at">options =</span> <span class="fu">providerTileOptions</span>(<span class="at">maxNativeZoom =</span> <span class="dv">19</span>, <span class="at">maxZoom =</span> <span class="dv">21</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addProviderTiles</span>(providers<span class="sc">$</span>Esri.WorldGrayCanvas, <span class="at">group =</span> <span class="st">"Light"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addPolygons</span>(<span class="at">data =</span> <span class="fu">st_transform</span>(aoi, <span class="dv">4326</span>), <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">weight =</span> <span class="dv">1</span>, <span class="at">fill =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addPolylines</span>(<span class="at">data =</span> <span class="fu">st_transform</span>(line, <span class="dv">4326</span>), <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">dashArray =</span> <span class="st">"6"</span>, <span class="at">weight =</span> <span class="dv">2</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addCircleMarkers</span>(<span class="at">data =</span> ll[ll<span class="sc">$</span>role <span class="sc">==</span> <span class="st">"alternate"</span>, ], <span class="at">radius =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="sc">~</span>col, <span class="at">weight =</span> <span class="dv">1</span>,</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>                   <span class="at">fillOpacity =</span> <span class="fl">0.6</span>, <span class="at">popup =</span> <span class="sc">~</span>popup, <span class="at">group =</span> <span class="st">"Alternates"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addCircleMarkers</span>(<span class="at">data =</span> ll[ll<span class="sc">$</span>role <span class="sc">==</span> <span class="st">"primary"</span>, ], <span class="at">radius =</span> <span class="dv">6</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">weight =</span> <span class="dv">1</span>,</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>                   <span class="at">fillColor =</span> <span class="sc">~</span>col, <span class="at">fillOpacity =</span> <span class="fl">0.9</span>, <span class="at">popup =</span> <span class="sc">~</span>popup, <span class="at">group =</span> <span class="st">"Primaries"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addLegend</span>(<span class="at">colors =</span> bin_pal, <span class="at">labels =</span> bin_lab, <span class="at">title =</span> <span class="st">"Bin (impervious)"</span>, <span class="at">opacity =</span> <span class="fl">0.9</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addLayersControl</span>(<span class="at">baseGroups =</span> <span class="fu">c</span>(<span class="st">"Imagery"</span>, <span class="st">"Light"</span>), <span class="at">overlayGroups =</span> <span class="fu">c</span>(<span class="st">"Primaries"</span>, <span class="st">"Alternates"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hideGroup</span>(<span class="st">"Alternates"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-9f019d49f16b26c17298" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-9f019d49f16b26c17298">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["Esri.WorldImagery",null,"Imagery",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"maxNativeZoom":19,"maxZoom":21}]},{"method":"addProviderTiles","args":["Esri.WorldGrayCanvas",null,"Light",{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addPolygons","args":[[[[{"lng":[-77.54964291373017,-77.55008310794251,-77.55058010519791,-77.55113254176071,-77.55173890213347,-77.552397523225,-77.55310659892085,-77.55386418504345,-77.55466820468784,-77.55551645391914,-77.55640660781502,-77.55733622683746,-77.55830276351601,-77.55930356942397,-77.56033590242924,-77.56139693419904,-77.56248375793889,-77.56359339634446,-77.56472280974441,-77.5658689044127,-77.56702854102717,-77.56819854325192,-77.56937570641982,-77.57055680629196,-77.57173860787005,-77.57291787423796,-77.57409137540849,-77.57525589715145,-77.57640824977879,-77.57754527686356,-77.57866386386847,-77.57976094666095,-77.58083351989174,-77.58187864521385,-77.58289345931998,-77.58387518177628,-77.5848211226313,-77.58572868977923,-77.5865953960576,-77.58741886605981,-77.58819684264404,-77.58892719312061,-77.58960791510101,-77.59023714199215,-77.59081314812127,-77.59133435347677,-77.59179932805225,-77.59220679578165,-77.59255563805436,-77.59284489680064,-77.59307377713859,-77.59324164957525,-77.59334805175557,-77.59339268975401,-77.59337543890533,-77.59329634417142,-77.59315562004379,-77.59295364998066,-77.5926909853808,-77.59236834409604,-77.59198660848674,-77.49365788021352,-77.49321571300285,-77.49271656555398,-77.49216180448705,-77.4915529490501,-77.49089166696913,-77.49017976988918,-77.48941920841847,-77.48861206678902,-77.48776055714848,-77.48686701349871,-77.48593388529768,-77.48496373074211,-77.48395920974966,-77.4829230766595,-77.48185817267181,-77.48076741804674,-77.47965380408438,-77.47852038490828,-77.47737026907453,-77.47620661103036,-77.47503260244547,-77.47385146344003,-77.47266643373403,-77.47148076374224,-77.47029770563941,-77.46912050442074,-77.46795238898217,-77.4667965632453,-77.46565619735161,-77.46453441895018,-77.46343430460333,-77.46235887133371,-77.46131106833639,-77.46029376887876,-77.45930976241077,-77.45836174690717,-77.45745232146285,-77.45658397916179,-77.45575910023922,-77.45497994555571,-77.4542486504011,-77.4535672186454,-77.45293751725244,-77.4523612711713,-77.45184005861967,-77.4513753067714,-77.45096828786066,-77.45062011571237,-77.45033174270904,-77.45010395720139,-77.44993738137032,-77.44983246954503,-77.44978950698254,-77.44980860911085,-77.44988972123819,-77.45003261872847,-77.45023690764226,-77.45050202584153,-77.45082724455436,-77.45121167039554,-77.54964291373017],"lat":[37.36749911859064,37.36662347808588,37.36576742321952,37.36493329968071,37.36412339298845,37.36333992223527,37.36258503401376,37.36186079654217,37.36116919400514,37.36051212112513,37.35989137797899,37.3593086650742,37.35876557869784,37.35826360655081,37.35780412367985,37.35738838871745,37.35701754044065,37.35669259465769,37.35641444143084,37.35618384264339,37.35600142991709,37.35586770288552,37.3557830278285,37.35574763667098,37.35576162634906,37.35582495854513,37.35593745979257,37.35609882194988,37.35630860304281,37.35656622847257,37.35687099258626,37.35722206060591,37.35761847091027,37.35805913766367,37.35854285378473,37.35906829424632,37.35963401969889,37.36023848040599,37.36088002048276,37.36155688242446,37.36226721191375,37.36300906289328,37.36378040288966,37.36457911857482,37.36540302154879,37.36624985432905,37.36711729652959,37.36800297121309,37.36890445139852,37.36981926670696,37.37074491012703,37.37167884488171,37.37261851137769,37.37356133421813,37.37450472925994,37.37544611069595,37.37638289814269,37.37731252371442,37.37823243906389,37.37914012237051,37.3800330852569,37.59109941517469,37.59197480550801,37.59283057974811,37.59366439157996,37.59447395482817,37.59525704973153,37.59601152903605,37.5967353238897,37.5974264495226,37.59808301069691,37.59870320691162,37.59928533734754,37.59982780553906,37.60032912375968,37.60078791710912,37.60120292729088,37.60157301606967,37.60189716839911,37.60217449521105,37.60240423585904,37.6025857602087,37.60271857036974,37.60280230206424,37.60283672562808,37.60282174664208,37.60275740619162,37.60264388075358,37.6024814817114,37.60227065449911,37.60201197737716,37.60170615984295,37.6013540406809,37.60095658565739,37.60051488486653,37.60003014973485,37.59950370969235,37.5989370085201,37.59833160038344,37.59768914556253,37.5970114058919,37.59630023992136,37.59555759781184,37.59478551598016,37.59398611150777,37.59316157632848,37.59231417121143,37.5914462195563,37.59056010101671,37.58965824497089,37.58874312385625,37.58781724638712,37.58688315067372,37.58594339726174,37.58500056211107,37.58405722953374,37.58311598510959,37.58217940859981,37.58125006687735,37.58033050689355,37.57942324870078,37.57853077854929,37.36749911859064]}]]],null,null,{"interactive":true,"className":"","stroke":true,"color":"white","weight":1,"opacity":0.5,"fill":false,"fillColor":"white","fillOpacity":0.2,"smoothFactor":1,"noClip":false},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addPolylines","args":[[[[{"lng":[-77.47243300000149,-77.57081300000151],"lat":[37.58481700000311,37.37376800000308]}]]],null,null,{"interactive":true,"className":"","stroke":true,"color":"white","weight":2,"opacity":0.5,"fill":false,"fillColor":"white","fillOpacity":0.2,"dashArray":"6","smoothFactor":1,"noClip":false},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addCircleMarkers","args":[[37.39459561380863,37.38594849942244,37.3937533114641,37.38101458247809,37.38356148097259,37.38315631436213,37.38118245827972,37.38079908476808,37.3639290872333,37.36245529532206,37.43461131570833,37.42861466505676,37.42862173101031,37.4216381926798,37.39918539158346,37.3964599485866,37.39103370148571,37.36674542333643,37.36276650353878,37.35960628024977,37.59285100085796,37.55626531400482,37.55303236728287,37.53067060175636,37.44451722465527,37.43082519920389,37.4281341564468,37.4049033168446,37.39817253879816,37.36126589093341,37.59732182157663,37.56069590969069,37.55660173019913,37.51970493629753,37.49288595579524,37.47832769337413,37.46721174331613,37.45015520532928,37.43878581488519,37.41071487755723,37.59091538093262,37.53851238330203,37.54213506892901,37.51958311819087,37.5283855131485,37.48621724425665,37.47970009866885,37.46235033935955,37.43900020947233,37.40777198100485,37.60211790893511,37.59035345270669,37.57410418632151,37.56586080674143,37.56296690960389,37.53558630996265,37.53409445984487,37.47529057525809,37.46528446958296,37.45845789473944,37.60205584041029,37.59913257742597,37.58978722792832,37.56786159309804,37.55932545435289,37.5472997042389,37.52166120715685,37.49166783034124,37.48344888038492,37.46733666111481,37.58937695947174,37.58171957258689,37.57673990898155,37.57412456130864,37.54974216955416,37.54270603595326,37.50578213875183,37.50208323347036,37.49678068420167,37.46855106996242,37.58722069810645,37.58836794489752,37.57192836580614,37.57893960993778,37.55944601680691,37.55330148370668,37.50648641846021,37.50460096878462,37.498596336641,37.49794957743752,37.58573853914223,37.58405467410164,37.58567774664206,37.57585761486185,37.57447097192997,37.56726588958129,37.56418097935516,37.55063548683292,37.5468885505075,37.50396555433707],[-77.55196413426313,-77.54921282496444,-77.58045654433552,-77.56814178959841,-77.58495307910611,-77.58829247605048,-77.58378459147451,-77.58733884033434,-77.58592353699554,-77.58622270963622,-77.5364729291618,-77.56265902821679,-77.56586164938574,-77.56453001067037,-77.55167325290179,-77.55341243011725,-77.57912705183224,-77.55600640421824,-77.57223684784363,-77.57777870153947,-77.47431914391103,-77.50986450540925,-77.51008938654472,-77.49337820898948,-77.52856819314313,-77.55685397031242,-77.56053922850899,-77.54998650284226,-77.56378758559985,-77.55456887115024,-77.47855328924686,-77.50727392380267,-77.50393644868851,-77.52489407494012,-77.52757321326716,-77.54452016246725,-77.54264470133388,-77.53551810950285,-77.56363041636892,-77.55421946068022,-77.47600574330403,-77.49120319467957,-77.5161516588486,-77.47961950144213,-77.51492481518339,-77.51100044628602,-77.49770910774697,-77.52723007061932,-77.55779763153367,-77.56107253827696,-77.47806900965499,-77.47710243166284,-77.49806896106072,-77.48968066673713,-77.50198827644898,-77.47323128610515,-77.5200224391579,-77.51319005520804,-77.53502390030215,-77.54563425353341,-77.46787069232469,-77.46647178857494,-77.47892837210053,-77.48654780942921,-77.49234759201913,-77.48406096132398,-77.49073028616284,-77.4922901809082,-77.4964832789092,-77.53375585629922,-77.48084593141195,-77.46626063169747,-77.45959911845966,-77.45669053335784,-77.48874886069154,-77.4684754297311,-77.52619236947127,-77.5344649745268,-77.5277009961715,-77.52616986294622,-77.47927697737767,-77.49414354219944,-77.4562082700233,-77.49547119961581,-77.48777384520038,-77.48334907197832,-77.5001412317657,-77.49470931758134,-77.53671524940526,-77.53475775471976,-77.48205635461028,-77.47697586132452,-77.49009846174059,-77.47278790378409,-77.47980715903576,-77.46389221061304,-77.47440958719027,-77.47652971383903,-77.46601890099005,-77.50049959200574],3,null,"Alternates",{"interactive":true,"className":"","stroke":true,"color":["#1B7837","#1B7837","#1B7837","#1B7837","#1B7837","#1B7837","#1B7837","#1B7837","#1B7837","#1B7837","#58A365","#58A365","#58A365","#58A365","#58A365","#58A365","#58A365","#58A365","#58A365","#58A365","#96CF94","#96CF94","#96CF94","#96CF94","#96CF94","#96CF94","#96CF94","#96CF94","#96CF94","#96CF94","#C1E4BC","#C1E4BC","#C1E4BC","#C1E4BC","#C1E4BC","#C1E4BC","#C1E4BC","#C1E4BC","#C1E4BC","#C1E4BC","#E4F0E3","#E4F0E3","#E4F0E3","#E4F0E3","#E4F0E3","#E4F0E3","#E4F0E3","#E4F0E3","#E4F0E3","#E4F0E3","#EBE4EE","#EBE4EE","#EBE4EE","#EBE4EE","#EBE4EE","#EBE4EE","#EBE4EE","#EBE4EE","#EBE4EE","#EBE4EE","#D3C0DC","#D3C0DC","#D3C0DC","#D3C0DC","#D3C0DC","#D3C0DC","#D3C0DC","#D3C0DC","#D3C0DC","#D3C0DC","#B997C6","#B997C6","#B997C6","#B997C6","#B997C6","#B997C6","#B997C6","#B997C6","#B997C6","#B997C6","#9760A4","#9760A4","#9760A4","#9760A4","#9760A4","#9760A4","#9760A4","#9760A4","#9760A4","#9760A4","#762A83","#762A83","#762A83","#762A83","#762A83","#762A83","#762A83","#762A83","#762A83","#762A83"],"weight":1,"opacity":0.5,"fill":true,"fillColor":["#1B7837","#1B7837","#1B7837","#1B7837","#1B7837","#1B7837","#1B7837","#1B7837","#1B7837","#1B7837","#58A365","#58A365","#58A365","#58A365","#58A365","#58A365","#58A365","#58A365","#58A365","#58A365","#96CF94","#96CF94","#96CF94","#96CF94","#96CF94","#96CF94","#96CF94","#96CF94","#96CF94","#96CF94","#C1E4BC","#C1E4BC","#C1E4BC","#C1E4BC","#C1E4BC","#C1E4BC","#C1E4BC","#C1E4BC","#C1E4BC","#C1E4BC","#E4F0E3","#E4F0E3","#E4F0E3","#E4F0E3","#E4F0E3","#E4F0E3","#E4F0E3","#E4F0E3","#E4F0E3","#E4F0E3","#EBE4EE","#EBE4EE","#EBE4EE","#EBE4EE","#EBE4EE","#EBE4EE","#EBE4EE","#EBE4EE","#EBE4EE","#EBE4EE","#D3C0DC","#D3C0DC","#D3C0DC","#D3C0DC","#D3C0DC","#D3C0DC","#D3C0DC","#D3C0DC","#D3C0DC","#D3C0DC","#B997C6","#B997C6","#B997C6","#B997C6","#B997C6","#B997C6","#B997C6","#B997C6","#B997C6","#B997C6","#9760A4","#9760A4","#9760A4","#9760A4","#9760A4","#9760A4","#9760A4","#9760A4","#9760A4","#9760A4","#762A83","#762A83","#762A83","#762A83","#762A83","#762A83","#762A83","#762A83","#762A83","#762A83"],"fillOpacity":0.6},null,null,["<b>F101<\/b> (alternate, bin 1)<br>Crown DO_S13_7656_30_26791, 15 ft<br>Impervious 0.6% | forest 99%<br>\n   Heterogeneity -3.41 | evenness 0.07 | edge 6 m/ha<br>22.2 km along transect<br>37.394596, -77.551964","<b>F102<\/b> (alternate, bin 1)<br>Crown DO_S13_7656_30_75005, 11 ft<br>Impervious 0.0% | forest 80%<br>\n   Heterogeneity -1.77 | evenness 0.50 | edge 33 m/ha<br>23.1 km along transect<br>37.385948, -77.549213","<b>F103<\/b> (alternate, bin 1)<br>Crown DO_S13_7656_20_17873, 12 ft<br>Impervious 1.0% | forest 64%<br>\n   Heterogeneity -0.26 | evenness 0.52 | edge 110 m/ha<br>23.2 km along transect<br>37.393753, -77.580457","<b>F104<\/b> (alternate, bin 1)<br>Crown DO_S13_7656_10_11356, 11 ft<br>Impervious 0.0% | forest 99%<br>\n   Heterogeneity -3.70 | evenness 0.05 | edge 5 m/ha<br>24.2 km along transect<br>37.381015, -77.568142","<b>F105<\/b> (alternate, bin 1)<br>Crown DO_S13_7646_40_3288, 14 ft<br>Impervious 0.0% | forest 83%<br>\n   Heterogeneity -1.53 | evenness 0.40 | edge 67 m/ha<br>24.4 km along transect<br>37.383561, -77.584953","<b>F106<\/b> (alternate, bin 1)<br>Crown DO_S13_7646_40_4718, 11 ft<br>Impervious 0.0% | forest 78%<br>\n   Heterogeneity -1.15 | evenness 0.50 | edge 78 m/ha<br>24.5 km along transect<br>37.383156, -77.588292","<b>F107<\/b> (alternate, bin 1)<br>Crown DO_S13_7646_40_10035, 14 ft<br>Impervious 0.0% | forest 92%<br>\n   Heterogeneity -2.59 | evenness 0.26 | edge 29 m/ha<br>24.6 km along transect<br>37.381182, -77.583785","<b>F108<\/b> (alternate, bin 1)<br>Crown DO_S13_7646_40_11604, 15 ft<br>Impervious 0.0% | forest 85%<br>\n   Heterogeneity -1.92 | evenness 0.37 | edge 53 m/ha<br>24.8 km along transect<br>37.380799, -77.587339","<b>F109<\/b> (alternate, bin 1)<br>Crown DO_S13_7645_30_41145, 14 ft<br>Impervious 0.2% | forest 98%<br>\n   Heterogeneity -3.40 | evenness 0.13 | edge 8 m/ha<br>26.5 km along transect<br>37.363929, -77.585924","<b>F110<\/b> (alternate, bin 1)<br>Crown DO_S13_7645_30_51157, 13 ft<br>Impervious 0.4% | forest 95%<br>\n   Heterogeneity -2.85 | evenness 0.21 | edge 26 m/ha<br>26.6 km along transect<br>37.362455, -77.586223","<b>F111<\/b> (alternate, bin 2)<br>Crown DO_S13_7668_10_15097, 11 ft<br>Impervious 4.3% | forest 62%<br>\n   Heterogeneity 0.50 | evenness 0.56 | edge 151 m/ha<br>17.6 km along transect<br>37.434611, -77.536473","<b>F112<\/b> (alternate, bin 2)<br>Crown DO_S13_7658_40_33084, 14 ft<br>Impervious 4.3% | forest 64%<br>\n   Heterogeneity 0.01 | evenness 0.55 | edge 125 m/ha<br>19.0 km along transect<br>37.428615, -77.562659","<b>F113<\/b> (alternate, bin 2)<br>Crown DO_S13_7658_10_31179, 11 ft<br>Impervious 1.2% | forest 80%<br>\n   Heterogeneity -1.01 | evenness 0.40 | edge 90 m/ha<br>19.1 km along transect<br>37.428622, -77.565862","<b>F114<\/b> (alternate, bin 2)<br>Crown DO_S13_7657_20_9039, 10 ft<br>Impervious 3.9% | forest 61%<br>\n   Heterogeneity 0.66 | evenness 0.70 | edge 125 m/ha<br>19.8 km along transect<br>37.421638, -77.564530","<b>F115<\/b> (alternate, bin 2)<br>Crown DO_S13_7657_40_58330, 12 ft<br>Impervious 2.8% | forest 86%<br>\n   Heterogeneity -1.26 | evenness 0.40 | edge 80 m/ha<br>21.8 km along transect<br>37.399185, -77.551673","<b>F116<\/b> (alternate, bin 2)<br>Crown DO_S13_7656_30_13125, 15 ft<br>Impervious 2.0% | forest 91%<br>\n   Heterogeneity -2.13 | evenness 0.27 | edge 45 m/ha<br>22.1 km along transect<br>37.396460, -77.553412","<b>F117<\/b> (alternate, bin 2)<br>Crown DO_S13_7656_20_28151, 11 ft<br>Impervious 1.1% | forest 68%<br>\n   Heterogeneity -0.08 | evenness 0.48 | edge 136 m/ha<br>23.4 km along transect<br>37.391034, -77.579127","<b>F118<\/b> (alternate, bin 2)<br>Crown DO_S13_7655_30_16356, 16 ft<br>Impervious 3.6% | forest 69%<br>\n   Heterogeneity -0.43 | evenness 0.53 | edge 116 m/ha<br>25.3 km along transect<br>37.366745, -77.556006","<b>F119<\/b> (alternate, bin 2)<br>Crown DO_S13_7655_20_43195, 13 ft<br>Impervious 2.6% | forest 80%<br>\n   Heterogeneity -0.92 | evenness 0.46 | edge 90 m/ha<br>26.2 km along transect<br>37.362767, -77.572237","<b>F120<\/b> (alternate, bin 2)<br>Crown DO_S13_7655_20_63972, 11 ft<br>Impervious 1.8% | forest 89%<br>\n   Heterogeneity -1.92 | evenness 0.28 | edge 54 m/ha<br>26.7 km along transect<br>37.359606, -77.577779","<b>F121<\/b> (alternate, bin 3)<br>Crown DO_S13_7784_10_23818, 12 ft<br>Impervious 6.9% | forest 47%<br>\n   Heterogeneity 0.91 | evenness 0.83 | edge 116 m/ha<br>-0.8 km along transect<br>37.592851, -77.474319","<b>F122<\/b> (alternate, bin 3)<br>Crown DO_S13_7762_30_14009, 11 ft<br>Impervious 9.2% | forest 32%<br>\n   Heterogeneity 0.99 | evenness 0.65 | edge 163 m/ha<br>4.1 km along transect<br>37.556265, -77.509865","<b>F123<\/b> (alternate, bin 3)<br>Crown DO_S13_7762_30_19970, 11 ft<br>Impervious 5.0% | forest 34%<br>\n   Heterogeneity 1.84 | evenness 0.83 | edge 163 m/ha<br>4.5 km along transect<br>37.553032, -77.510089","<b>F124<\/b> (alternate, bin 3)<br>Crown DO_S13_7771_20_10075, 12 ft<br>Impervious 8.9% | forest 4%<br>\n   Heterogeneity 1.36 | evenness 0.80 | edge 153 m/ha<br>6.3 km along transect<br>37.530671, -77.493378","<b>F125<\/b> (alternate, bin 3)<br>Crown DO_S13_7668_20_28111, 16 ft<br>Impervious 9.4% | forest 33%<br>\n   Heterogeneity 1.47 | evenness 0.69 | edge 195 m/ha<br>16.3 km along transect<br>37.444517, -77.528568","<b>F126<\/b> (alternate, bin 3)<br>Crown DO_S13_7658_40_25997, 14 ft<br>Impervious 7.4% | forest 45%<br>\n   Heterogeneity 0.97 | evenness 0.66 | edge 179 m/ha<br>18.6 km along transect<br>37.430825, -77.556854","<b>F127<\/b> (alternate, bin 3)<br>Crown DO_S13_7658_40_34607, 20 ft<br>Impervious 6.0% | forest 52%<br>\n   Heterogeneity 0.26 | evenness 0.60 | edge 140 m/ha<br>19.0 km along transect<br>37.428134, -77.560539","<b>F128<\/b> (alternate, bin 3)<br>Crown DO_S13_7657_40_28742, 15 ft<br>Impervious 8.5% | forest 53%<br>\n   Heterogeneity 1.53 | evenness 0.85 | edge 151 m/ha<br>21.1 km along transect<br>37.404903, -77.549987","<b>F129<\/b> (alternate, bin 3)<br>Crown DO_S13_7656_20_1243, 12 ft<br>Impervious 5.9% | forest 79%<br>\n   Heterogeneity -0.78 | evenness 0.40 | edge 71 m/ha<br>22.2 km along transect<br>37.398173, -77.563788","<b>F130<\/b> (alternate, bin 3)<br>Crown DO_S13_7655_30_45710, 14 ft<br>Impervious 5.3% | forest 50%<br>\n   Heterogeneity 0.72 | evenness 0.59 | edge 172 m/ha<br>25.8 km along transect<br>37.361266, -77.554569","<b>F131<\/b> (alternate, bin 4)<br>Crown DO_S13_7774_40_14520, 11 ft<br>Impervious 16.5% | forest 30%<br>\n   Heterogeneity 2.28 | evenness 0.97 | edge 164 m/ha<br>-1.1 km along transect<br>37.597322, -77.478553","<b>F132<\/b> (alternate, bin 4)<br>Crown DO_S13_7772_20_7322, 15 ft<br>Impervious 15.8% | forest 0%<br>\n   Heterogeneity 0.01 | evenness 0.58 | edge 158 m/ha<br>3.6 km along transect<br>37.560696, -77.507274","<b>F133<\/b> (alternate, bin 4)<br>Crown DO_S13_7772_20_21883, 11 ft<br>Impervious 14.4% | forest 7%<br>\n   Heterogeneity 0.75 | evenness 0.75 | edge 170 m/ha<br>3.9 km along transect<br>37.556602, -77.503936","<b>F134<\/b> (alternate, bin 4)<br>Crown DO_S13_7761_40_3944, 14 ft<br>Impervious 15.3% | forest 35%<br>\n   Heterogeneity 1.85 | evenness 0.94 | edge 138 m/ha<br>8.4 km along transect<br>37.519705, -77.524894","<b>F135<\/b> (alternate, bin 4)<br>Crown DO_S13_7760_40_4141, 16 ft<br>Impervious 15.8% | forest 52%<br>\n   Heterogeneity 1.59 | evenness 0.69 | edge 151 m/ha<br>11.3 km along transect<br>37.492886, -77.527573","<b>F136<\/b> (alternate, bin 4)<br>Crown DO_S13_7669_20_6942, 11 ft<br>Impervious 15.0% | forest 0%<br>\n   Heterogeneity 0.37 | evenness 0.81 | edge 158 m/ha<br>13.3 km along transect<br>37.478328, -77.544520","<b>F137<\/b> (alternate, bin 4)<br>Crown DO_S13_7669_20_33000, 10 ft<br>Impervious 14.5% | forest 25%<br>\n   Heterogeneity 2.49 | evenness 0.90 | edge 197 m/ha<br>14.4 km along transect<br>37.467212, -77.542645","<b>F138<\/b> (alternate, bin 4)<br>Crown DO_S13_7668_20_10085, 13 ft<br>Impervious 13.5% | forest 3%<br>\n   Heterogeneity 0.05 | evenness 0.51 | edge 173 m/ha<br>16.0 km along transect<br>37.450155, -77.535518","<b>F139<\/b> (alternate, bin 4)<br>Crown DO_S13_7658_10_2788, 13 ft<br>Impervious 11.6% | forest 28%<br>\n   Heterogeneity 1.82 | evenness 0.81 | edge 191 m/ha<br>18.0 km along transect<br>37.438786, -77.563630","<b>F140<\/b> (alternate, bin 4)<br>Crown DO_S13_7657_40_3990, 16 ft<br>Impervious 11.1% | forest 51%<br>\n   Heterogeneity 1.25 | evenness 0.68 | edge 151 m/ha<br>20.6 km along transect<br>37.410715, -77.554219","<b>F141<\/b> (alternate, bin 5)<br>Crown DO_S13_7774_40_31121, 10 ft<br>Impervious 20.2% | forest 41%<br>\n   Heterogeneity 1.60 | evenness 0.91 | edge 99 m/ha<br>-0.5 km along transect<br>37.590915, -77.476006","<b>F142<\/b> (alternate, bin 5)<br>Crown DO_S13_7772_40_17956, 11 ft<br>Impervious 18.3% | forest 8%<br>\n   Heterogeneity 2.32 | evenness 0.90 | edge 166 m/ha<br>5.4 km along transect<br>37.538512, -77.491203","<b>F143<\/b> (alternate, bin 5)<br>Crown DO_S13_7762_40_19687, 12 ft<br>Impervious 19.9% | forest 3%<br>\n   Heterogeneity 0.72 | evenness 0.63 | edge 164 m/ha<br>5.8 km along transect<br>37.542135, -77.516152","<b>F144<\/b> (alternate, bin 5)<br>Crown DO_S13_7771_40_4385, 13 ft<br>Impervious 23.8% | forest 0%<br>\n   Heterogeneity -0.17 | evenness 0.51 | edge 126 m/ha<br>7.0 km along transect<br>37.519583, -77.479620","<b>F145<\/b> (alternate, bin 5)<br>Crown DO_S13_7761_30_16572, 13 ft<br>Impervious 20.1% | forest 4%<br>\n   Heterogeneity 1.40 | evenness 0.74 | edge 181 m/ha<br>7.2 km along transect<br>37.528386, -77.514925","<b>F146<\/b> (alternate, bin 5)<br>Crown DO_S13_7760_40_24636, 11 ft<br>Impervious 24.1% | forest 13%<br>\n   Heterogeneity 1.48 | evenness 0.71 | edge 173 m/ha<br>11.4 km along transect<br>37.486217, -77.511000","<b>F147<\/b> (alternate, bin 5)<br>Crown DO_S13_7679_20_1819, 18 ft<br>Impervious 24.5% | forest 3%<br>\n   Heterogeneity 0.34 | evenness 0.58 | edge 147 m/ha<br>11.7 km along transect<br>37.479700, -77.497709","<b>F148<\/b> (alternate, bin 5)<br>Crown DO_S13_7669_40_9724, 13 ft<br>Impervious 20.0% | forest 14%<br>\n   Heterogeneity 1.26 | evenness 0.75 | edge 167 m/ha<br>14.4 km along transect<br>37.462350, -77.527230","<b>F149<\/b> (alternate, bin 5)<br>Crown DO_S13_7658_40_1994, 18 ft<br>Impervious 17.2% | forest 6%<br>\n   Heterogeneity 1.26 | evenness 0.78 | edge 208 m/ha<br>17.8 km along transect<br>37.439000, -77.557798","<b>F150<\/b> (alternate, bin 5)<br>Crown DO_S13_7657_40_16077, 11 ft<br>Impervious 20.4% | forest 30%<br>\n   Heterogeneity 1.64 | evenness 0.79 | edge 174 m/ha<br>21.1 km along transect<br>37.407772, -77.561073","<b>F151<\/b> (alternate, bin 6)<br>Crown DO_S13_7774_40_4311, 12 ft<br>Impervious 29.0% | forest 1%<br>\n   Heterogeneity -0.11 | evenness 0.51 | edge 133 m/ha<br>-1.6 km along transect<br>37.602118, -77.478069","<b>F152<\/b> (alternate, bin 6)<br>Crown DO_S13_7774_40_31902, 11 ft<br>Impervious 26.7% | forest 39%<br>\n   Heterogeneity 1.53 | evenness 0.87 | edge 94 m/ha<br>-0.4 km along transect<br>37.590353, -77.477102","<b>F153<\/b> (alternate, bin 6)<br>Crown DO_S13_7773_10_7571, 12 ft<br>Impervious 33.4% | forest 0%<br>\n   Heterogeneity 0.09 | evenness 0.77 | edge 118 m/ha<br>1.9 km along transect<br>37.574104, -77.498069","<b>F154<\/b> (alternate, bin 6)<br>Crown DO_S13_7773_40_16240, 12 ft<br>Impervious 34.4% | forest 0%<br>\n   Heterogeneity -0.56 | evenness 0.61 | edge 102 m/ha<br>2.5 km along transect<br>37.565861, -77.489681","<b>F155<\/b> (alternate, bin 6)<br>Crown DO_S13_7773_10_42669, 19 ft<br>Impervious 25.8% | forest 0%<br>\n   Heterogeneity 1.07 | evenness 0.96 | edge 161 m/ha<br>3.2 km along transect<br>37.562967, -77.501988","<b>F156<\/b> (alternate, bin 6)<br>Crown DO_S13_7782_10_22465, 19 ft<br>Impervious 26.8% | forest 0%<br>\n   Heterogeneity -0.19 | evenness 0.56 | edge 97 m/ha<br>5.1 km along transect<br>37.535586, -77.473231","<b>F157<\/b> (alternate, bin 6)<br>Crown DO_S13_7761_30_2209, 11 ft<br>Impervious 26.0% | forest 21%<br>\n   Heterogeneity 1.72 | evenness 0.82 | edge 148 m/ha<br>6.7 km along transect<br>37.534094, -77.520022","<b>F158<\/b> (alternate, bin 6)<br>Crown DO_S13_7669_30_10833, 14 ft<br>Impervious 30.0% | forest 8%<br>\n   Heterogeneity 0.96 | evenness 0.69 | edge 145 m/ha<br>12.6 km along transect<br>37.475291, -77.513190","<b>F159<\/b> (alternate, bin 6)<br>Crown DO_S13_7669_10_5652, 13 ft<br>Impervious 27.6% | forest 14%<br>\n   Heterogeneity 2.03 | evenness 0.89 | edge 162 m/ha<br>14.4 km along transect<br>37.465284, -77.535024","<b>F160<\/b> (alternate, bin 6)<br>Crown DO_S13_7659_40_30644, 12 ft<br>Impervious 27.5% | forest 19%<br>\n   Heterogeneity 1.40 | evenness 0.74 | edge 160 m/ha<br>15.4 km along transect<br>37.458458, -77.545634","<b>F161<\/b> (alternate, bin 7)<br>Crown DO_S13_7784_10_3782, 11 ft<br>Impervious 39.4% | forest 0%<br>\n   Heterogeneity -1.11 | evenness 0.39 | edge 78 m/ha<br>-1.9 km along transect<br>37.602056, -77.467871","<b>F162<\/b> (alternate, bin 7)<br>Crown DO_S13_7784_10_10033, 19 ft<br>Impervious 36.4% | forest 0%<br>\n   Heterogeneity -0.33 | evenness 0.50 | edge 117 m/ha<br>-1.7 km along transect<br>37.599133, -77.466472","<b>F163<\/b> (alternate, bin 7)<br>Crown DO_S13_7773_30_296, 12 ft<br>Impervious 37.0% | forest 34%<br>\n   Heterogeneity 1.11 | evenness 0.77 | edge 78 m/ha<br>-0.3 km along transect<br>37.589787, -77.478928","<b>F164<\/b> (alternate, bin 7)<br>Crown DO_S13_7773_40_12813, 18 ft<br>Impervious 44.1% | forest 0%<br>\n   Heterogeneity -1.71 | evenness 0.36 | edge 51 m/ha<br>2.2 km along transect<br>37.567862, -77.486548","<b>F165<\/b> (alternate, bin 7)<br>Crown DO_S13_7772_20_11403, 10 ft<br>Impervious 40.5% | forest 0%<br>\n   Heterogeneity 0.01 | evenness 0.74 | edge 94 m/ha<br>3.3 km along transect<br>37.559325, -77.492348","<b>F166<\/b> (alternate, bin 7)<br>Crown DO_S13_7772_40_2731, 17 ft<br>Impervious 44.5% | forest 0%<br>\n   Heterogeneity -1.20 | evenness 0.45 | edge 74 m/ha<br>4.3 km along transect<br>37.547300, -77.484061","<b>F167<\/b> (alternate, bin 7)<br>Crown DO_S13_7771_30_23127, 12 ft<br>Impervious 35.2% | forest 0%<br>\n   Heterogeneity 0.62 | evenness 0.84 | edge 129 m/ha<br>7.1 km along transect<br>37.521661, -77.490730","<b>F168<\/b> (alternate, bin 7)<br>Crown DO_S13_7770_40_3619, 16 ft<br>Impervious 38.1% | forest 3%<br>\n   Heterogeneity 0.37 | evenness 0.55 | edge 132 m/ha<br>10.3 km along transect<br>37.491668, -77.492290","<b>F169<\/b> (alternate, bin 7)<br>Crown DO_S13_7770_10_26872, 15 ft<br>Impervious 36.5% | forest 2%<br>\n   Heterogeneity -0.47 | evenness 0.49 | edge 109 m/ha<br>11.3 km along transect<br>37.483449, -77.496483","<b>F170<\/b> (alternate, bin 7)<br>Crown DO_S13_7669_20_32599, 19 ft<br>Impervious 35.6% | forest 6%<br>\n   Heterogeneity 1.12 | evenness 0.71 | edge 141 m/ha<br>14.1 km along transect<br>37.467337, -77.533756","<b>F171<\/b> (alternate, bin 8)<br>Crown DO_S13_7773_30_1092, 14 ft<br>Impervious 51.6% | forest 19%<br>\n   Heterogeneity 0.44 | evenness 0.64 | edge 65 m/ha<br>-0.2 km along transect<br>37.589377, -77.480846","<b>F172<\/b> (alternate, bin 8)<br>Crown DO_S13_7783_20_19140, 17 ft<br>Impervious 47.7% | forest 0%<br>\n   Heterogeneity -1.98 | evenness 0.30 | edge 47 m/ha<br>0.1 km along transect<br>37.581720, -77.466261","<b>F173<\/b> (alternate, bin 8)<br>Crown DO_S13_7783_20_27577, 15 ft<br>Impervious 46.1% | forest 0%<br>\n   Heterogeneity -0.60 | evenness 0.57 | edge 85 m/ha<br>0.4 km along transect<br>37.576740, -77.459599","<b>F174<\/b> (alternate, bin 8)<br>Crown DO_S13_7783_40_5622, 13 ft<br>Impervious 45.5% | forest 0%<br>\n   Heterogeneity -0.09 | evenness 0.69 | edge 91 m/ha<br>0.6 km along transect<br>37.574125, -77.456691","<b>F175<\/b> (alternate, bin 8)<br>Crown DO_S13_7772_30_21693, 11 ft<br>Impervious 46.5% | forest 0%<br>\n   Heterogeneity -0.69 | evenness 0.65 | edge 50 m/ha<br>4.2 km along transect<br>37.549742, -77.488749","<b>F176<\/b> (alternate, bin 8)<br>Crown DO_S13_7782_10_7163, 16 ft<br>Impervious 47.5% | forest 0%<br>\n   Heterogeneity -1.38 | evenness 0.41 | edge 43 m/ha<br>4.3 km along transect<br>37.542706, -77.468475","<b>F177<\/b> (alternate, bin 8)<br>Crown DO_S13_7760_30_3928, 10 ft<br>Impervious 54.1% | forest 0%<br>\n   Heterogeneity -1.04 | evenness 0.38 | edge 79 m/ha<br>9.9 km along transect<br>37.505782, -77.526192","<b>F178<\/b> (alternate, bin 8)<br>Crown DO_S13_7760_20_9032, 16 ft<br>Impervious 54.0% | forest 2%<br>\n   Heterogeneity -0.36 | evenness 0.52 | edge 77 m/ha<br>10.5 km along transect<br>37.502083, -77.534465","<b>F179<\/b> (alternate, bin 8)<br>Crown DO_S13_7760_20_12842, 15 ft<br>Impervious 45.9% | forest 23%<br>\n   Heterogeneity 1.01 | evenness 0.58 | edge 113 m/ha<br>10.9 km along transect<br>37.496781, -77.527701","<b>F180<\/b> (alternate, bin 8)<br>Crown DO_S13_7669_30_24019, 18 ft<br>Impervious 48.7% | forest 0%<br>\n   Heterogeneity -0.07 | evenness 0.70 | edge 89 m/ha<br>13.7 km along transect<br>37.468551, -77.526170","<b>F181<\/b> (alternate, bin 9)<br>Crown DO_S13_7773_30_4784, 17 ft<br>Impervious 58.2% | forest 13%<br>\n   Heterogeneity -0.48 | evenness 0.48 | edge 50 m/ha<br>-0.0 km along transect<br>37.587221, -77.479277","<b>F182<\/b> (alternate, bin 9)<br>Crown DO_S13_7773_20_2548, 13 ft<br>Impervious 63.6% | forest 0%<br>\n   Heterogeneity -1.80 | evenness 0.27 | edge 40 m/ha<br>0.3 km along transect<br>37.588368, -77.494144","<b>F183<\/b> (alternate, bin 9)<br>Crown DO_S13_7783_40_10728, 15 ft<br>Impervious 58.2% | forest 0%<br>\n   Heterogeneity -1.40 | evenness 0.42 | edge 43 m/ha<br>0.8 km along transect<br>37.571928, -77.456208","<b>F184<\/b> (alternate, bin 9)<br>Crown DO_S13_7773_20_17536, 10 ft<br>Impervious 65.8% | forest 0%<br>\n   Heterogeneity -3.09 | evenness 0.03 | edge 4 m/ha<br>1.3 km along transect<br>37.578940, -77.495471","<b>F185<\/b> (alternate, bin 9)<br>Crown DO_S13_7772_30_5323, 16 ft<br>Impervious 56.4% | forest 0%<br>\n   Heterogeneity -2.23 | evenness 0.23 | edge 34 m/ha<br>3.1 km along transect<br>37.559446, -77.487774","<b>F186<\/b> (alternate, bin 9)<br>Crown DO_S13_7772_30_14625, 14 ft<br>Impervious 62.9% | forest 0%<br>\n   Heterogeneity -3.20 | evenness 0.06 | edge 6 m/ha<br>3.6 km along transect<br>37.553301, -77.483349","<b>F187<\/b> (alternate, bin 9)<br>Crown DO_S13_7770_20_1747, 15 ft<br>Impervious 63.8% | forest 0%<br>\n   Heterogeneity -1.15 | evenness 0.39 | edge 52 m/ha<br>9.0 km along transect<br>37.506486, -77.500141","<b>F188<\/b> (alternate, bin 9)<br>Crown DO_S13_7770_20_3758, 11 ft<br>Impervious 56.0% | forest 0%<br>\n   Heterogeneity -0.32 | evenness 0.49 | edge 59 m/ha<br>9.0 km along transect<br>37.504601, -77.494709","<b>F189<\/b> (alternate, bin 9)<br>Crown DO_S13_7760_20_11509, 20 ft<br>Impervious 58.2% | forest 4%<br>\n   Heterogeneity -1.04 | evenness 0.36 | edge 60 m/ha<br>10.9 km along transect<br>37.498596, -77.536715","<b>F190<\/b> (alternate, bin 9)<br>Crown DO_S13_7760_20_11850, 13 ft<br>Impervious 56.2% | forest 8%<br>\n   Heterogeneity -0.44 | evenness 0.43 | edge 70 m/ha<br>11.0 km along transect<br>37.497950, -77.534758","<b>F191<\/b> (alternate, bin 10)<br>Crown DO_S13_7773_30_5987, 15 ft<br>Impervious 71.1% | forest 0%<br>\n   Heterogeneity -2.09 | evenness 0.23 | edge 31 m/ha<br>0.2 km along transect<br>37.585739, -77.482056","<b>F192<\/b> (alternate, bin 10)<br>Crown DO_S13_7773_30_6636, 15 ft<br>Impervious 72.0% | forest 0%<br>\n   Heterogeneity -2.79 | evenness 0.14 | edge 14 m/ha<br>0.2 km along transect<br>37.584055, -77.476976","<b>F193<\/b> (alternate, bin 10)<br>Crown DO_S13_7773_30_6014, 15 ft<br>Impervious 66.4% | forest 0%<br>\n   Heterogeneity -1.47 | evenness 0.33 | edge 44 m/ha<br>0.5 km along transect<br>37.585678, -77.490098","<b>F194<\/b> (alternate, bin 10)<br>Crown DO_S13_7783_10_480, 13 ft<br>Impervious 75.6% | forest 0%<br>\n   Heterogeneity -3.38 | evenness 0.02 | edge 3 m/ha<br>0.9 km along transect<br>37.575858, -77.472788","<b>F195<\/b> (alternate, bin 10)<br>Crown DO_S13_7773_40_1971, 13 ft<br>Impervious 74.2% | forest 0%<br>\n   Heterogeneity -3.01 | evenness 0.10 | edge 8 m/ha<br>1.3 km along transect<br>37.574471, -77.479807","<b>F196<\/b> (alternate, bin 10)<br>Crown DO_S13_7783_10_4155, 17 ft<br>Impervious 74.2% | forest 0%<br>\n   Heterogeneity -2.19 | evenness 0.27 | edge 24 m/ha<br>1.6 km along transect<br>37.567266, -77.463892","<b>F197<\/b> (alternate, bin 10)<br>Crown DO_S13_7783_10_4955, 15 ft<br>Impervious 74.0% | forest 0%<br>\n   Heterogeneity -3.42 | evenness 0.01 | edge 2 m/ha<br>2.2 km along transect<br>37.564181, -77.474410","<b>F198<\/b> (alternate, bin 10)<br>Crown DO_S13_7772_30_19748, 11 ft<br>Impervious 66.1% | forest 0%<br>\n   Heterogeneity -2.49 | evenness 0.18 | edge 19 m/ha<br>3.7 km along transect<br>37.550635, -77.476530","<b>F199<\/b> (alternate, bin 10)<br>Crown DO_S13_7782_10_1718, 12 ft<br>Impervious 66.4% | forest 0%<br>\n   Heterogeneity -3.13 | evenness 0.07 | edge 8 m/ha<br>3.7 km along transect<br>37.546889, -77.466019","<b>F200<\/b> (alternate, bin 10)<br>Crown DO_S13_7770_20_4717, 11 ft<br>Impervious 66.4% | forest 0%<br>\n   Heterogeneity -1.52 | evenness 0.31 | edge 49 m/ha<br>9.3 km along transect<br>37.503966, -77.500500"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addCircleMarkers","args":[[37.39197319002012,37.40044857337433,37.39995055034742,37.39895569241827,37.39585609421731,37.39026187254943,37.37651527787686,37.36513215518449,37.36448170088978,37.36059389933862,37.5481196019721,37.43325359244346,37.43151929497027,37.41334072771139,37.39955378453153,37.39550284718057,37.39443485818036,37.37838064673478,37.371683013086,37.36008980758876,37.59556055481886,37.55064685460282,37.53494999755827,37.48998805928127,37.44711213320919,37.41920553247104,37.41315667617554,37.40797023334095,37.39837419247542,37.36035512103712,37.59751526027983,37.54771574263219,37.53799160052964,37.5271305791791,37.49368610463561,37.47690898409007,37.4705802897301,37.44910475669729,37.40614280067084,37.40035878392623,37.60047475095872,37.59819871994445,37.55922096473567,37.55406028719014,37.51905347998837,37.50198137953998,37.45783886510258,37.46481454846332,37.40251139933259,37.40298896104306,37.60209488505026,37.60122065993251,37.59793080397961,37.54443836866381,37.51262484917989,37.50944137262153,37.49447624103443,37.4678023149569,37.42345102392759,37.40465234716469,37.60111427588757,37.60266812811245,37.59632355224073,37.57404499266286,37.55401618793053,37.51304596101232,37.5001156885068,37.46600054410192,37.45757594243642,37.40528479145399,37.59924435192203,37.59571788400878,37.57608813696927,37.5774771976188,37.54393696517636,37.54566799767655,37.50993479824321,37.5080376029366,37.50039383200955,37.47025192525771,37.59095787889609,37.59142362621357,37.58071997639006,37.55886405527419,37.54833747773379,37.55150704609645,37.54711706178998,37.50830025279089,37.50172145960434,37.49730272561199,37.58721566938272,37.58525030256776,37.58310703432979,37.57359263669581,37.57421899997529,37.56368773706657,37.5549512375368,37.55037420752343,37.49963333298024,37.4999440169135],[-77.54210609435978,-77.5736954051381,-77.57251452317439,-77.5824452866935,-77.58325034330646,-77.57686300857878,-77.55764717767237,-77.57703324494878,-77.58782601903931,-77.57855355290258,-77.51288975639989,-77.56367221109744,-77.56557043679616,-77.54389750754655,-77.54010063258096,-77.55186779678954,-77.57642906118731,-77.5730667383343,-77.58153599317248,-77.56067614065506,-77.47521858094332,-77.49811010571669,-77.48565149729708,-77.52742188751863,-77.5257879611342,-77.53825875365511,-77.55602916118598,-77.5776054825802,-77.56530274343005,-77.55785062407111,-77.47280441649724,-77.49974719382004,-77.48982662145252,-77.49382074475504,-77.52136354927772,-77.54491541474583,-77.54739035426906,-77.53722750880908,-77.54810773137984,-77.56291224204611,-77.47700569764753,-77.47967641796259,-77.50160526707216,-77.49551509111414,-77.52674941862212,-77.48782139420351,-77.52236930494874,-77.54886003063396,-77.53558679202355,-77.56495595116516,-77.47438703268391,-77.48051988861022,-77.48084469264616,-77.4792479945536,-77.50136486966296,-77.51994016693189,-77.52732409109423,-77.51607753120564,-77.54778200413864,-77.53614945165157,-77.46356947227531,-77.46938585912041,-77.48226627975892,-77.49248233814738,-77.49193480260945,-77.48976019155457,-77.51671856193937,-77.52815280564536,-77.50807193476608,-77.53374799698892,-77.45894822206891,-77.48411890573446,-77.49060803365933,-77.49805481428903,-77.46805491777286,-77.47412200789923,-77.49033358056482,-77.48560199800973,-77.52207368847135,-77.52524527345678,-77.48383959017174,-77.48998207729525,-77.4707345684137,-77.47638605020346,-77.47358177600933,-77.4860473131872,-77.47309182876231,-77.4993268310966,-77.52666767317582,-77.5313166375701,-77.48370905628839,-77.47800091165143,-77.47765458939708,-77.46260027647469,-77.48233698960156,-77.47798439167707,-77.47164372484237,-77.47457709625216,-77.52717406736068,-77.52917533801381],6,null,"Primaries",{"interactive":true,"className":"","stroke":true,"color":"black","weight":1,"opacity":0.5,"fill":true,"fillColor":["#1B7837","#1B7837","#1B7837","#1B7837","#1B7837","#1B7837","#1B7837","#1B7837","#1B7837","#1B7837","#58A365","#58A365","#58A365","#58A365","#58A365","#58A365","#58A365","#58A365","#58A365","#58A365","#96CF94","#96CF94","#96CF94","#96CF94","#96CF94","#96CF94","#96CF94","#96CF94","#96CF94","#96CF94","#C1E4BC","#C1E4BC","#C1E4BC","#C1E4BC","#C1E4BC","#C1E4BC","#C1E4BC","#C1E4BC","#C1E4BC","#C1E4BC","#E4F0E3","#E4F0E3","#E4F0E3","#E4F0E3","#E4F0E3","#E4F0E3","#E4F0E3","#E4F0E3","#E4F0E3","#E4F0E3","#EBE4EE","#EBE4EE","#EBE4EE","#EBE4EE","#EBE4EE","#EBE4EE","#EBE4EE","#EBE4EE","#EBE4EE","#EBE4EE","#D3C0DC","#D3C0DC","#D3C0DC","#D3C0DC","#D3C0DC","#D3C0DC","#D3C0DC","#D3C0DC","#D3C0DC","#D3C0DC","#B997C6","#B997C6","#B997C6","#B997C6","#B997C6","#B997C6","#B997C6","#B997C6","#B997C6","#B997C6","#9760A4","#9760A4","#9760A4","#9760A4","#9760A4","#9760A4","#9760A4","#9760A4","#9760A4","#9760A4","#762A83","#762A83","#762A83","#762A83","#762A83","#762A83","#762A83","#762A83","#762A83","#762A83"],"fillOpacity":0.9},null,null,["<b>F001<\/b> (primary, bin 1)<br>Crown DO_S13_7666_20_50902, 14 ft<br>Impervious 0.0% | forest 100%<br>\n   Heterogeneity -3.93 | evenness 0.00 | edge 0 m/ha<br>22.2 km along transect<br>37.391973, -77.542106","<b>F002<\/b> (primary, bin 1)<br>Crown DO_S13_7657_10_56563, 15 ft<br>Impervious 1.1% | forest 89%<br>\n   Heterogeneity -2.12 | evenness 0.31 | edge 43 m/ha<br>22.3 km along transect<br>37.400449, -77.573695","<b>F003<\/b> (primary, bin 1)<br>Crown DO_S13_7657_10_58778, 10 ft<br>Impervious 0.6% | forest 94%<br>\n   Heterogeneity -2.72 | evenness 0.17 | edge 33 m/ha<br>22.3 km along transect<br>37.399951, -77.572515","<b>F004<\/b> (primary, bin 1)<br>Crown DO_S13_7647_40_52180, 18 ft<br>Impervious 1.0% | forest 82%<br>\n   Heterogeneity -1.40 | evenness 0.39 | edge 64 m/ha<br>22.7 km along transect<br>37.398956, -77.582445","<b>F005<\/b> (primary, bin 1)<br>Crown DO_S13_7646_30_10659, 15 ft<br>Impervious 0.8% | forest 68%<br>\n   Heterogeneity -0.74 | evenness 0.49 | edge 84 m/ha<br>23.1 km along transect<br>37.395856, -77.583250","<b>F006<\/b> (primary, bin 1)<br>Crown DO_S13_7656_20_31352, 11 ft<br>Impervious 1.1% | forest 68%<br>\n   Heterogeneity 0.20 | evenness 0.52 | edge 139 m/ha<br>23.5 km along transect<br>37.390262, -77.576863","<b>F007<\/b> (primary, bin 1)<br>Crown DO_S13_7656_40_23192, 13 ft<br>Impervious 0.1% | forest 97%<br>\n   Heterogeneity -3.13 | evenness 0.14 | edge 27 m/ha<br>24.3 km along transect<br>37.376515, -77.557647","<b>F008<\/b> (primary, bin 1)<br>Crown DO_S13_7655_20_30715, 17 ft<br>Impervious 1.1% | forest 83%<br>\n   Heterogeneity -1.42 | evenness 0.38 | edge 78 m/ha<br>26.1 km along transect<br>37.365132, -77.577033","<b>F009<\/b> (primary, bin 1)<br>Crown DO_S13_7645_30_37416, 13 ft<br>Impervious 0.0% | forest 100%<br>\n   Heterogeneity -3.92 | evenness 0.00 | edge 0 m/ha<br>26.5 km along transect<br>37.364482, -77.587826","<b>F010<\/b> (primary, bin 1)<br>Crown DO_S13_7655_20_56549, 16 ft<br>Impervious 0.9% | forest 91%<br>\n   Heterogeneity -2.31 | evenness 0.25 | edge 46 m/ha<br>26.6 km along transect<br>37.360594, -77.578554","<b>F011<\/b> (primary, bin 2)<br>Crown DO_S13_7762_40_1691, 11 ft<br>Impervious 4.3% | forest 6%<br>\n   Heterogeneity 1.28 | evenness 0.80 | edge 123 m/ha<br>5.1 km along transect<br>37.548120, -77.512890","<b>F012<\/b> (primary, bin 2)<br>Crown DO_S13_7658_10_17350, 12 ft<br>Impervious 2.8% | forest 73%<br>\n   Heterogeneity -0.48 | evenness 0.54 | edge 93 m/ha<br>18.6 km along transect<br>37.433254, -77.563672","<b>F013<\/b> (primary, bin 2)<br>Crown DO_S13_7658_10_21412, 15 ft<br>Impervious 1.4% | forest 85%<br>\n   Heterogeneity -1.54 | evenness 0.32 | edge 74 m/ha<br>18.8 km along transect<br>37.431519, -77.565570","<b>F014<\/b> (primary, bin 2)<br>Crown DO_S13_7667_20_34424, 14 ft<br>Impervious 3.9% | forest 54%<br>\n   Heterogeneity 1.16 | evenness 0.76 | edge 158 m/ha<br>20.0 km along transect<br>37.413341, -77.543898","<b>F015<\/b> (primary, bin 2)<br>Crown DO_S13_7667_10_43862, 15 ft<br>Impervious 3.2% | forest 73%<br>\n   Heterogeneity 0.26 | evenness 0.59 | edge 137 m/ha<br>21.4 km along transect<br>37.399554, -77.540101","<b>F016<\/b> (primary, bin 2)<br>Crown DO_S13_7656_30_20021, 15 ft<br>Impervious 1.2% | forest 96%<br>\n   Heterogeneity -2.89 | evenness 0.15 | edge 20 m/ha<br>22.1 km along transect<br>37.395503, -77.551868","<b>F017<\/b> (primary, bin 2)<br>Crown DO_S13_7656_20_14540, 14 ft<br>Impervious 1.3% | forest 75%<br>\n   Heterogeneity -0.65 | evenness 0.46 | edge 98 m/ha<br>23.0 km along transect<br>37.394435, -77.576429","<b>F018<\/b> (primary, bin 2)<br>Crown DO_S13_7656_10_22560, 15 ft<br>Impervious 2.8% | forest 86%<br>\n   Heterogeneity -1.58 | evenness 0.36 | edge 64 m/ha<br>24.6 km along transect<br>37.378381, -77.573067","<b>F019<\/b> (primary, bin 2)<br>Crown DO_S13_7646_40_47975, 14 ft<br>Impervious 1.1% | forest 93%<br>\n   Heterogeneity -2.40 | evenness 0.23 | edge 42 m/ha<br>25.5 km along transect<br>37.371683, -77.581536","<b>F020<\/b> (primary, bin 2)<br>Crown DO_S13_7655_30_51953, 17 ft<br>Impervious 4.0% | forest 62%<br>\n   Heterogeneity 0.07 | evenness 0.70 | edge 128 m/ha<br>26.1 km along transect<br>37.360090, -77.560676","<b>F021<\/b> (primary, bin 3)<br>Crown DO_S13_7774_40_19377, 10 ft<br>Impervious 8.8% | forest 37%<br>\n   Heterogeneity 1.68 | evenness 0.94 | edge 147 m/ha<br>-1.0 km along transect<br>37.595561, -77.475219","<b>F022<\/b> (primary, bin 3)<br>Crown DO_S13_7772_20_41454, 14 ft<br>Impervious 9.2% | forest 13%<br>\n   Heterogeneity 0.40 | evenness 0.61 | edge 143 m/ha<br>4.3 km along transect<br>37.550647, -77.498110","<b>F023<\/b> (primary, bin 3)<br>Crown DO_S13_7771_30_84, 14 ft<br>Impervious 9.1% | forest 15%<br>\n   Heterogeneity 2.40 | evenness 0.97 | edge 168 m/ha<br>5.6 km along transect<br>37.534950, -77.485651","<b>F024<\/b> (primary, bin 3)<br>Crown DO_S13_7760_40_13380, 15 ft<br>Impervious 9.5% | forest 50%<br>\n   Heterogeneity 1.46 | evenness 0.84 | edge 159 m/ha<br>11.6 km along transect<br>37.489988, -77.527422","<b>F025<\/b> (primary, bin 3)<br>Crown DO_S13_7668_30_17413, 10 ft<br>Impervious 6.8% | forest 47%<br>\n   Heterogeneity 0.47 | evenness 0.60 | edge 138 m/ha<br>16.0 km along transect<br>37.447112, -77.525788","<b>F026<\/b> (primary, bin 3)<br>Crown DO_S13_7667_20_17709, 12 ft<br>Impervious 8.1% | forest 44%<br>\n   Heterogeneity 2.26 | evenness 0.78 | edge 209 m/ha<br>19.3 km along transect<br>37.419206, -77.538259","<b>F027<\/b> (primary, bin 3)<br>Crown DO_S13_7657_30_50273, 11 ft<br>Impervious 4.4% | forest 74%<br>\n   Heterogeneity -0.33 | evenness 0.50 | edge 105 m/ha<br>20.4 km along transect<br>37.413157, -77.556029","<b>F028<\/b> (primary, bin 3)<br>Crown DO_S13_7657_10_17519, 15 ft<br>Impervious 7.5% | forest 56%<br>\n   Heterogeneity 0.70 | evenness 0.58 | edge 165 m/ha<br>21.6 km along transect<br>37.407970, -77.577605","<b>F029<\/b> (primary, bin 3)<br>Crown DO_S13_7656_20_595, 10 ft<br>Impervious 4.6% | forest 84%<br>\n   Heterogeneity -1.38 | evenness 0.33 | edge 52 m/ha<br>22.3 km along transect<br>37.398374, -77.565303","<b>F030<\/b> (primary, bin 3)<br>Crown DO_S13_7655_30_50392, 13 ft<br>Impervious 4.6% | forest 55%<br>\n   Heterogeneity 0.02 | evenness 0.58 | edge 148 m/ha<br>26.0 km along transect<br>37.360355, -77.557851","<b>F031<\/b> (primary, bin 4)<br>Crown DO_S13_7784_10_12313, 13 ft<br>Impervious 16.5% | forest 17%<br>\n   Heterogeneity 1.50 | evenness 0.88 | edge 151 m/ha<br>-1.3 km along transect<br>37.597515, -77.472804","<b>F032<\/b> (primary, bin 4)<br>Crown DO_S13_7772_10_2608, 14 ft<br>Impervious 11.8% | forest 12%<br>\n   Heterogeneity 1.40 | evenness 0.74 | edge 130 m/ha<br>4.7 km along transect<br>37.547716, -77.499747","<b>F033<\/b> (primary, bin 4)<br>Crown DO_S13_7772_40_18630, 15 ft<br>Impervious 14.2% | forest 13%<br>\n   Heterogeneity 2.47 | evenness 0.94 | edge 172 m/ha<br>5.4 km along transect<br>37.537992, -77.489827","<b>F034<\/b> (primary, bin 4)<br>Crown DO_S13_7771_20_20722, 10 ft<br>Impervious 16.5% | forest 3%<br>\n   Heterogeneity 0.37 | evenness 0.54 | edge 157 m/ha<br>6.7 km along transect<br>37.527131, -77.493821","<b>F035<\/b> (primary, bin 4)<br>Crown DO_S13_7760_40_1948, 15 ft<br>Impervious 11.1% | forest 59%<br>\n   Heterogeneity 0.94 | evenness 0.73 | edge 137 m/ha<br>11.0 km along transect<br>37.493686, -77.521364","<b>F036<\/b> (primary, bin 4)<br>Crown DO_S13_7669_20_10595, 15 ft<br>Impervious 14.5% | forest 0%<br>\n   Heterogeneity -0.32 | evenness 0.50 | edge 161 m/ha<br>13.5 km along transect<br>37.476909, -77.544915","<b>F037<\/b> (primary, bin 4)<br>Crown DO_S13_7659_30_28297, 16 ft<br>Impervious 13.7% | forest 8%<br>\n   Heterogeneity 1.79 | evenness 0.77 | edge 211 m/ha<br>14.2 km along transect<br>37.470580, -77.547390","<b>F038<\/b> (primary, bin 4)<br>Crown DO_S13_7668_20_13694, 12 ft<br>Impervious 12.2% | forest 7%<br>\n   Heterogeneity 0.70 | evenness 0.61 | edge 175 m/ha<br>16.1 km along transect<br>37.449105, -77.537228","<b>F039<\/b> (primary, bin 4)<br>Crown DO_S13_7657_40_22557, 13 ft<br>Impervious 11.4% | forest 40%<br>\n   Heterogeneity 2.32 | evenness 0.95 | edge 186 m/ha<br>20.9 km along transect<br>37.406143, -77.548108","<b>F040<\/b> (primary, bin 4)<br>Crown DO_S13_7657_40_52954, 10 ft<br>Impervious 10.4% | forest 65%<br>\n   Heterogeneity 0.24 | evenness 0.52 | edge 110 m/ha<br>22.0 km along transect<br>37.400359, -77.562912","<b>F041<\/b> (primary, bin 5)<br>Crown DO_S13_7774_40_8576, 12 ft<br>Impervious 25.0% | forest 8%<br>\n   Heterogeneity 0.90 | evenness 0.71 | edge 152 m/ha<br>-1.5 km along transect<br>37.600475, -77.477006","<b>F042<\/b> (primary, bin 5)<br>Crown DO_S13_7774_40_13135, 10 ft<br>Impervious 20.2% | forest 23%<br>\n   Heterogeneity 2.27 | evenness 0.95 | edge 168 m/ha<br>-1.2 km along transect<br>37.598199, -77.479676","<b>F043<\/b> (primary, bin 5)<br>Crown DO_S13_7772_20_11993, 18 ft<br>Impervious 21.4% | forest 0%<br>\n   Heterogeneity 1.32 | evenness 1.00 | edge 185 m/ha<br>3.6 km along transect<br>37.559221, -77.501605","<b>F044<\/b> (primary, bin 5)<br>Crown DO_S13_7772_20_31255, 10 ft<br>Impervious 19.2% | forest 0%<br>\n   Heterogeneity 0.16 | evenness 0.59 | edge 151 m/ha<br>3.9 km along transect<br>37.554060, -77.495515","<b>F045<\/b> (primary, bin 5)<br>Crown DO_S13_7761_40_5448, 12 ft<br>Impervious 18.1% | forest 28%<br>\n   Heterogeneity 2.05 | evenness 0.97 | edge 135 m/ha<br>8.5 km along transect<br>37.519053, -77.526749","<b>F046<\/b> (primary, bin 5)<br>Crown DO_S13_7770_30_10499, 20 ft<br>Impervious 25.1% | forest 0%<br>\n   Heterogeneity 0.79 | evenness 0.67 | edge 151 m/ha<br>9.1 km along transect<br>37.501981, -77.487821","<b>F047<\/b> (primary, bin 5)<br>Crown DO_S13_7669_40_19490, 16 ft<br>Impervious 18.7% | forest 0%<br>\n   Heterogeneity 0.59 | evenness 0.63 | edge 194 m/ha<br>14.7 km along transect<br>37.457839, -77.522369","<b>F048<\/b> (primary, bin 5)<br>Crown DO_S13_7659_40_8746, 16 ft<br>Impervious 21.2% | forest 19%<br>\n   Heterogeneity 1.94 | evenness 0.86 | edge 168 m/ha<br>14.8 km along transect<br>37.464815, -77.548860","<b>F049<\/b> (primary, bin 5)<br>Crown DO_S13_7667_10_33697, 13 ft<br>Impervious 20.7% | forest 35%<br>\n   Heterogeneity 2.41 | evenness 0.82 | edge 204 m/ha<br>20.9 km along transect<br>37.402511, -77.535587","<b>F050<\/b> (primary, bin 5)<br>Crown DO_S13_7657_10_42457, 16 ft<br>Impervious 16.8% | forest 53%<br>\n   Heterogeneity 0.89 | evenness 0.68 | edge 111 m/ha<br>21.8 km along transect<br>37.402989, -77.564956","<b>F051<\/b> (primary, bin 6)<br>Crown DO_S13_7784_10_3795, 13 ft<br>Impervious 31.5% | forest 0%<br>\n   Heterogeneity -1.11 | evenness 0.36 | edge 97 m/ha<br>-1.7 km along transect<br>37.602095, -77.474387","<b>F052<\/b> (primary, bin 6)<br>Crown DO_S13_7774_40_6615, 10 ft<br>Impervious 28.9% | forest 3%<br>\n   Heterogeneity 0.85 | evenness 0.64 | edge 167 m/ha<br>-1.5 km along transect<br>37.601221, -77.480520","<b>F053<\/b> (primary, bin 6)<br>Crown DO_S13_7774_40_13641, 12 ft<br>Impervious 25.4% | forest 21%<br>\n   Heterogeneity 2.20 | evenness 0.93 | edge 153 m/ha<br>-1.1 km along transect<br>37.597931, -77.480845","<b>F054<\/b> (primary, bin 6)<br>Crown DO_S13_7772_40_7456, 14 ft<br>Impervious 28.1% | forest 0%<br>\n   Heterogeneity 0.46 | evenness 0.71 | edge 129 m/ha<br>4.4 km along transect<br>37.544438, -77.479248","<b>F055<\/b> (primary, bin 6)<br>Crown DO_S13_7771_10_25825, 12 ft<br>Impervious 34.9% | forest 0%<br>\n   Heterogeneity -0.25 | evenness 0.53 | edge 121 m/ha<br>8.4 km along transect<br>37.512625, -77.501365","<b>F056<\/b> (primary, bin 6)<br>Crown DO_S13_7761_40_32239, 17 ft<br>Impervious 35.0% | forest 12%<br>\n   Heterogeneity 0.83 | evenness 0.78 | edge 122 m/ha<br>9.3 km along transect<br>37.509441, -77.519940","<b>F057<\/b> (primary, bin 6)<br>Crown DO_S13_7760_30_34663, 13 ft<br>Impervious 26.3% | forest 42%<br>\n   Heterogeneity 1.84 | evenness 0.71 | edge 146 m/ha<br>11.1 km along transect<br>37.494476, -77.527324","<b>F058<\/b> (primary, bin 6)<br>Crown DO_S13_7669_30_25346, 15 ft<br>Impervious 28.3% | forest 2%<br>\n   Heterogeneity 0.22 | evenness 0.65 | edge 126 m/ha<br>13.5 km along transect<br>37.467802, -77.516078","<b>F059<\/b> (primary, bin 6)<br>Crown DO_S13_7657_30_8194, 13 ft<br>Impervious 25.9% | forest 15%<br>\n   Heterogeneity 0.78 | evenness 0.53 | edge 164 m/ha<br>19.1 km along transect<br>37.423451, -77.547782","<b>F060<\/b> (primary, bin 6)<br>Crown DO_S13_7667_10_26219, 17 ft<br>Impervious 25.4% | forest 35%<br>\n   Heterogeneity 2.04 | evenness 0.76 | edge 177 m/ha<br>20.7 km along transect<br>37.404652, -77.536149","<b>F061<\/b> (primary, bin 7)<br>Crown DO_S13_7784_10_5900, 11 ft<br>Impervious 39.3% | forest 0%<br>\n   Heterogeneity 0.44 | evenness 0.64 | edge 128 m/ha<br>-2.0 km along transect<br>37.601114, -77.463569","<b>F062<\/b> (primary, bin 7)<br>Crown DO_S13_7784_10_2153, 12 ft<br>Impervious 41.2% | forest 0%<br>\n   Heterogeneity -1.96 | evenness 0.23 | edge 54 m/ha<br>-2.0 km along transect<br>37.602668, -77.469386","<b>F063<\/b> (primary, bin 7)<br>Crown DO_S13_7774_40_16756, 19 ft<br>Impervious 35.7% | forest 21%<br>\n   Heterogeneity 1.89 | evenness 0.88 | edge 119 m/ha<br>-0.9 km along transect<br>37.596324, -77.482266","<b>F064<\/b> (primary, bin 7)<br>Crown DO_S13_7773_10_7640, 15 ft<br>Impervious 36.4% | forest 0%<br>\n   Heterogeneity -0.78 | evenness 0.61 | edge 80 m/ha<br>1.7 km along transect<br>37.574045, -77.492482","<b>F065<\/b> (primary, bin 7)<br>Crown DO_S13_7772_30_13737, 11 ft<br>Impervious 35.6% | forest 0%<br>\n   Heterogeneity 0.85 | evenness 0.97 | edge 99 m/ha<br>3.8 km along transect<br>37.554016, -77.491935","<b>F066<\/b> (primary, bin 7)<br>Crown DO_S13_7771_40_25483, 12 ft<br>Impervious 39.2% | forest 0%<br>\n   Heterogeneity -0.24 | evenness 0.52 | edge 111 m/ha<br>8.0 km along transect<br>37.513046, -77.489760","<b>F067<\/b> (primary, bin 7)<br>Crown DO_S13_7760_30_9582, 14 ft<br>Impervious 35.3% | forest 26%<br>\n   Heterogeneity 1.15 | evenness 0.75 | edge 105 m/ha<br>10.2 km along transect<br>37.500116, -77.516719","<b>F068<\/b> (primary, bin 7)<br>Crown DO_S13_7669_10_2982, 14 ft<br>Impervious 36.1% | forest 4%<br>\n   Heterogeneity 0.38 | evenness 0.55 | edge 137 m/ha<br>14.1 km along transect<br>37.466001, -77.528153","<b>F069<\/b> (primary, bin 7)<br>Crown DO_S13_7679_10_25487, 13 ft<br>Impervious 37.6% | forest 0%<br>\n   Heterogeneity -0.81 | evenness 0.42 | edge 110 m/ha<br>14.3 km along transect<br>37.457576, -77.508072","<b>F070<\/b> (primary, bin 7)<br>Crown DO_S13_7667_10_22768, 10 ft<br>Impervious 36.2% | forest 20%<br>\n   Heterogeneity 1.46 | evenness 0.65 | edge 164 m/ha<br>20.6 km along transect<br>37.405285, -77.533748","<b>F071<\/b> (primary, bin 8)<br>Crown DO_S13_7784_10_9837, 15 ft<br>Impervious 50.1% | forest 0%<br>\n   Heterogeneity -0.10 | evenness 0.53 | edge 105 m/ha<br>-1.9 km along transect<br>37.599244, -77.458948","<b>F072<\/b> (primary, bin 8)<br>Crown DO_S13_7774_40_19111, 14 ft<br>Impervious 45.3% | forest 13%<br>\n   Heterogeneity 1.07 | evenness 0.72 | edge 103 m/ha<br>-0.8 km along transect<br>37.595718, -77.484119","<b>F073<\/b> (primary, bin 8)<br>Crown DO_S13_7773_40_307, 11 ft<br>Impervious 55.4% | forest 0%<br>\n   Heterogeneity -2.66 | evenness 0.12 | edge 14 m/ha<br>1.5 km along transect<br>37.576088, -77.490608","<b>F074<\/b> (primary, bin 8)<br>Crown DO_S13_7773_20_20459, 17 ft<br>Impervious 51.5% | forest 0%<br>\n   Heterogeneity -1.29 | evenness 0.44 | edge 55 m/ha<br>1.6 km along transect<br>37.577477, -77.498055","<b>F075<\/b> (primary, bin 8)<br>Crown DO_S13_7782_10_5458, 17 ft<br>Impervious 53.0% | forest 0%<br>\n   Heterogeneity -1.98 | evenness 0.29 | edge 29 m/ha<br>4.1 km along transect<br>37.543937, -77.468055","<b>F076<\/b> (primary, bin 8)<br>Crown DO_S13_7782_10_3147, 10 ft<br>Impervious 45.6% | forest 0%<br>\n   Heterogeneity 0.11 | evenness 0.66 | edge 78 m/ha<br>4.1 km along transect<br>37.545668, -77.474122","<b>F077<\/b> (primary, bin 8)<br>Crown DO_S13_7771_40_32467, 10 ft<br>Impervious 52.0% | forest 0%<br>\n   Heterogeneity -0.59 | evenness 0.58 | edge 78 m/ha<br>8.3 km along transect<br>37.509935, -77.490334","<b>F078<\/b> (primary, bin 8)<br>Crown DO_S13_7771_40_35630, 12 ft<br>Impervious 53.5% | forest 0%<br>\n   Heterogeneity -1.50 | evenness 0.30 | edge 41 m/ha<br>8.4 km along transect<br>37.508038, -77.485602","<b>F079<\/b> (primary, bin 8)<br>Crown DO_S13_7760_30_9056, 12 ft<br>Impervious 47.2% | forest 23%<br>\n   Heterogeneity 0.19 | evenness 0.69 | edge 56 m/ha<br>10.3 km along transect<br>37.500394, -77.522074","<b>F080<\/b> (primary, bin 8)<br>Crown DO_S13_7669_30_20772, 12 ft<br>Impervious 51.5% | forest 1%<br>\n   Heterogeneity -0.81 | evenness 0.42 | edge 81 m/ha<br>13.5 km along transect<br>37.470252, -77.525245","<b>F081<\/b> (primary, bin 9)<br>Crown DO_S13_7774_40_31138, 15 ft<br>Impervious 56.5% | forest 8%<br>\n   Heterogeneity 0.05 | evenness 0.55 | edge 76 m/ha<br>-0.3 km along transect<br>37.590958, -77.483840","<b>F082<\/b> (primary, bin 9)<br>Crown DO_S13_7774_40_30555, 12 ft<br>Impervious 57.8% | forest 0%<br>\n   Heterogeneity -1.02 | evenness 0.39 | edge 65 m/ha<br>-0.1 km along transect<br>37.591424, -77.489982","<b>F083<\/b> (primary, bin 9)<br>Crown DO_S13_7783_20_21250, 18 ft<br>Impervious 63.8% | forest 0%<br>\n   Heterogeneity -2.54 | evenness 0.16 | edge 24 m/ha<br>0.4 km along transect<br>37.580720, -77.470735","<b>F084<\/b> (primary, bin 9)<br>Crown DO_S13_7772_30_6152, 20 ft<br>Impervious 65.1% | forest 0%<br>\n   Heterogeneity -3.56 | evenness 0.00 | edge 0 m/ha<br>2.8 km along transect<br>37.558864, -77.476386","<b>F085<\/b> (primary, bin 9)<br>Crown DO_S13_7782_10_334, 16 ft<br>Impervious 61.7% | forest 0%<br>\n   Heterogeneity -1.68 | evenness 0.34 | edge 28 m/ha<br>3.8 km along transect<br>37.548337, -77.473582","<b>F086<\/b> (primary, bin 9)<br>Crown DO_S13_7772_30_18122, 16 ft<br>Impervious 58.5% | forest 0%<br>\n   Heterogeneity -2.78 | evenness 0.13 | edge 16 m/ha<br>3.9 km along transect<br>37.551507, -77.486047","<b>F087<\/b> (primary, bin 9)<br>Crown DO_S13_7782_10_1533, 14 ft<br>Impervious 56.4% | forest 0%<br>\n   Heterogeneity -0.93 | evenness 0.48 | edge 45 m/ha<br>3.9 km along transect<br>37.547117, -77.473092","<b>F088<\/b> (primary, bin 9)<br>Crown DO_S13_7771_10_36446, 15 ft<br>Impervious 57.5% | forest 0%<br>\n   Heterogeneity -0.75 | evenness 0.43 | edge 74 m/ha<br>8.8 km along transect<br>37.508300, -77.499327","<b>F089<\/b> (primary, bin 9)<br>Crown DO_S13_7760_30_7098, 10 ft<br>Impervious 65.7% | forest 3%<br>\n   Heterogeneity -1.60 | evenness 0.32 | edge 41 m/ha<br>10.3 km along transect<br>37.501721, -77.526668","<b>F090<\/b> (primary, bin 9)<br>Crown DO_S13_7760_20_12184, 14 ft<br>Impervious 57.7% | forest 15%<br>\n   Heterogeneity 0.04 | evenness 0.46 | edge 77 m/ha<br>10.9 km along transect<br>37.497303, -77.531317","<b>F091<\/b> (primary, bin 10)<br>Crown DO_S13_7773_30_4863, 12 ft<br>Impervious 66.9% | forest 0%<br>\n   Heterogeneity -1.15 | evenness 0.39 | edge 55 m/ha<br>0.1 km along transect<br>37.587216, -77.483709","<b>F092<\/b> (primary, bin 10)<br>Crown DO_S13_7773_30_6115, 10 ft<br>Impervious 66.6% | forest 4%<br>\n   Heterogeneity -1.77 | evenness 0.26 | edge 32 m/ha<br>0.1 km along transect<br>37.585250, -77.478001","<b>F093<\/b> (primary, bin 10)<br>Crown DO_S13_7773_30_7360, 12 ft<br>Impervious 74.3% | forest 0%<br>\n   Heterogeneity -3.12 | evenness 0.07 | edge 8 m/ha<br>0.3 km along transect<br>37.583107, -77.477655","<b>F094<\/b> (primary, bin 10)<br>Crown DO_S13_7783_10_2682, 19 ft<br>Impervious 70.8% | forest 0%<br>\n   Heterogeneity -2.39 | evenness 0.22 | edge 22 m/ha<br>0.9 km along transect<br>37.573593, -77.462600","<b>F095<\/b> (primary, bin 10)<br>Crown DO_S13_7773_40_2317, 20 ft<br>Impervious 69.5% | forest 0%<br>\n   Heterogeneity -2.78 | evenness 0.12 | edge 12 m/ha<br>1.4 km along transect<br>37.574219, -77.482337","<b>F096<\/b> (primary, bin 10)<br>Crown DO_S13_7773_40_20170, 11 ft<br>Impervious 66.4% | forest 0%<br>\n   Heterogeneity -3.16 | evenness 0.06 | edge 7 m/ha<br>2.4 km along transect<br>37.563688, -77.477984","<b>F097<\/b> (primary, bin 10)<br>Crown DO_S13_7782_20_4908, 13 ft<br>Impervious 70.1% | forest 0%<br>\n   Heterogeneity -3.58 | evenness 0.00 | edge 0 m/ha<br>3.1 km along transect<br>37.554951, -77.471644","<b>F098<\/b> (primary, bin 10)<br>Crown DO_S13_7782_20_9479, 13 ft<br>Impervious 68.6% | forest 0%<br>\n   Heterogeneity -2.82 | evenness 0.13 | edge 11 m/ha<br>3.6 km along transect<br>37.550374, -77.474577","<b>F099<\/b> (primary, bin 10)<br>Crown DO_S13_7760_30_11077, 10 ft<br>Impervious 67.1% | forest 7%<br>\n   Heterogeneity -1.54 | evenness 0.34 | edge 34 m/ha<br>10.5 km along transect<br>37.499633, -77.527174","<b>F100<\/b> (primary, bin 10)<br>Crown DO_S13_7760_20_10495, 11 ft<br>Impervious 69.7% | forest 1%<br>\n   Heterogeneity -1.93 | evenness 0.26 | edge 33 m/ha<br>10.6 km along transect<br>37.499944, -77.529175"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addLegend","args":[{"colors":["#1B7837","#58A365","#96CF94","#C1E4BC","#E4F0E3","#EBE4EE","#D3C0DC","#B997C6","#9760A4","#762A83"],"labels":["1: 0–1%","2: 1–4%","3: 4–10%","4: 10–17%","5: 17–25%","6: 25–35%","7: 35–45%","8: 45–56%","9: 56–66%","10: 66–76%"],"na_color":null,"na_label":"NA","opacity":0.9,"position":"topright","type":"unknown","title":"Bin (impervious)","extra":null,"layerId":null,"className":"info legend","group":null}]},{"method":"addLayersControl","args":[["Imagery","Light"],["Primaries","Alternates"],{"collapsed":true,"autoZIndex":true,"position":"topright"}]},{"method":"hideGroup","args":["Alternates"]}],"limits":{"lat":[37.35574763667098,37.60283672562808],"lng":[-77.59339268975401,-77.44978950698254]}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="primary-trees" class="level2">
+<h2 class="anchored" data-anchor-id="primary-trees">Primary trees</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>prim <span class="sc">|&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">|&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(bin, u_km) <span class="sc">|&gt;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(<span class="at">ID =</span> focal_id, <span class="at">Bin =</span> bin, <span class="st">`</span><span class="at">km</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">round</span>(u_km, <span class="dv">1</span>), <span class="st">`</span><span class="at">Impervious %</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">round</span>(imperv_mean, <span class="dv">1</span>),</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>            <span class="st">`</span><span class="at">Forest %</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">round</span>(forest_pct), <span class="at">Heterogeneity =</span> <span class="fu">round</span>(heterogeneity_index, <span class="dv">2</span>),</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">`</span><span class="at">Crown (ft)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">round</span>(diam_ft), <span class="at">Lat =</span> <span class="fu">round</span>(lat, <span class="dv">6</span>), <span class="at">Lon =</span> <span class="fu">round</span>(lon, <span class="dv">6</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 5%">
+<col style="width: 6%">
+<col style="width: 16%">
+<col style="width: 11%">
+<col style="width: 17%">
+<col style="width: 13%">
+<col style="width: 11%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">ID</th>
+<th style="text-align: right;">Bin</th>
+<th style="text-align: right;">km</th>
+<th style="text-align: right;">Impervious %</th>
+<th style="text-align: right;">Forest %</th>
+<th style="text-align: right;">Heterogeneity</th>
+<th style="text-align: right;">Crown (ft)</th>
+<th style="text-align: right;">Lat</th>
+<th style="text-align: right;">Lon</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">F001</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">22.2</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">-3.93</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">37.39197</td>
+<td style="text-align: right;">-77.54211</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F002</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">22.3</td>
+<td style="text-align: right;">1.1</td>
+<td style="text-align: right;">89</td>
+<td style="text-align: right;">-2.12</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">37.40045</td>
+<td style="text-align: right;">-77.57370</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F003</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">22.3</td>
+<td style="text-align: right;">0.6</td>
+<td style="text-align: right;">94</td>
+<td style="text-align: right;">-2.72</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">37.39995</td>
+<td style="text-align: right;">-77.57251</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F004</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">22.7</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">-1.40</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">37.39896</td>
+<td style="text-align: right;">-77.58245</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F005</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">23.1</td>
+<td style="text-align: right;">0.8</td>
+<td style="text-align: right;">68</td>
+<td style="text-align: right;">-0.74</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">37.39586</td>
+<td style="text-align: right;">-77.58325</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F006</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">23.5</td>
+<td style="text-align: right;">1.1</td>
+<td style="text-align: right;">68</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">37.39026</td>
+<td style="text-align: right;">-77.57686</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F007</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">24.3</td>
+<td style="text-align: right;">0.1</td>
+<td style="text-align: right;">97</td>
+<td style="text-align: right;">-3.13</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">37.37651</td>
+<td style="text-align: right;">-77.55765</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F008</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">26.1</td>
+<td style="text-align: right;">1.1</td>
+<td style="text-align: right;">83</td>
+<td style="text-align: right;">-1.42</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">37.36513</td>
+<td style="text-align: right;">-77.57703</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F009</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">26.5</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">-3.92</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">37.36448</td>
+<td style="text-align: right;">-77.58783</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F010</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">26.6</td>
+<td style="text-align: right;">0.9</td>
+<td style="text-align: right;">91</td>
+<td style="text-align: right;">-2.31</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">37.36059</td>
+<td style="text-align: right;">-77.57855</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F011</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">5.1</td>
+<td style="text-align: right;">4.3</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1.28</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">37.54812</td>
+<td style="text-align: right;">-77.51289</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F012</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">18.6</td>
+<td style="text-align: right;">2.8</td>
+<td style="text-align: right;">73</td>
+<td style="text-align: right;">-0.48</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">37.43325</td>
+<td style="text-align: right;">-77.56367</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F013</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">18.8</td>
+<td style="text-align: right;">1.4</td>
+<td style="text-align: right;">85</td>
+<td style="text-align: right;">-1.54</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">37.43152</td>
+<td style="text-align: right;">-77.56557</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F014</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">20.0</td>
+<td style="text-align: right;">3.9</td>
+<td style="text-align: right;">54</td>
+<td style="text-align: right;">1.16</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">37.41334</td>
+<td style="text-align: right;">-77.54390</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F015</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">21.4</td>
+<td style="text-align: right;">3.2</td>
+<td style="text-align: right;">73</td>
+<td style="text-align: right;">0.26</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">37.39955</td>
+<td style="text-align: right;">-77.54010</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F016</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">22.1</td>
+<td style="text-align: right;">1.2</td>
+<td style="text-align: right;">96</td>
+<td style="text-align: right;">-2.89</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">37.39550</td>
+<td style="text-align: right;">-77.55187</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F017</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">23.0</td>
+<td style="text-align: right;">1.3</td>
+<td style="text-align: right;">75</td>
+<td style="text-align: right;">-0.65</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">37.39444</td>
+<td style="text-align: right;">-77.57643</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F018</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">24.6</td>
+<td style="text-align: right;">2.8</td>
+<td style="text-align: right;">86</td>
+<td style="text-align: right;">-1.58</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">37.37838</td>
+<td style="text-align: right;">-77.57307</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F019</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">25.5</td>
+<td style="text-align: right;">1.1</td>
+<td style="text-align: right;">93</td>
+<td style="text-align: right;">-2.40</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">37.37168</td>
+<td style="text-align: right;">-77.58154</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F020</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">26.1</td>
+<td style="text-align: right;">4.0</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">37.36009</td>
+<td style="text-align: right;">-77.56068</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F021</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">-1.0</td>
+<td style="text-align: right;">8.8</td>
+<td style="text-align: right;">37</td>
+<td style="text-align: right;">1.68</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">37.59556</td>
+<td style="text-align: right;">-77.47522</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F022</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">4.3</td>
+<td style="text-align: right;">9.2</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">0.40</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">37.55065</td>
+<td style="text-align: right;">-77.49811</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F023</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">5.6</td>
+<td style="text-align: right;">9.1</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">2.40</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">37.53495</td>
+<td style="text-align: right;">-77.48565</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F024</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">11.6</td>
+<td style="text-align: right;">9.5</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">1.46</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">37.48999</td>
+<td style="text-align: right;">-77.52742</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F025</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">16.0</td>
+<td style="text-align: right;">6.8</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">0.47</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">37.44711</td>
+<td style="text-align: right;">-77.52579</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F026</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">19.3</td>
+<td style="text-align: right;">8.1</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">2.26</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">37.41921</td>
+<td style="text-align: right;">-77.53826</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F027</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">20.4</td>
+<td style="text-align: right;">4.4</td>
+<td style="text-align: right;">74</td>
+<td style="text-align: right;">-0.33</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">37.41316</td>
+<td style="text-align: right;">-77.55603</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F028</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">21.6</td>
+<td style="text-align: right;">7.5</td>
+<td style="text-align: right;">56</td>
+<td style="text-align: right;">0.70</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">37.40797</td>
+<td style="text-align: right;">-77.57761</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F029</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">22.3</td>
+<td style="text-align: right;">4.6</td>
+<td style="text-align: right;">84</td>
+<td style="text-align: right;">-1.38</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">37.39837</td>
+<td style="text-align: right;">-77.56530</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F030</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">26.0</td>
+<td style="text-align: right;">4.6</td>
+<td style="text-align: right;">55</td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">37.36035</td>
+<td style="text-align: right;">-77.55785</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F031</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">-1.3</td>
+<td style="text-align: right;">16.5</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">1.50</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">37.59752</td>
+<td style="text-align: right;">-77.47280</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F032</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">4.7</td>
+<td style="text-align: right;">11.8</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">1.40</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">37.54772</td>
+<td style="text-align: right;">-77.49975</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F033</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">5.4</td>
+<td style="text-align: right;">14.2</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">2.47</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">37.53799</td>
+<td style="text-align: right;">-77.48983</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F034</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">6.7</td>
+<td style="text-align: right;">16.5</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.37</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">37.52713</td>
+<td style="text-align: right;">-77.49382</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F035</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">11.0</td>
+<td style="text-align: right;">11.1</td>
+<td style="text-align: right;">59</td>
+<td style="text-align: right;">0.94</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">37.49369</td>
+<td style="text-align: right;">-77.52136</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F036</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">13.5</td>
+<td style="text-align: right;">14.5</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-0.32</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">37.47691</td>
+<td style="text-align: right;">-77.54492</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F037</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">14.2</td>
+<td style="text-align: right;">13.7</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">1.79</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">37.47058</td>
+<td style="text-align: right;">-77.54739</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F038</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">16.1</td>
+<td style="text-align: right;">12.2</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0.70</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">37.44911</td>
+<td style="text-align: right;">-77.53723</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F039</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">20.9</td>
+<td style="text-align: right;">11.4</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">2.32</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">37.40614</td>
+<td style="text-align: right;">-77.54811</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F040</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">22.0</td>
+<td style="text-align: right;">10.4</td>
+<td style="text-align: right;">65</td>
+<td style="text-align: right;">0.24</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">37.40036</td>
+<td style="text-align: right;">-77.56291</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F041</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">-1.5</td>
+<td style="text-align: right;">25.0</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">0.90</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">37.60048</td>
+<td style="text-align: right;">-77.47701</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F042</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">-1.2</td>
+<td style="text-align: right;">20.2</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">2.27</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">37.59820</td>
+<td style="text-align: right;">-77.47968</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F043</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">3.6</td>
+<td style="text-align: right;">21.4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.32</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">37.55922</td>
+<td style="text-align: right;">-77.50160</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F044</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">3.9</td>
+<td style="text-align: right;">19.2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">37.55406</td>
+<td style="text-align: right;">-77.49551</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F045</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">8.5</td>
+<td style="text-align: right;">18.1</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: right;">2.05</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">37.51905</td>
+<td style="text-align: right;">-77.52675</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F046</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">9.1</td>
+<td style="text-align: right;">25.1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.79</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">37.50198</td>
+<td style="text-align: right;">-77.48782</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F047</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">14.7</td>
+<td style="text-align: right;">18.7</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.59</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">37.45784</td>
+<td style="text-align: right;">-77.52237</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F048</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">14.8</td>
+<td style="text-align: right;">21.2</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">1.94</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">37.46482</td>
+<td style="text-align: right;">-77.54886</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F049</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">20.9</td>
+<td style="text-align: right;">20.7</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">2.41</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">37.40251</td>
+<td style="text-align: right;">-77.53559</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F050</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">21.8</td>
+<td style="text-align: right;">16.8</td>
+<td style="text-align: right;">53</td>
+<td style="text-align: right;">0.89</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">37.40299</td>
+<td style="text-align: right;">-77.56496</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F051</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">-1.7</td>
+<td style="text-align: right;">31.5</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-1.11</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">37.60209</td>
+<td style="text-align: right;">-77.47439</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F052</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">-1.5</td>
+<td style="text-align: right;">28.9</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.85</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">37.60122</td>
+<td style="text-align: right;">-77.48052</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F053</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">-1.1</td>
+<td style="text-align: right;">25.4</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">2.20</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">37.59793</td>
+<td style="text-align: right;">-77.48085</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F054</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">4.4</td>
+<td style="text-align: right;">28.1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.46</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">37.54444</td>
+<td style="text-align: right;">-77.47925</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F055</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">8.4</td>
+<td style="text-align: right;">34.9</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-0.25</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">37.51262</td>
+<td style="text-align: right;">-77.50137</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F056</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">9.3</td>
+<td style="text-align: right;">35.0</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">0.83</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">37.50944</td>
+<td style="text-align: right;">-77.51994</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F057</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">11.1</td>
+<td style="text-align: right;">26.3</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">1.84</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">37.49448</td>
+<td style="text-align: right;">-77.52732</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F058</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">13.5</td>
+<td style="text-align: right;">28.3</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.22</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">37.46780</td>
+<td style="text-align: right;">-77.51608</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F059</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">19.1</td>
+<td style="text-align: right;">25.9</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">0.78</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">37.42345</td>
+<td style="text-align: right;">-77.54778</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F060</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">20.7</td>
+<td style="text-align: right;">25.4</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">2.04</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">37.40465</td>
+<td style="text-align: right;">-77.53615</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F061</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">-2.0</td>
+<td style="text-align: right;">39.3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.44</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">37.60111</td>
+<td style="text-align: right;">-77.46357</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F062</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">-2.0</td>
+<td style="text-align: right;">41.2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-1.96</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">37.60267</td>
+<td style="text-align: right;">-77.46939</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F063</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">-0.9</td>
+<td style="text-align: right;">35.7</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">1.89</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">37.59632</td>
+<td style="text-align: right;">-77.48227</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F064</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">1.7</td>
+<td style="text-align: right;">36.4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-0.78</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">37.57404</td>
+<td style="text-align: right;">-77.49248</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F065</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">3.8</td>
+<td style="text-align: right;">35.6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.85</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">37.55402</td>
+<td style="text-align: right;">-77.49193</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F066</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">8.0</td>
+<td style="text-align: right;">39.2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-0.24</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">37.51305</td>
+<td style="text-align: right;">-77.48976</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F067</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">10.2</td>
+<td style="text-align: right;">35.3</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">1.15</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">37.50012</td>
+<td style="text-align: right;">-77.51672</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F068</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">14.1</td>
+<td style="text-align: right;">36.1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0.38</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">37.46600</td>
+<td style="text-align: right;">-77.52815</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F069</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">14.3</td>
+<td style="text-align: right;">37.6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-0.81</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">37.45758</td>
+<td style="text-align: right;">-77.50807</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F070</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">20.6</td>
+<td style="text-align: right;">36.2</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">1.46</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">37.40528</td>
+<td style="text-align: right;">-77.53375</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F071</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">-1.9</td>
+<td style="text-align: right;">50.1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-0.10</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">37.59924</td>
+<td style="text-align: right;">-77.45895</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F072</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">-0.8</td>
+<td style="text-align: right;">45.3</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">1.07</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">37.59572</td>
+<td style="text-align: right;">-77.48412</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F073</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">1.5</td>
+<td style="text-align: right;">55.4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-2.66</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">37.57609</td>
+<td style="text-align: right;">-77.49061</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F074</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">1.6</td>
+<td style="text-align: right;">51.5</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-1.29</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">37.57748</td>
+<td style="text-align: right;">-77.49805</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F075</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">4.1</td>
+<td style="text-align: right;">53.0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-1.98</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">37.54394</td>
+<td style="text-align: right;">-77.46806</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F076</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">4.1</td>
+<td style="text-align: right;">45.6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">37.54567</td>
+<td style="text-align: right;">-77.47412</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F077</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">8.3</td>
+<td style="text-align: right;">52.0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-0.59</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">37.50993</td>
+<td style="text-align: right;">-77.49033</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F078</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">8.4</td>
+<td style="text-align: right;">53.5</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-1.50</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">37.50804</td>
+<td style="text-align: right;">-77.48560</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F079</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">10.3</td>
+<td style="text-align: right;">47.2</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">37.50039</td>
+<td style="text-align: right;">-77.52207</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F080</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">13.5</td>
+<td style="text-align: right;">51.5</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.81</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">37.47025</td>
+<td style="text-align: right;">-77.52524</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F081</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">-0.3</td>
+<td style="text-align: right;">56.5</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">37.59096</td>
+<td style="text-align: right;">-77.48384</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F082</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">-0.1</td>
+<td style="text-align: right;">57.8</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-1.02</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">37.59142</td>
+<td style="text-align: right;">-77.48998</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F083</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0.4</td>
+<td style="text-align: right;">63.8</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-2.54</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">37.58072</td>
+<td style="text-align: right;">-77.47074</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F084</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">2.8</td>
+<td style="text-align: right;">65.1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-3.56</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">37.55886</td>
+<td style="text-align: right;">-77.47639</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F085</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">3.8</td>
+<td style="text-align: right;">61.7</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-1.68</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">37.54834</td>
+<td style="text-align: right;">-77.47358</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F086</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">3.9</td>
+<td style="text-align: right;">58.5</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-2.78</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">37.55151</td>
+<td style="text-align: right;">-77.48605</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F087</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">3.9</td>
+<td style="text-align: right;">56.4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-0.93</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">37.54712</td>
+<td style="text-align: right;">-77.47309</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F088</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">8.8</td>
+<td style="text-align: right;">57.5</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-0.75</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">37.50830</td>
+<td style="text-align: right;">-77.49933</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F089</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">10.3</td>
+<td style="text-align: right;">65.7</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">-1.60</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">37.50172</td>
+<td style="text-align: right;">-77.52667</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F090</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">10.9</td>
+<td style="text-align: right;">57.7</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">37.49730</td>
+<td style="text-align: right;">-77.53132</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F091</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0.1</td>
+<td style="text-align: right;">66.9</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-1.15</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">37.58722</td>
+<td style="text-align: right;">-77.48371</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F092</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0.1</td>
+<td style="text-align: right;">66.6</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">-1.77</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">37.58525</td>
+<td style="text-align: right;">-77.47800</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F093</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0.3</td>
+<td style="text-align: right;">74.3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-3.12</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">37.58311</td>
+<td style="text-align: right;">-77.47765</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F094</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0.9</td>
+<td style="text-align: right;">70.8</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-2.39</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">37.57359</td>
+<td style="text-align: right;">-77.46260</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F095</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">1.4</td>
+<td style="text-align: right;">69.5</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-2.78</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">37.57422</td>
+<td style="text-align: right;">-77.48234</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F096</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">2.4</td>
+<td style="text-align: right;">66.4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-3.16</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">37.56369</td>
+<td style="text-align: right;">-77.47798</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F097</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">3.1</td>
+<td style="text-align: right;">70.1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-3.58</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">37.55495</td>
+<td style="text-align: right;">-77.47164</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F098</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">3.6</td>
+<td style="text-align: right;">68.6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-2.82</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">37.55037</td>
+<td style="text-align: right;">-77.47458</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F099</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">10.5</td>
+<td style="text-align: right;">67.1</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">-1.54</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">37.49963</td>
+<td style="text-align: right;">-77.52717</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F100</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">10.6</td>
+<td style="text-align: right;">69.7</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-1.93</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">37.49994</td>
+<td style="text-align: right;">-77.52917</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The full list with alternates is <code>data/derived/focal_trees.csv</code> (and <code>.gpx</code> for GPS units and phone apps). Each row carries the crown id from the candidate run, so field records can be joined back to imagery features.</p>
+</section>
+<section id="notes" class="level2">
+<h2 class="anchored" data-anchor-id="notes">Notes</h2>
+<ul>
+<li><strong>Spacing.</strong> 100 m is a working choice. Holly fruit is bird-dispersed, and most seeds of bird-dispersed trees fall within a few hundred metres of the parent, so trees 100 m apart can still be related. A genetic check (e.g.&nbsp;a kinship estimate from markers) on the final set would show how much residual relatedness remains. Increase <code>min_spacing_m</code> in <code>config.yml</code> and rerun <code>R/08_focal_trees.R</code> (about 30 s) to tighten it.</li>
+<li><strong>Scale.</strong> Landscape context uses a 500 m radius, a common scale for urban landscape effects on plants and their insects. Pollinator and leaf-miner responses may work at other scales; the metrics can be recomputed at several radii for analysis without changing the tree list.</li>
+<li><strong>Access.</strong> Urban bins fall largely on private land (yards, institutional grounds). Expect more substitutions there, from both access and ornamental look-alikes.</li>
+<li><strong>NLCD limits.</strong> Context comes from 30 m NLCD, so small features (a single street tree’s yard, a narrow riparian strip) are blurred. Neighbourhoods near the edge of the NLCD extract are truncated.</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

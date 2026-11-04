@@ -18,16 +18,19 @@ library(here)
 source(here("R", "functions.R"))
 
 grid_km <- 0.005                      # output pixel size (5 m)
-fig_width_in  <- 1.5
-fig_height_in <- 9
+fig_width_in <- 1.4                   # height follows from this width and the map's true scale
+left_in  <- 0.33                      # room for the distance labels
+right_in <- 0.17                      # room for the legend
+label_in <- 0.17                      # room for each place name
 font_pt <- 7
 
-nlcd_names <- c(
-  `11` = "Open water", `21` = "Developed, open space", `22` = "Developed, low",
-  `23` = "Developed, medium", `24` = "Developed, high", `31` = "Barren",
-  `41` = "Deciduous forest", `42` = "Evergreen forest", `43` = "Mixed forest",
-  `52` = "Shrub/scrub", `71` = "Grassland", `81` = "Pasture/hay", `82` = "Cultivated crops",
-  `90` = "Woody wetlands", `95` = "Emergent wetlands"
+# Legend groups, drawn as blocks of touching swatches in NLCD class order within each group
+lc_groups <- list(
+  Developed   = c(21, 22, 23, 24),
+  Forest      = c(41, 42, 43),
+  Agriculture = c(71, 81, 82),
+  Water       = c(11, 90, 95),
+  Other       = c(31, 52)
 )
 
 lc <- rast(here(cfg$nlcd$dir, sprintf("LndCov_%d.tif", cfg$nlcd$year)))
@@ -57,7 +60,8 @@ xy <- cbind(ends[1, 1] + km_to_crs(grid$u) * d[1] + km_to_crs(grid$v) * n[1],
 xy_lc <- sf_project(st_crs(cfg$crs), st_crs(crs(lc)), xy)
 cls <- values(lc)[cellFromXY(lc, xy_lc), 1]
 cls[!inside] <- NA
-present <- intersect(as.integer(names(nlcd_names)), unique(cls))
+lc_groups <- lapply(lc_groups, intersect, unique(cls))
+lc_groups <- lc_groups[lengths(lc_groups) > 0]
 
 # Check against the window summaries from R/05_nlcd.R ------------------------
 # Fractions for each window from this grid should match the exactextractr values.
@@ -82,14 +86,10 @@ img <- matrix(ifelse(is.na(cls), "transparent", ct_hex[as.character(cls)]),
 
 # Figure --------------------------------------------------------------------
 # Everything is drawn in km on one true-scale coordinate system: x = v, y = -u.
-draw <- function() {
-  line_in <- 1.45 * font_pt / 72                  # legend row height
-  legend_in <- line_in * length(present) + 0.05
-  label_in <- 0.17                                # room for each place name
-  map_in <- fig_height_in - legend_in - 2 * label_in
-  km_per_in <- (len_km + 2 * half_w) / map_in
-  left_in <- 0.33                                 # room for the distance labels
+km_per_in <- 2 * half_w / (fig_width_in - left_in - right_in)
+fig_height_in <- (len_km + 2 * half_w) / km_per_in + 2 * label_in
 
+draw <- function() {
   x0 <- -half_w - left_in * km_per_in
   y1 <- half_w + label_in * km_per_in
   op <- par(mai = rep(0, 4), xaxs = "i", yaxs = "i", ps = font_pt, cex = 1, lend = "butt")
@@ -119,15 +119,23 @@ draw <- function() {
   arrows(base[1], base[2], tip[1], tip[2], length = 0.05, lwd = 0.8)
   text(tip[1] + 0.35 * north[1], tip[2] + 0.5 * north[2], "N", font = 2)
 
-  # Legend, in the order of the NLCD classes
+  # Legend in one column down the right edge of the map: each group name, turned -90 degrees
+  # (reading downward), followed by its swatches
   sw <- 0.11 * km_per_in
-  row <- line_in * km_per_in
-  top <- -len_km - half_w - label_in * km_per_in
-  y <- top - (seq_along(present) - 0.5) * row - 0.05 * km_per_in
-  xl <- x0 + 0.03 * km_per_in
-  rect(xl, y - sw / 2, xl + sw, y + sw / 2, col = ct_hex[as.character(present)],
-       border = "grey20", lwd = 0.35)
-  text(xl + sw + 0.05 * km_per_in, y, nlcd_names[as.character(present)], adj = c(0, 0.5))
+  gap <- 0.1 * km_per_in
+  pad <- 0.03 * km_per_in
+  xl <- half_w + pad
+  y <- 0
+  for (g in names(lc_groups)) {
+    cl <- lc_groups[[g]]
+    label_len <- strwidth(g, units = "inches") * km_per_in
+    text(xl + sw / 2, y - label_len / 2, g, srt = -90, adj = c(0.5, 0.5))
+    y <- y - label_len - pad
+    tops <- y - (seq_along(cl) - 1) * sw
+    rect(xl, tops - sw, xl + sw, tops, col = ct_hex[as.character(cl)],
+         border = "grey20", lwd = 0.35)
+    y <- y - length(cl) * sw - gap
+  }
 }
 
 out <- here("media", "lc_map_vertical")
@@ -141,4 +149,4 @@ pdf(paste0(out, ".pdf"), width = fig_width_in, height = fig_height_in, bg = "whi
 draw()
 invisible(dev.off())
 
-message(sprintf("Wrote %s.png and .pdf (%.1f x %.1f in)", out, fig_width_in, fig_height_in))
+message(sprintf("Wrote %s.png and .pdf (%.2f x %.2f in)", out, fig_width_in, fig_height_in))

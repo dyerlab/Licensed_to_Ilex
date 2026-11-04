@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-11-04">
+
+<title>Study Area and Orthoimagery – Licensed to Ilex</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link href="../site_libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
+<script src="../site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="../site_libs/leaflet-1.3.1/leaflet.css" rel="stylesheet">
+<script src="../site_libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="../site_libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet">
+<script src="../site_libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="../site_libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="../site_libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet">
+<script src="../site_libs/leaflet-binding-2.2.3/leaflet.js"></script>
+<script src="../site_libs/leaflet-providers-3.0.0/leaflet-providers.js"></script>
+<script src="../site_libs/leaflet-providers-plugin-2.2.3/leaflet-providers-plugin.js"></script>
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Licensed to Ilex</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-analyses" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Analyses</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-analyses">    
+        <li>
+    <a class="dropdown-item" href="../analyses/01_study_area.html">
+ <span class="dropdown-text">Study Area and Orthoimagery</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../analyses/02_gradient.html">
+ <span class="dropdown-text">Urban to Forest Gradient</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../analyses/03_holly_classification.html">
+ <span class="dropdown-text">Holly Candidates</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../analyses/04_focal_trees.html">
+ <span class="dropdown-text">Focal Trees</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../analyses/05_forest_composition.html">
+ <span class="dropdown-text">Forest Composition</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/dyerlab/Licensed_to_Ilex"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#purpose" id="toc-purpose" class="nav-link active" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#study-area" id="toc-study-area" class="nav-link" data-scroll-target="#study-area">Study area</a></li>
+  <li><a href="#orthoimagery-tiles" id="toc-orthoimagery-tiles" class="nav-link" data-scroll-target="#orthoimagery-tiles">Orthoimagery tiles</a>
+  <ul class="collapse">
+  <li><a href="#tiles-required-to-reproduce" id="toc-tiles-required-to-reproduce" class="nav-link" data-scroll-target="#tiles-required-to-reproduce">Tiles required to reproduce</a></li>
+  </ul></li>
+  <li><a href="#mosaic" id="toc-mosaic" class="nav-link" data-scroll-target="#mosaic">Mosaic</a></li>
+  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes">Notes</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Study Area and Orthoimagery</h1>
+<p class="subtitle lead">Transect from industrial Richmond to Pocahontas State Park</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 4, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(leaflet)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(yaml)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>cfg <span class="ot">&lt;-</span> <span class="fu">read_yaml</span>(<span class="fu">here</span>(<span class="st">"config.yml"</span>))</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>derived <span class="ot">&lt;-</span> <span class="fu">here</span>(cfg<span class="sc">$</span>paths<span class="sc">$</span>derived)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>pts   <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="fu">file.path</span>(derived, <span class="st">"aoi.gpkg"</span>), <span class="at">layer =</span> <span class="st">"transect_points"</span>, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>line  <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="fu">file.path</span>(derived, <span class="st">"aoi.gpkg"</span>), <span class="at">layer =</span> <span class="st">"transect_line"</span>,   <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>aoi   <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="fu">file.path</span>(derived, <span class="st">"aoi.gpkg"</span>), <span class="at">layer =</span> <span class="st">"aoi"</span>,             <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>tiles <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="fu">file.path</span>(derived, <span class="st">"tiles_needed.gpkg"</span>), <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Status is checked at render time; tile paths are relative to the project root</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>tiles<span class="sc">$</span>converted <span class="ot">&lt;-</span> <span class="fu">file.exists</span>(<span class="fu">here</span>(tiles<span class="sc">$</span>tif_path))</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>tiles<span class="sc">$</span>state <span class="ot">&lt;-</span> <span class="fu">case_when</span>(</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  tiles<span class="sc">$</span>converted          <span class="sc">~</span> <span class="st">"converted"</span>,</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  tiles<span class="sc">$</span>status <span class="sc">==</span> <span class="st">"local"</span>  <span class="sc">~</span> <span class="st">"local (not converted)"</span>,</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="cn">TRUE</span>                     <span class="sc">~</span> <span class="st">"missing (download needed)"</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>state_cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"converted"</span> <span class="ot">=</span> <span class="st">"#1b9e77"</span>,</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>                <span class="st">"local (not converted)"</span> <span class="ot">=</span> <span class="st">"#7570b3"</span>,</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>                <span class="st">"missing (download needed)"</span> <span class="ot">=</span> <span class="st">"#d95f02"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<section id="purpose" class="level2">
+<h2 class="anchored" data-anchor-id="purpose">Purpose</h2>
+<p>This project uses 2025 Virginia Base Mapping Program (VBMP) orthoimagery along a transect from industrial Richmond to Pocahontas State Park. The statewide imagery is distributed as RGB MrSID tiles, and VGIN supplies 4-band (red, green, blue, near-infrared) GeoTIFF tiles on request. Only the tiles that overlap the study area are used, combined into a single virtual mosaic. The mosaic is built from the 4-band GeoTIFFs (<code>imagery_source: "4band"</code> in <code>config.yml</code>), so it carries the near-infrared band needed for NDVI.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Step</th>
+<th>Script</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1. Build transect and buffer</td>
+<td><code>R/01_build_aoi.R</code></td>
+<td><code>data/derived/aoi.gpkg</code></td>
+</tr>
+<tr class="even">
+<td>2. Select intersecting tiles</td>
+<td><code>R/02_select_tiles.R</code></td>
+<td><code>data/derived/tiles_needed.{gpkg,csv}</code></td>
+</tr>
+<tr class="odd">
+<td>3. Convert MrSID to GeoTIFF (RGB only; not needed with the 4-band tiles)</td>
+<td><code>python/convert_mrsid.py</code> (QGIS Python console)</td>
+<td><code>data/geotiff/*.tif</code></td>
+</tr>
+<tr class="even">
+<td>4. Virtual mosaic</td>
+<td><code>R/03_build_vrt.R</code></td>
+<td><code>data/derived/ortho_12in.vrt</code>, <code>ortho_12in_preview.tif</code></td>
+</tr>
+</tbody>
+</table>
+<p>All parameters live in <code>config.yml</code>. Analysis scripts load the imagery with <code>load_ortho()</code> from <code>R/functions.R</code>, which returns the mosaic limited to the study area without copying any data.</p>
+</section>
+<section id="study-area" class="level2">
+<h2 class="anchored" data-anchor-id="study-area">Study area</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>len_km  <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(line<span class="sc">$</span>length_km)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>area_km <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(aoi<span class="sc">$</span>area_km2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<ul>
+<li><strong>Start:</strong> Industrial Richmond (37.584817° N, 77.472433° W)</li>
+<li><strong>End:</strong> Pocahontas State Park (37.373768° N, 77.570813° W)</li>
+<li><strong>Transect length:</strong> 24.99 km</li>
+<li><strong>Buffer:</strong> 2 km each side, round end caps</li>
+<li><strong>Study area:</strong> 112.5 km²</li>
+<li><strong>CRS:</strong> EPSG:2925 (NAD83(HARN) / Virginia South (ftUS))</li>
+</ul>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>to_ll <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">st_transform</span>(x, <span class="dv">4326</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>pal <span class="ot">&lt;-</span> <span class="fu">colorFactor</span>(<span class="fu">unname</span>(state_cols), <span class="at">levels =</span> <span class="fu">names</span>(state_cols))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">leaflet</span>() <span class="sc">|&gt;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addProviderTiles</span>(providers<span class="sc">$</span>Esri.WorldImagery, <span class="at">group =</span> <span class="st">"Imagery"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addProviderTiles</span>(providers<span class="sc">$</span>Esri.WorldGrayCanvas, <span class="at">group =</span> <span class="st">"Light"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addPolygons</span>(<span class="at">data =</span> <span class="fu">to_ll</span>(tiles), <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">weight =</span> <span class="dv">1</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">fillColor =</span> <span class="sc">~</span><span class="fu">pal</span>(state), <span class="at">fillOpacity =</span> <span class="fl">0.4</span>,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">label =</span> <span class="sc">~</span><span class="fu">paste0</span>(tile_name, <span class="st">" ("</span>, state, <span class="st">")"</span>), <span class="at">group =</span> <span class="st">"Tiles"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addPolygons</span>(<span class="at">data =</span> <span class="fu">to_ll</span>(aoi), <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">weight =</span> <span class="dv">2</span>, <span class="at">fill =</span> <span class="cn">FALSE</span>, <span class="at">group =</span> <span class="st">"Study area"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addPolylines</span>(<span class="at">data =</span> <span class="fu">to_ll</span>(line), <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">dashArray =</span> <span class="st">"6"</span>, <span class="at">weight =</span> <span class="dv">2</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addCircleMarkers</span>(<span class="at">data =</span> <span class="fu">to_ll</span>(pts), <span class="at">radius =</span> <span class="dv">5</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">label =</span> <span class="sc">~</span>name) <span class="sc">|&gt;</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addLegend</span>(<span class="at">pal =</span> pal, <span class="at">values =</span> <span class="fu">names</span>(state_cols), <span class="at">title =</span> <span class="st">"Tile status"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addLayersControl</span>(<span class="at">baseGroups =</span> <span class="fu">c</span>(<span class="st">"Imagery"</span>, <span class="st">"Light"</span>), <span class="at">overlayGroups =</span> <span class="fu">c</span>(<span class="st">"Tiles"</span>, <span class="st">"Study area"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-0351147a1bcf5291d343" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-0351147a1bcf5291d343">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["Esri.WorldImagery",null,"Imagery",{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addProviderTiles","args":["Esri.WorldGrayCanvas",null,"Light",{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addPolygons","args":[[[[{"lng":[-77.59808917992635,-77.58948640426782,-77.58088364260298,-77.58096739428046,-77.58105113069666,-77.58965232489591,-77.59825353308079,-77.59817136399143,-77.59808917992635],"lat":[37.37131201370332,37.3712461036743,37.37117956796323,37.36431368283172,37.3574477896963,37.35751431343719,37.35758021160861,37.3644461166578,37.37131201370332]}]],[[{"lng":[-77.59776029381639,-77.58915438149607,-77.58054848318559,-77.58063229595002,-77.58071609343644,-77.58932042313829,-77.59792476684196,-77.5978425378252,-77.59776029381639],"lat":[37.39877552077642,37.3987095870306,37.39864302737759,37.39177717524862,37.38491131472088,37.38497786240265,37.38504378428979,37.39190965673236,37.39877552077642]}]],[[{"lng":[-77.59792476684196,-77.58932042313829,-77.58071609343644,-77.58079987566003,-77.58088364260298,-77.58948640426782,-77.59808917992635,-77.59800698088148,-77.59792476684196],"lat":[37.38504378428979,37.38497786240265,37.38491131472088,37.37804544499219,37.37117956796323,37.3712461036743,37.37131201370332,37.37817790264658,37.38504378428979]}]],[[{"lng":[-77.5975957607953,-77.5889882792862,-77.58038081179505,-77.58046465513901,-77.58054848318559,-77.58915438149607,-77.59776029381639,-77.59767803481138,-77.5975957607953],"lat":[37.41250722417532,37.4124412785703,37.41237470694548,37.40550887100913,37.39864302737759,37.3987095870306,37.39877552077642,37.40564137632333,37.41250722417532]}]],[[{"lng":[-77.58105113069666,-77.5724499528833,-77.56384879046985,-77.5639340786646,-77.56401935130978,-77.57261894684555,-77.58121855777283,-77.58113485186672,-77.58105113069666],"lat":[37.3574477896963,37.35738064040503,37.35731286555633,37.35044697575335,37.34358107904465,37.34364884169861,37.3437159789077,37.35058188775474,37.3574477896963]}]],[[{"lng":[-77.58088364260298,-77.5722808973326,-77.56367816747051,-77.56376348674364,-77.56384879046985,-77.5724499528833,-77.58105113069666,-77.58096739428046,-77.58088364260298],"lat":[37.37117956796323,37.37111240658923,37.37104461954524,37.36417874655287,37.35731286555633,37.35738064040503,37.3574477896963,37.36431368283172,37.37117956796323]}]],[[{"lng":[-77.56367816747051,-77.55507545315953,-77.54647275341362,-77.54655964026544,-77.54664651128482,-77.55524764359896,-77.56384879046985,-77.56376348674364,-77.56367816747051],"lat":[37.37104461954524,37.37097620683293,37.37090716844487,37.36404130781678,37.35717543918424,37.35724446515186,37.35731286555633,37.36417874655287,37.37104461954524]}]],[[{"lng":[-77.56384879046985,-77.55524764359896,-77.54664651128482,-77.5467333664874,-77.54682020585476,-77.55541977130808,-77.56401935130978,-77.5639340786646,-77.56384879046985],"lat":[37.35731286555633,37.35724446515186,37.35717543918424,37.35030956174498,37.3434436773997,37.3435126909475,37.34358107904465,37.35044697575335,37.35731286555633]}]],[[{"lng":[-77.58071609343644,-77.57211178013756,-77.56350748225543,-77.56359283264628,-77.56367816747051,-77.5722808973326,-77.58088364260298,-77.58079987566003,-77.58071609343644],"lat":[37.38491131472088,37.38484414126359,37.38477634202377,37.37791048443478,37.37104461954524,37.37111240658923,37.37117956796323,37.37804544499219,37.38491131472088]}]],[[{"lng":[-77.58054848318559,-77.57194260128668,-77.56333673481292,-77.56342211631612,-77.56350748225543,-77.57211178013756,-77.58071609343644,-77.58063229595002,-77.58054848318559],"lat":[37.39864302737759,37.39857584183649,37.39850803040029,37.39164219041154,37.38477634202377,37.38484414126359,37.38491131472088,37.39177717524862,37.39864302737759]}]],[[{"lng":[-77.56333673481292,-77.55473088390728,-77.54612504758349,-77.54621199780856,-77.5462989321838,-77.55490319993288,-77.56350748225543,-77.56342211631612,-77.56333673481292],"lat":[37.39850803040029,37.3984395930706,37.39837052984009,37.39150470221669,37.38463886619403,37.38470791700305,37.38477634202377,37.39164219041154,37.39850803040029]}]],[[{"lng":[-77.56350748225543,-77.55490319993288,-77.5462989321838,-77.54638585072499,-77.54647275341362,-77.55507545315953,-77.56367816747051,-77.56359283264628,-77.56350748225543],"lat":[37.38477634202377,37.38470791700305,37.38463886619403,37.37777302096986,37.37090716844487,37.37097620683293,37.37104461954524,37.37791048443478,37.38477634202377]}]],[[{"lng":[-77.58038081179505,-77.57177336072401,-77.56316592508658,-77.56325133774155,-77.56333673481292,-77.57194260128668,-77.58054848318559,-77.58046465513901,-77.58038081179505],"lat":[37.41237470694548,37.41230750932004,37.41223968568689,37.40537386189131,37.39850803040029,37.39857584183649,37.39864302737759,37.40550887100913,37.41237470694548]}]],[[{"lng":[-77.58021307925337,-77.571604058438,-77.56299505306472,-77.56308049686611,-77.56316592508658,-77.57177336072401,-77.58038081179505,-77.58029695317157,-77.58021307925337],"lat":[37.42610635083266,37.42603914112231,37.42597130529169,37.41910549988631,37.41223968568689,37.41230750932004,37.41237470694548,37.41924053328594,37.42610635083266]}]],[[{"lng":[-77.56299505306472,-77.55438606327658,-77.54577708808706,-77.54586410175473,-77.54595109955521,-77.55455850502578,-77.56316592508658,-77.56308049686611,-77.56299505306472],"lat":[37.42597130529169,37.42590284334243,37.42583375526719,37.41896796222828,37.41210216039509,37.41217123604771,37.41223968568689,37.41910549988631,37.42597130529169]}]],[[{"lng":[-77.56316592508658,-77.55455850502578,-77.54595109955521,-77.54603808150431,-77.54612504758349,-77.55473088390728,-77.56333673481292,-77.56325133774155,-77.56316592508658],"lat":[37.41223968568689,37.41217123604771,37.41210216039509,37.40523634896542,37.39837052984009,37.3984395930706,37.39850803040029,37.40537386189131,37.41223968568689]}]],[[{"lng":[-77.58004528550504,-77.57143469437268,-77.56282411869084,-77.56290959367813,-77.56299505306472,-77.571604058438,-77.58021307925337,-77.58012919003625,-77.58004528550504],"lat":[37.43983796005096,37.43977073825517,37.43970289022653,37.43283710180432,37.42597130529169,37.42603914112231,37.42610635083266,37.43297215948692,37.43983796005096]}]],[[{"lng":[-77.5798774305386,-77.57126526851643,-77.56265312195323,-77.56273862812102,-77.56282411869084,-77.57143469437268,-77.58004528550504,-77.57996136567755,-77.5798774305386],"lat":[37.45356953200825,37.4535022981265,37.45343443789928,37.44656866865746,37.43970289022653,37.43977073825517,37.43983796005096,37.44670375062405,37.45356953200825]}]],[[{"lng":[-77.56265312195323,-77.55404099099225,-77.5454288746467,-77.54551595182639,-77.54560301312155,-77.55421355860268,-77.56282411869084,-77.56273862812102,-77.56265312195323],"lat":[37.45343443789928,37.45336595132827,37.45329683840606,37.44643108153183,37.43956531546822,37.43963441596667,37.43970289022653,37.44656866865746,37.45343443789928]}]],[[{"lng":[-77.56282411869084,-77.55421355860268,-77.54560301312155,-77.54569005854795,-77.54577708808706,-77.55438606327658,-77.56299505306472,-77.56290959367813,-77.56282411869084],"lat":[37.43970289022653,37.43963441596667,37.43956531546822,37.43269953941309,37.42583375526719,37.42590284334243,37.42597130529169,37.43283710180432,37.43970289022653]}]],[[{"lng":[-77.56231094120537,-77.55369566677869,-77.54508040698428,-77.54516754774558,-77.54525467260494,-77.55386836038819,-77.56248206279533,-77.5623965098079,-77.56231094120537],"lat":[37.48089742190095,37.48082891070597,37.48075977293458,37.47389405380575,37.46702832509233,37.46709745043884,37.46716594932155,37.47403169040341,37.48089742190095]}]],[[{"lng":[-77.56248206279533,-77.55386836038819,-77.54525467260494,-77.54534178157814,-77.5454288746467,-77.55404099099225,-77.56265312195323,-77.56256760018316,-77.56248206279533],"lat":[37.46716594932155,37.46709745043884,37.46702832509233,37.46016258599214,37.45329683840606,37.45336595132827,37.45343443789928,37.46030019785324,37.46716594932155]}]],[[{"lng":[-77.5462989321838,-77.53769468140933,-77.52909044662326,-77.52917893329736,-77.52926740383296,-77.53787007063347,-77.54647275341362,-77.54638585072499,-77.5462989321838],"lat":[37.38463886619403,37.38456918961656,37.38449888726325,37.37763305462905,37.37076721469373,37.37083750440092,37.37090716844487,37.37777302096986,37.38463886619403]}]],[[{"lng":[-77.54612504758349,-77.5375192282432,-77.52891342490003,-77.5290019438295,-77.52909044662326,-77.53769468140933,-77.5462989321838,-77.54621199780856,-77.54612504758349],"lat":[37.39837052984009,37.39830084072847,37.39823052572854,37.39136471069568,37.38449888726325,37.38456918961656,37.38463886619403,37.39150470221669,37.39837052984009]}]],[[{"lng":[-77.54595109955521,-77.53734371107701,-77.5287363386047,-77.52882488983043,-77.52891342490003,-77.5375192282432,-77.54612504758349,-77.54603808150431,-77.54595109955521],"lat":[37.41210216039509,37.41203245874881,37.41196213110167,37.40509633226311,37.39823052572854,37.39830084072847,37.39837052984009,37.40523634896542,37.41210216039509]}]],[[{"lng":[-77.54577708808706,-77.53716812989883,-77.52855918772524,-77.52864777124165,-77.5287363386047,-77.53734371107701,-77.54595109955521,-77.54586410175473,-77.54577708808706],"lat":[37.42583375526719,37.42576404108571,37.42569370079076,37.41882792034347,37.41196213110167,37.41203245874881,37.41210216039509,37.41896796222828,37.42583375526719]}]],[[{"lng":[-77.52855918772524,-77.51995026170937,-77.5113413508647,-77.5114315042123,-77.51152164112035,-77.52012898228129,-77.5287363386047,-77.52864777124165,-77.52855918772524],"lat":[37.42569370079076,37.42562273438401,37.42555114185778,37.41868537422734,37.41181959780202,37.4118911774553,37.41196213110167,37.41882792034347,37.42569370079076]}]],[[{"lng":[-77.54560301312155,-77.53699248465058,-77.52838197220301,-77.52847058805104,-77.52855918772524,-77.53716812989883,-77.54577708808706,-77.54569005854795,-77.54560301312155],"lat":[37.43956531546822,37.43949558875097,37.43942523580765,37.43255947234471,37.42569370079076,37.42576404108571,37.42583375526719,37.43269953941309,37.43956531546822]}]],[[{"lng":[-77.5454288746467,-77.53681677532023,-77.52820469202591,-77.52829334019998,-77.52838197220301,-77.53699248465058,-77.54560301312155,-77.54551595182639,-77.5454288746467],"lat":[37.45329683840606,37.45322709915249,37.45315673356022,37.44629098927875,37.43942523580765,37.43949558875097,37.43956531546822,37.44643108153183,37.45329683840606]}]],[[{"lng":[-77.52820469202591,-77.51959262490703,-77.51098057297679,-77.51107079212765,-77.51116099482095,-77.51977147592201,-77.52838197220301,-77.52829334019998,-77.52820469202591],"lat":[37.45315673356022,37.45308574163098,37.45301412335714,37.44614839189365,37.43928265124019,37.43935425663993,37.43942523580765,37.44629098927875,37.45315673356022]}]],[[{"lng":[-77.52838197220301,-77.51977147592201,-77.51116099482095,-77.51125118107302,-77.5113413508647,-77.51995026170937,-77.52855918772524,-77.52847058805104,-77.52838197220301],"lat":[37.43942523580765,37.43935425663993,37.43928265124019,37.43241690059465,37.42555114185778,37.42562273438401,37.42569370079076,37.43255947234471,37.43942523580765]}]],[[{"lng":[-77.54525467260494,-77.53664100184963,-77.52802734713528,-77.52811602767636,-77.52820469202591,-77.53681677532023,-77.5454288746467,-77.54534178157814,-77.54525467260494],"lat":[37.46702832509233,37.46695857330181,37.46688819506006,37.46002246855326,37.45315673356022,37.45322709915249,37.45329683840606,37.46016258599214,37.46702832509233]}]],[[{"lng":[-77.54508040698428,-77.53646516422675,-77.52784993751895,-77.5279386504215,-77.52802734713528,-77.53664100184963,-77.54525467260494,-77.54516754774558,-77.54508040698428],"lat":[37.48075977293458,37.48069000860664,37.48061961771482,37.47375391117989,37.46688819506006,37.46695857330181,37.46702832509233,37.47389405380575,37.48075977293458]}]],[[{"lng":[-77.52784993751895,-77.51923472700433,-77.51061953169578,-77.51070981672194,-77.51080008527254,-77.51941370860523,-77.52802734713528,-77.5279386504215,-77.52784993751895],"lat":[37.48061961771482,37.48054860026084,37.48047695623703,37.4736112625212,37.4667455592202,37.46681719036875,37.46688819506006,37.47375391117989,37.48061961771482]}]],[[{"lng":[-77.52802734713528,-77.51941370860523,-77.51080008527254,-77.51089033736388,-77.51098057297679,-77.51959262490703,-77.52820469202591,-77.52811602767636,-77.52802734713528],"lat":[37.46688819506006,37.46681719036875,37.4667455592202,37.45987984553192,37.45301412335714,37.45308574163098,37.45315673356022,37.46002246855326,37.46688819506006]}]],[[{"lng":[-77.51098057297679,-77.50236853863881,-77.49375652090617,-77.4938483110157,-77.49394008438115,-77.50255053130292,-77.51116099482095,-77.51107079212765,-77.51098057297679],"lat":[37.45301412335714,37.45294187875921,37.45286900782959,37.44600328940924,37.4391375617986,37.43921041962894,37.43928265124019,37.44614839189365,37.45301412335714]}]],[[{"lng":[-77.51080008527254,-77.50218647954131,-77.49357289042455,-77.49366471404799,-77.49375652090617,-77.50236853863881,-77.51098057297679,-77.51089033736388,-77.51080008527254],"lat":[37.4667455592202,37.46667330163499,37.46660041760551,37.45973471696095,37.45286900782959,37.45294187875921,37.45301412335714,37.45987984553192,37.4667455592202]}]],[[{"lng":[-77.51061953169578,-77.50200435399792,-77.49338919292363,-77.49348105005529,-77.49357289042455,-77.50218647954131,-77.51080008527254,-77.51070981672194,-77.51061953169578],"lat":[37.48047695623703,37.48040468566397,37.48033178853403,37.47346610786249,37.46660041760551,37.46667330163499,37.4667455592202,37.4736112625212,37.48047695623703]}]],[[{"lng":[-77.56213975712673,-77.55352291010655,-77.54490607772708,-77.54499325031672,-77.54508040698428,-77.55369566677869,-77.56231094120537,-77.5622253569835,-77.56213975712673],"lat":[37.49462885664884,37.49456033314106,37.49449118294424,37.48762548238002,37.48075977293458,37.48082891070597,37.48089742190095,37.48776314371535,37.49462885664884]}]],[[{"lng":[-77.54490607772708,-77.53628926239338,-77.52767246311822,-77.52776120842323,-77.52784993751895,-77.53646516422675,-77.54508040698428,-77.54499325031672,-77.54490607772708],"lat":[37.49449118294424,37.49442140607827,37.49435100253583,37.48748531456605,37.48061961771482,37.48069000860664,37.48075977293458,37.48762548238002,37.49449118294424]}]],[[{"lng":[-77.54473168482131,-77.53611329633743,-77.52749492392086,-77.52758370162279,-77.52767246311822,-77.53628926239338,-77.54490607772708,-77.54481888923387,-77.54473168482131],"lat":[37.50822255252857,37.50815276312402,37.50808234693038,37.5012166797232,37.49435100253583,37.49442140607827,37.49449118294424,37.50135687272638,37.50822255252857]}]],[[{"lng":[-77.52749492392086,-77.5188765677152,-77.5102582267331,-77.51034857770676,-77.51043891218677,-77.51905568004506,-77.52767246311822,-77.52758370162279,-77.52749492392086],"lat":[37.50808234693038,37.50801130394939,37.50793963417333,37.5010739797864,37.494208315419,37.49427997231864,37.49435100253583,37.5012166797232,37.50808234693038]}]],[[{"lng":[-77.52767246311822,-77.51905568004506,-77.51043891218677,-77.5105292301895,-77.51061953169578,-77.51923472700433,-77.52784993751895,-77.52776120842323,-77.52767246311822],"lat":[37.49435100253583,37.49427997231864,37.494208315419,37.48734264026888,37.48047695623703,37.48054860026084,37.48061961771482,37.48748531456605,37.49435100253583]}]],[[{"lng":[-77.54455722822071,-77.53593726601217,-77.52731731987973,-77.52740613000798,-77.52749492392086,-77.53611329633743,-77.54473168482131,-77.54464446448506,-77.54455722822071],"lat":[37.52195388179778,37.52188407985409,37.52181365100871,37.51494800405852,37.50808234693038,37.50815276312402,37.50822255252857,37.51508822225202,37.52195388179778]}]],[[{"lng":[-77.52713965094766,-77.51851814675318,-77.5098966577998,-77.50998707479323,-77.51007747528679,-77.51869738996709,-77.52731731987973,-77.52722849352,-77.52713965094766],"lat":[37.53554491488084,37.53547384637052,37.53540215083992,37.5285365373636,37.5216709126103,37.52174259526333,37.52181365100871,37.52867928858313,37.53554491488084]}]],[[{"lng":[-77.52731731987973,-77.51869738996709,-77.51007747528679,-77.51016785926129,-77.5102582267331,-77.5188765677152,-77.52749492392086,-77.52740613000798,-77.52731731987973],"lat":[37.52181365100871,37.52174259526333,37.5216709126103,37.51480527848094,37.50793963417333,37.50801130394939,37.50808234693038,37.51494800405852,37.52181365100871]}]],[[{"lng":[-77.52678411831504,-77.51815946383144,-77.50953482460652,-77.50962530769208,-77.50971577425969,-77.5183388380611,-77.5269619171124,-77.52687302582892,-77.52678411831504],"lat":[37.56300731523798,37.56293622119611,37.56286449990866,37.55599892892517,37.54913334626909,37.54920505467782,37.54927613595365,37.55614173143199,37.56300731523798]}]],[[{"lng":[-77.5269619171124,-77.5183388380611,-77.50971577425969,-77.50980622429014,-77.5098966577998,-77.51851814675318,-77.52713965094766,-77.52705079214661,-77.5269619171124],"lat":[37.54927613595365,37.54920505467782,37.54913334626909,37.54226775384137,37.53540215083992,37.53547384637052,37.53554491488084,37.54241053070398,37.54927613595365]}]],[[{"lng":[-77.51043891218677,-77.5018221619484,-77.49320542834268,-77.49329731902499,-77.49338919292363,-77.50200435399792,-77.51061953169578,-77.5105292301895,-77.51043891218677],"lat":[37.494208315419,37.49413603185747,37.4940631216265,37.48719745952129,37.48033178853403,37.48040468566397,37.48047695623703,37.48734264026888,37.494208315419]}]],[[{"lng":[-77.5102582267331,-77.50163990338019,-77.49302159666904,-77.49311352089626,-77.49320542834268,-77.5018221619484,-77.51043891218677,-77.51034857770676,-77.5102582267331],"lat":[37.50793963417333,37.50786733762281,37.50779441429021,37.50092877294875,37.4940631216265,37.49413603185747,37.494208315419,37.5010739797864,37.50793963417333]}]],[[{"lng":[-77.49302159666904,-77.48440330674322,-77.47578503374643,-77.47587853120881,-77.47597201160328,-77.4845887115131,-77.49320542834268,-77.49311352089626,-77.49302159666904],"lat":[37.50779441429021,37.50772086417734,37.50764668728602,37.50078105921523,37.49391542116337,37.49398958472787,37.4940631216265,37.50092877294875,37.50779441429021]}]],[[{"lng":[-77.49320542834268,-77.4845887115131,-77.47597201160328,-77.47606547494679,-77.47615892121945,-77.48477404861629,-77.49338919292363,-77.49329731902499,-77.49320542834268],"lat":[37.4940631216265,37.49398958472787,37.49391542116337,37.48704977232827,37.4801841146108,37.48025826484905,37.48033178853403,37.48719745952129,37.4940631216265]}]],[[{"lng":[-77.51007747528679,-77.50145757824491,-77.49283769785391,-77.49292965565647,-77.49302159666904,-77.50163990338019,-77.5102582267331,-77.51016785926129,-77.51007747528679],"lat":[37.5216709126103,37.52159860307017,37.52152566663536,37.51466004555204,37.50779441429021,37.50786733762281,37.50793963417333,37.51480527848094,37.5216709126103]}]],[[{"lng":[-77.5098966577998,-77.50127518649411,-77.49265373184841,-77.49274572324471,-77.49283769785391,-77.50145757824491,-77.51007747528679,-77.50998707479323,-77.5098966577998],"lat":[37.53540215083992,37.53532982830962,37.53525687877201,37.52839127834234,37.52152566663536,37.52159860307017,37.5216709126103,37.5285365373636,37.53540215083992]}]],[[{"lng":[-77.49265373184841,-77.48403229400644,-77.47541087311205,-77.47550443889283,-77.47559798759926,-77.48421783425744,-77.49283769785391,-77.49274572324471,-77.49265373184841],"lat":[37.53525687877201,37.53518330222892,37.53510909868214,37.52824351152431,37.52137791308892,37.52145210330767,37.52152566663536,37.52839127834234,37.53525687877201]}]],[[{"lng":[-77.49283769785391,-77.48421783425744,-77.47559798759926,-77.47569151921148,-77.47578503374643,-77.48440330674322,-77.49302159666904,-77.49292965565647,-77.49283769785391],"lat":[37.52152566663536,37.52145210330767,37.52137791308892,37.51451230527688,37.50764668728602,37.50772086417734,37.50779441429021,37.51466004555204,37.52152566663536]}]],[[{"lng":[-77.50971577425969,-77.50109272811521,-77.49246969863987,-77.49256172364834,-77.49265373184841,-77.50127518649411,-77.5098966577998,-77.50980622429014,-77.50971577425969],"lat":[37.54913334626909,37.54906101074803,37.54898804810706,37.54212246872657,37.53525687877201,37.53532982830962,37.53540215083992,37.54226775384137,37.54913334626909]}]],[[{"lng":[-77.50953482460652,-77.50091020304777,-77.4922855981673,-77.49237765680634,-77.49246969863987,-77.50109272811521,-77.50971577425969,-77.50962530769208,-77.50953482460652],"lat":[37.56286449990866,37.56279215139627,37.56271917565134,37.55585361771563,37.54898804810706,37.54906101074803,37.54913334626909,37.55599892892517,37.56286449990866]}]],[[{"lng":[-77.4922855981673,-77.48366101010899,-77.47503643901685,-77.47513007319093,-77.47522369027193,-77.48384668597745,-77.49246969863987,-77.49237765680634,-77.4922855981673],"lat":[37.56271917565134,37.56264557267567,37.56257134247103,37.55570579780836,37.54884024147255,37.54891445834796,37.54898804810706,37.55585361771563,37.56271917565134]}]],[[{"lng":[-77.49246969863987,-77.48384668597745,-77.47522369027193,-77.47531729023999,-77.47541087311205,-77.48403229400644,-77.49265373184841,-77.49256172364834,-77.49246969863987],"lat":[37.54898804810706,37.54891445834796,37.54884024147255,37.54197467536451,37.53510909868214,37.53518330222892,37.53525687877201,37.54212246872657,37.54898804810706]}]],[[{"lng":[-77.50935380882775,-77.50072761127916,-77.49210143041799,-77.49219352270606,-77.4922855981673,-77.50091020304777,-77.50953482460652,-77.50944432498657,-77.50935380882775],"lat":[37.57659560916525,37.57652324766095,37.57645025881147,37.56958472271628,37.56271917565134,37.56279215139627,37.56286449990866,37.56973006002169,37.57659560916525]}]],[[{"lng":[-77.5091727268634,-77.50054495274884,-77.49191719533087,-77.4920093212864,-77.49210143041799,-77.50072761127916,-77.50935380882775,-77.50926327611361,-77.5091727268634],"lat":[37.59032667504945,37.59025430055268,37.59018129859806,37.58331578473909,37.57645025881147,37.57652324766095,37.57659560916525,37.58346114814153,37.59032667504945]}]],[[{"lng":[-77.49191719533087,-77.4832894547535,-77.47466173116092,-77.47475543380332,-77.4748491193339,-77.4834752663882,-77.49210143041799,-77.4920093212864,-77.49191719533087],"lat":[37.59018129859806,37.59010766918745,37.59003341232259,37.58316791173785,37.57630239908415,37.5763766426186,37.57645025881147,37.58331578473909,37.59018129859806]}]],[[{"lng":[-77.49210143041799,-77.4834752663882,-77.4748491193339,-77.47494278773274,-77.47503643901685,-77.48366101010899,-77.4922855981673,-77.49219352270606,-77.49210143041799],"lat":[37.57645025881147,37.5763766426186,37.57630239908415,37.5694368762626,37.56257134247103,37.56264557267567,37.56271917565134,37.56958472271628,37.57645025881147]}]],[[{"lng":[-77.50899157870093,-77.50036222744421,-77.49173289289321,-77.49182505253468,-77.49191719533087,-77.50054495274884,-77.5091727268634,-77.50908216106069,-77.50899157870093],"lat":[37.60405769496769,37.60398530747781,37.60391229241749,37.59704680119054,37.59018129859806,37.59025430055268,37.59032667504945,37.59719219069119,37.60405769496769]}]],[[{"lng":[-77.49173289289321,-77.48310357519206,-77.474474274485,-77.47456801138972,-77.47466173116092,-77.4832894547535,-77.49191719533087,-77.49182505253468,-77.49173289289321],"lat":[37.60391229241749,37.60383864978853,37.6037643795927,37.59689890164053,37.59003341232259,37.59010766918745,37.59018129859806,37.59704680119054,37.60391229241749]}]],[[{"lng":[-77.47541087311205,-77.46678946817757,-77.45816808160956,-77.45826322175618,-77.45835834454122,-77.46697815689184,-77.47559798759926,-77.47550443889283,-77.47541087311205],"lat":[37.53510909868214,37.53503426812361,37.53495881057484,37.52809323691413,37.52122765197555,37.52130309597104,37.52137791308892,37.52824351152431,37.53510909868214]}]],[[{"lng":[-77.47522369027193,-77.46660071053546,-77.45797774917511,-77.45807292408412,-77.45816808160956,-77.46678946817757,-77.47541087311205,-77.47531729023999,-77.47522369027193],"lat":[37.54884024147255,37.54876539747278,37.54868992637016,37.54182437375982,37.53495881057484,37.53503426812361,37.53510909868214,37.54197467536451,37.54884024147255]}]],[[{"lng":[-77.47503643901685,-77.46641188390295,-77.45778734717481,-77.45788255686527,-77.45797774917511,-77.46660071053546,-77.47522369027193,-77.47513007319093,-77.47503643901685],"lat":[37.56257134247103,37.56249648502942,37.5624210003723,37.55555546920797,37.54868992637016,37.54876539747278,37.54884024147255,37.55570579780836,37.56257134247103]}]],[[{"lng":[-77.4748491193339,-77.46622298826699,-77.45759687559551,-77.45769212008648,-77.45778734717481,-77.46641188390295,-77.47503643901685,-77.47494278773274,-77.4748491193339],"lat":[37.57630239908415,37.57622752820012,37.57615202998795,37.56928652066529,37.5624210003723,37.56249648502942,37.56257134247103,37.5694368762626,37.57630239908415]}]],[[{"lng":[-77.47466173116092,-77.46603402356494,-77.45740633437407,-77.45750161368463,-77.45759687559551,-77.46622298826699,-77.4748491193339,-77.47475543380332,-77.47466173116092],"lat":[37.59003341232259,37.58995852799549,37.58988301622767,37.58301752914241,37.57615202998795,37.57622752820012,37.57630239908415,37.58316791173785,37.59003341232259]}]],[[{"lng":[-77.45740633437407,-77.44877866260009,-77.44015100838719,-77.44024786434674,-77.44034470261876,-77.44897078033141,-77.45759687559551,-77.45750161368463,-77.45740633437407],"lat":[37.58988301622767,37.58980687701116,37.58973011034783,37.58286463698736,37.57599915155738,37.57607590443973,37.57615202998795,37.58301752914241,37.58988301622767]}]],[[{"lng":[-77.45759687559551,-77.44897078033141,-77.44034470261876,-77.44044152318266,-77.44053832605601,-77.44916282784449,-77.45778734717481,-77.45769212008648,-77.45759687559551],"lat":[37.57615202998795,37.57607590443973,37.57599915155738,37.56913365595889,37.56226814938978,37.56234488849182,37.5624210003723,37.56928652066529,37.57615202998795]}]],[[{"lng":[-77.474474274485,-77.46584498978375,-77.45721572349727,-77.45731103764653,-77.45740633437407,-77.46603402356494,-77.47466173116092,-77.47456801138972,-77.474474274485],"lat":[37.6037643795927,37.60368948182196,37.60361395649784,37.59674849204578,37.58988301622767,37.58995852799549,37.59003341232259,37.59689890164053,37.6037643795927]}]],[[{"lng":[-77.45721572349727,-77.44858647463727,-77.43995724334796,-77.44005413472254,-77.44015100838719,-77.44877866260009,-77.45740633437407,-77.45731103764653,-77.45721572349727],"lat":[37.60361395649784,37.60353780361241,37.6034610231675,37.59659557244085,37.58973011034783,37.58980687701116,37.58988301622767,37.59674849204578,37.60361395649784]}]]],null,"Tiles",{"interactive":true,"className":"","stroke":true,"color":"white","weight":1,"opacity":0.5,"fill":true,"fillColor":["#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77","#1B9E77"],"fillOpacity":0.4,"smoothFactor":1,"noClip":false},null,null,["DO_S13_7645_30.2025 (converted)","DO_S13_7646_30.2025 (converted)","DO_S13_7646_40.2025 (converted)","DO_S13_7647_40.2025 (converted)","DO_S13_7655_10.2025 (converted)","DO_S13_7655_20.2025 (converted)","DO_S13_7655_30.2025 (converted)","DO_S13_7655_40.2025 (converted)","DO_S13_7656_10.2025 (converted)","DO_S13_7656_20.2025 (converted)","DO_S13_7656_30.2025 (converted)","DO_S13_7656_40.2025 (converted)","DO_S13_7657_10.2025 (converted)","DO_S13_7657_20.2025 (converted)","DO_S13_7657_30.2025 (converted)","DO_S13_7657_40.2025 (converted)","DO_S13_7658_10.2025 (converted)","DO_S13_7658_20.2025 (converted)","DO_S13_7658_30.2025 (converted)","DO_S13_7658_40.2025 (converted)","DO_S13_7659_30.2025 (converted)","DO_S13_7659_40.2025 (converted)","DO_S13_7666_10.2025 (converted)","DO_S13_7666_20.2025 (converted)","DO_S13_7667_10.2025 (converted)","DO_S13_7667_20.2025 (converted)","DO_S13_7667_30.2025 (converted)","DO_S13_7668_10.2025 (converted)","DO_S13_7668_20.2025 (converted)","DO_S13_7668_30.2025 (converted)","DO_S13_7668_40.2025 (converted)","DO_S13_7669_10.2025 (converted)","DO_S13_7669_20.2025 (converted)","DO_S13_7669_30.2025 (converted)","DO_S13_7669_40.2025 (converted)","DO_S13_7678_20.2025 (converted)","DO_S13_7679_10.2025 (converted)","DO_S13_7679_20.2025 (converted)","DO_S13_7750_40.2025 (converted)","DO_S13_7760_10.2025 (converted)","DO_S13_7760_20.2025 (converted)","DO_S13_7760_30.2025 (converted)","DO_S13_7760_40.2025 (converted)","DO_S13_7761_10.2025 (converted)","DO_S13_7761_30.2025 (converted)","DO_S13_7761_40.2025 (converted)","DO_S13_7762_30.2025 (converted)","DO_S13_7762_40.2025 (converted)","DO_S13_7770_10.2025 (converted)","DO_S13_7770_20.2025 (converted)","DO_S13_7770_30.2025 (converted)","DO_S13_7770_40.2025 (converted)","DO_S13_7771_10.2025 (converted)","DO_S13_7771_20.2025 (converted)","DO_S13_7771_30.2025 (converted)","DO_S13_7771_40.2025 (converted)","DO_S13_7772_10.2025 (converted)","DO_S13_7772_20.2025 (converted)","DO_S13_7772_30.2025 (converted)","DO_S13_7772_40.2025 (converted)","DO_S13_7773_10.2025 (converted)","DO_S13_7773_20.2025 (converted)","DO_S13_7773_30.2025 (converted)","DO_S13_7773_40.2025 (converted)","DO_S13_7774_10.2025 (converted)","DO_S13_7774_40.2025 (converted)","DO_S13_7781_20.2025 (converted)","DO_S13_7782_10.2025 (converted)","DO_S13_7782_20.2025 (converted)","DO_S13_7783_10.2025 (converted)","DO_S13_7783_20.2025 (converted)","DO_S13_7783_30.2025 (converted)","DO_S13_7783_40.2025 (converted)","DO_S13_7784_10.2025 (converted)","DO_S13_7784_40.2025 (converted)"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addPolygons","args":[[[[{"lng":[-77.54964291373017,-77.55008310794251,-77.55058010519791,-77.55113254176071,-77.55173890213347,-77.552397523225,-77.55310659892085,-77.55386418504345,-77.55466820468784,-77.55551645391914,-77.55640660781502,-77.55733622683746,-77.55830276351601,-77.55930356942397,-77.56033590242924,-77.56139693419904,-77.56248375793889,-77.56359339634446,-77.56472280974441,-77.5658689044127,-77.56702854102717,-77.56819854325192,-77.56937570641982,-77.57055680629196,-77.57173860787005,-77.57291787423796,-77.57409137540849,-77.57525589715145,-77.57640824977879,-77.57754527686356,-77.57866386386847,-77.57976094666095,-77.58083351989174,-77.58187864521385,-77.58289345931998,-77.58387518177628,-77.5848211226313,-77.58572868977923,-77.5865953960576,-77.58741886605981,-77.58819684264404,-77.58892719312061,-77.58960791510101,-77.59023714199215,-77.59081314812127,-77.59133435347677,-77.59179932805225,-77.59220679578165,-77.59255563805436,-77.59284489680064,-77.59307377713859,-77.59324164957525,-77.59334805175557,-77.59339268975401,-77.59337543890533,-77.59329634417142,-77.59315562004379,-77.59295364998066,-77.5926909853808,-77.59236834409604,-77.59198660848674,-77.49365788021352,-77.49321571300285,-77.49271656555398,-77.49216180448705,-77.4915529490501,-77.49089166696913,-77.49017976988918,-77.48941920841847,-77.48861206678902,-77.48776055714848,-77.48686701349871,-77.48593388529768,-77.48496373074211,-77.48395920974966,-77.4829230766595,-77.48185817267181,-77.48076741804674,-77.47965380408438,-77.47852038490828,-77.47737026907453,-77.47620661103036,-77.47503260244547,-77.47385146344003,-77.47266643373403,-77.47148076374224,-77.47029770563941,-77.46912050442074,-77.46795238898217,-77.4667965632453,-77.46565619735161,-77.46453441895018,-77.46343430460333,-77.46235887133371,-77.46131106833639,-77.46029376887876,-77.45930976241077,-77.45836174690717,-77.45745232146285,-77.45658397916179,-77.45575910023922,-77.45497994555571,-77.4542486504011,-77.4535672186454,-77.45293751725244,-77.4523612711713,-77.45184005861967,-77.4513753067714,-77.45096828786066,-77.45062011571237,-77.45033174270904,-77.45010395720139,-77.44993738137032,-77.44983246954503,-77.44978950698254,-77.44980860911085,-77.44988972123819,-77.45003261872847,-77.45023690764226,-77.45050202584153,-77.45082724455436,-77.45121167039554,-77.54964291373017],"lat":[37.36749911859064,37.36662347808588,37.36576742321952,37.36493329968071,37.36412339298845,37.36333992223527,37.36258503401376,37.36186079654217,37.36116919400514,37.36051212112513,37.35989137797899,37.3593086650742,37.35876557869784,37.35826360655081,37.35780412367985,37.35738838871745,37.35701754044065,37.35669259465769,37.35641444143084,37.35618384264339,37.35600142991709,37.35586770288552,37.3557830278285,37.35574763667098,37.35576162634906,37.35582495854513,37.35593745979257,37.35609882194988,37.35630860304281,37.35656622847257,37.35687099258626,37.35722206060591,37.35761847091027,37.35805913766367,37.35854285378473,37.35906829424632,37.35963401969889,37.36023848040599,37.36088002048276,37.36155688242446,37.36226721191375,37.36300906289328,37.36378040288966,37.36457911857482,37.36540302154879,37.36624985432905,37.36711729652959,37.36800297121309,37.36890445139852,37.36981926670696,37.37074491012703,37.37167884488171,37.37261851137769,37.37356133421813,37.37450472925994,37.37544611069595,37.37638289814269,37.37731252371442,37.37823243906389,37.37914012237051,37.3800330852569,37.59109941517469,37.59197480550801,37.59283057974811,37.59366439157996,37.59447395482817,37.59525704973153,37.59601152903605,37.5967353238897,37.5974264495226,37.59808301069691,37.59870320691162,37.59928533734754,37.59982780553906,37.60032912375968,37.60078791710912,37.60120292729088,37.60157301606967,37.60189716839911,37.60217449521105,37.60240423585904,37.6025857602087,37.60271857036974,37.60280230206424,37.60283672562808,37.60282174664208,37.60275740619162,37.60264388075358,37.6024814817114,37.60227065449911,37.60201197737716,37.60170615984295,37.6013540406809,37.60095658565739,37.60051488486653,37.60003014973485,37.59950370969235,37.5989370085201,37.59833160038344,37.59768914556253,37.5970114058919,37.59630023992136,37.59555759781184,37.59478551598016,37.59398611150777,37.59316157632848,37.59231417121143,37.5914462195563,37.59056010101671,37.58965824497089,37.58874312385625,37.58781724638712,37.58688315067372,37.58594339726174,37.58500056211107,37.58405722953374,37.58311598510959,37.58217940859981,37.58125006687735,37.58033050689355,37.57942324870078,37.57853077854929,37.36749911859064]}]]],null,"Study area",{"interactive":true,"className":"","stroke":true,"color":"black","weight":2,"opacity":0.5,"fill":false,"fillColor":"black","fillOpacity":0.2,"smoothFactor":1,"noClip":false},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addPolylines","args":[[[[{"lng":[-77.47243300000149,-77.57081300000151],"lat":[37.58481700000311,37.37376800000308]}]]],null,null,{"interactive":true,"className":"","stroke":true,"color":"black","weight":2,"opacity":0.5,"fill":false,"fillColor":"black","fillOpacity":0.2,"dashArray":"6","smoothFactor":1,"noClip":false},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addCircleMarkers","args":[[37.58481700000311,37.37376800000308],[-77.47243300000149,-77.57081300000151],5,null,null,{"interactive":true,"className":"","stroke":true,"color":"black","weight":5,"opacity":0.5,"fill":true,"fillColor":"black","fillOpacity":0.2},null,null,null,null,["Industrial Richmond","Pocahontas State Park"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addLegend","args":[{"colors":["#1B9E77","#7570B3","#D95F02"],"labels":["converted","local (not converted)","missing (download needed)"],"na_color":null,"na_label":"NA","opacity":0.5,"position":"topright","type":"factor","title":"Tile status","extra":null,"layerId":null,"className":"info legend","group":null}]},{"method":"addLayersControl","args":[["Imagery","Light"],["Tiles","Study area"],{"collapsed":true,"autoZIndex":true,"position":"topright"}]}],"limits":{"lat":[37.3434436773997,37.60405769496769],"lng":[-77.59825353308079,-77.43995724334796]}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="orthoimagery-tiles" class="level2">
+<h2 class="anchored" data-anchor-id="orthoimagery-tiles">Orthoimagery tiles</h2>
+<p>Tiles were selected by intersecting the study area with the VBMP 2025 12-inch tile index footprints (South and North state plane zones searched).</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>tiles <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(state, <span class="at">name =</span> <span class="st">"tiles"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Status"</span>, <span class="st">"Tiles"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Status</th>
+<th style="text-align: right;">Tiles</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">converted</td>
+<td style="text-align: right;">75</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> tiles, <span class="fu">aes</span>(<span class="at">fill =</span> state), <span class="at">colour =</span> <span class="st">"white"</span>, <span class="at">linewidth =</span> <span class="fl">0.2</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> aoi, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">linewidth =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> line, <span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> pts, <span class="at">size =</span> <span class="fl">2.5</span>) <span class="sc">+</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf_label</span>(<span class="at">data =</span> pts, <span class="fu">aes</span>(<span class="at">label =</span> name), <span class="at">nudge_y =</span> <span class="dv">3000</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> state_cols, <span class="at">name =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">datum =</span> <span class="fu">st_crs</span>(cfg<span class="sc">$</span>crs)) <span class="sc">+</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="cn">NULL</span>, <span class="at">caption =</span> <span class="st">"Coordinates in EPSG:2925 (US survey feet)"</span>) <span class="sc">+</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01_study_area_files/figure-html/map-static-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="tiles-required-to-reproduce" class="level3">
+<h3 class="anchored" data-anchor-id="tiles-required-to-reproduce">Tiles required to reproduce</h3>
+<p>To rebuild the data, download these MrSID tiles (<code>.sid</code> and <code>.sdw</code>) from the VGIN VBMP site into <code>data/raw/tiles/</code>.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>tiles <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">|&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">section =</span> <span class="fu">sub</span>(<span class="st">"^DO_(S</span><span class="sc">\\</span><span class="st">d+_</span><span class="sc">\\</span><span class="st">d{4})_.*"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, tile_name),</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">quarter =</span> <span class="fu">sub</span>(<span class="st">"^DO_S</span><span class="sc">\\</span><span class="st">d+_</span><span class="sc">\\</span><span class="st">d{4}_(</span><span class="sc">\\</span><span class="st">d+)</span><span class="sc">\\</span><span class="st">..*"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, tile_name)) <span class="sc">|&gt;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(section) <span class="sc">|&gt;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">tiles =</span> <span class="fu">n</span>(), <span class="at">quarters =</span> <span class="fu">paste</span>(quarter, <span class="at">collapse =</span> <span class="st">", "</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Section"</span>, <span class="st">"Tiles"</span>, <span class="st">"Quarter codes"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Section</th>
+<th style="text-align: right;">Tiles</th>
+<th style="text-align: left;">Quarter codes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">S13_7645</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">30</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S13_7646</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">30, 40</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">S13_7647</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">40</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S13_7655</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">10, 20, 30, 40</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">S13_7656</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">10, 20, 30, 40</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S13_7657</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">10, 20, 30, 40</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">S13_7658</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">10, 20, 30, 40</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S13_7659</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">30, 40</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">S13_7666</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">10, 20</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S13_7667</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">10, 20, 30</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">S13_7668</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">10, 20, 30, 40</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S13_7669</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">10, 20, 30, 40</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">S13_7678</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">20</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S13_7679</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">10, 20</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">S13_7750</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">40</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S13_7760</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">10, 20, 30, 40</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">S13_7761</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">10, 30, 40</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S13_7762</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">30, 40</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">S13_7770</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">10, 20, 30, 40</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S13_7771</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">10, 20, 30, 40</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">S13_7772</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">10, 20, 30, 40</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S13_7773</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">10, 20, 30, 40</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">S13_7774</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">10, 40</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S13_7781</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">20</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">S13_7782</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">10, 20</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S13_7783</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">10, 20, 30, 40</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">S13_7784</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">10, 40</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>log_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(derived, <span class="st">"conversion_log.csv"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">file.exists</span>(log_path)) {</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  log <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(log_path)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"**Conversion:** %d of %d tiles converted to GeoTIFF (%d errors logged)."</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>              <span class="fu">sum</span>(tiles<span class="sc">$</span>converted), <span class="fu">nrow</span>(tiles), <span class="fu">sum</span>(log<span class="sc">$</span>result <span class="sc">==</span> <span class="st">"error"</span>)))</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"**Conversion:** %d of %d tiles converted to GeoTIFF."</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>              <span class="fu">sum</span>(tiles<span class="sc">$</span>converted), <span class="fu">nrow</span>(tiles)))</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<p><strong>Conversion:</strong> 75 of 75 tiles converted to GeoTIFF (0 errors logged).</p>
+</section>
+</section>
+<section id="mosaic" class="level2">
+<h2 class="anchored" data-anchor-id="mosaic">Mosaic</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>vrt_path     <span class="ot">&lt;-</span> <span class="fu">file.path</span>(derived, <span class="st">"ortho_12in.vrt"</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>preview_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(derived, <span class="st">"ortho_12in_preview.tif"</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>has_mosaic   <span class="ot">&lt;-</span> <span class="fu">file.exists</span>(vrt_path) <span class="sc">&amp;&amp;</span> <span class="fu">file.exists</span>(preview_path)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>ortho <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(vrt_path)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>preview <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(preview_path)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"The virtual mosaic combines %d GeoTIFF tiles into one %s × %s px image at %g ft resolution</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="st">  (bands: %s). It only references the tiles, so it takes no extra disk space.</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="st">  The preview below is resampled to %g ft pixels; the study area is outlined in yellow."</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nrow</span>(tiles), <span class="fu">format</span>(terra<span class="sc">::</span><span class="fu">ncol</span>(ortho), <span class="at">big.mark =</span> <span class="st">","</span>), <span class="fu">format</span>(terra<span class="sc">::</span><span class="fu">nrow</span>(ortho), <span class="at">big.mark =</span> <span class="st">","</span>),</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  terra<span class="sc">::</span><span class="fu">res</span>(ortho)[<span class="dv">1</span>], <span class="fu">paste</span>(<span class="fu">names</span>(ortho), <span class="at">collapse =</span> <span class="st">", "</span>), terra<span class="sc">::</span><span class="fu">res</span>(preview)[<span class="dv">1</span>]</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<p>The virtual mosaic combines 75 GeoTIFF tiles into one 45,000 × 95,000 px image at 1 ft resolution (bands: red, green, blue, nir). It only references the tiles, so it takes no extra disk space. The preview below is resampled to 25 ft pixels; the study area is outlined in yellow.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plotRGB</span>(preview, <span class="at">stretch =</span> <span class="st">"lin"</span>, <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>))</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(terra<span class="sc">::</span><span class="fu">vect</span>(aoi), <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">border =</span> <span class="st">"yellow"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(terra<span class="sc">::</span><span class="fu">vect</span>(line), <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">"yellow"</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01_study_area_files/figure-html/mosaic-preview-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="notes" class="level2">
+<h2 class="anchored" data-anchor-id="notes">Notes</h2>
+<ul>
+<li><strong>Imagery source:</strong> VBMP 2025 12-inch orthoimagery (Sanborn Map Company, flown February to March 2025), distributed by the Virginia Geographic Information Network (VGIN). The MrSID versions are RGB only. The near-infrared band is only in the 4-band GeoTIFF deliverables, which share the MrSID tiles’ names and pixel grid exactly (same 5,000 × 5,000 px extent and origin, EPSG:2925). Their RGB bands are the uncompressed originals: compared with the MrSID-derived RGB they differ by about 5 digital numbers on average, with no bias (MrSID compression noise), so the 4-band tiles replace the MrSID set.</li>
+<li><strong>Tile layout:</strong> each 12-inch tile is 5,000 × 5,000 px at 1 ft, covering 5,000 × 5,000 ft. Tile names follow <code>DO_S13_&lt;section&gt;_&lt;quarter&gt;.2025</code>.</li>
+<li><strong>MrSID decoding</strong> (only needed with <code>imagery_source: "rgb"</code>): the MrSID GDAL driver only loads inside the QGIS application (macOS code-signing blocks it from the command line), so conversion runs in the QGIS Python console.</li>
+<li><strong>Mosaic edges:</strong> the VRT has no nodata value. Areas outside the tiles read as 0 in all bands; all such areas lie outside the study area.</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
